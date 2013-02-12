@@ -1,5 +1,10 @@
 *.class
-
+*.apk
+*.ap_
+*.dex
+bin/
+gen/
+local.properties
 # Package Files #
 *.jar
 *.war
