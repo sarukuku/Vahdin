@@ -1,8 +1,8 @@
 package vahdin.view;
 
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.CustomComponent;
 
-abstract public class Subview extends Panel {
+abstract public class Subview extends CustomComponent {
 
     /**
      * Opens the subview with the given parameters.
