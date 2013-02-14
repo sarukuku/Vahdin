@@ -1,5 +1,6 @@
 package vahdin;
 
+import vahdin.component.GoogleMap;
 import vahdin.layout.MenuBar;
 import vahdin.layout.SideBar;
 
@@ -8,7 +9,6 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.Navigator.ComponentContainerViewDisplay;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.CustomLayout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -19,14 +19,14 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("serial")
 public class VahdinUI extends UI {
 
-    private Navigator navigator;
+    private static final String GOOGLE_MAPS_API_KEY = "AIzaSyD723LQ68aCdI37_yhUNDQVHj3zzAfPDVo";
 
     /** Initializes the UI. */
     @Override
     protected void init(VaadinRequest request) {
         getPage().setTitle("Vahdin");
 
-        Panel map = new Panel("Map placeholder"); // TODO: map component
+        GoogleMap map = new GoogleMap(GOOGLE_MAPS_API_KEY);
         VerticalLayout sidebar = new VerticalLayout();
         MenuBar menu = new MenuBar();
 
@@ -39,7 +39,7 @@ public class VahdinUI extends UI {
         setContent(layout);
         ComponentContainerViewDisplay viewDisplay = new ComponentContainerViewDisplay(
                 sidebar);
-        navigator = new Navigator(UI.getCurrent(), viewDisplay);
+        Navigator navigator = new Navigator(UI.getCurrent(), viewDisplay);
         navigator.addView("", SideBar.class);
     }
 }
