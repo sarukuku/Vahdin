@@ -3,6 +3,7 @@
 *.ap_
 *.dex
 bin/
+build/
 gen/
 local.properties
 # Package Files #
