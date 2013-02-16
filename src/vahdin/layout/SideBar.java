@@ -16,7 +16,7 @@ public class SideBar extends CustomLayout implements View {
     /** Constructs the sidebar and its subviews. */
     public SideBar() {
         super("sidebar");
-        addComponent(new MarksSubview(), "marks");
+        addComponent(new MarksSubview(), "marks-list");
     }
 
     /** Opens a subview. */
