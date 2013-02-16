@@ -7,6 +7,5 @@ public class MarksSubview extends Subview {
     public MarksSubview() {
         CustomLayout layout = new CustomLayout("marks-list");
         setCompositionRoot(layout);
-        setSizeFull();
     }
 }

@@ -27,6 +27,7 @@ public class VahdinUI extends UI {
         getPage().setTitle("Vahdin");
 
         GoogleMap map = new GoogleMap(GOOGLE_MAPS_API_KEY);
+        map.setSizeFull();
         VerticalLayout sidebar = new VerticalLayout();
         MenuBar menu = new MenuBar();
 
