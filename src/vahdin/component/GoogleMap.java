@@ -1,18 +1,18 @@
 package vahdin.component;
 
+import java.util.UUID;
+
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.JavaScript;
 
 @com.vaadin.annotations.JavaScript("js/google_map.js")
 public class GoogleMap extends CustomComponent {
 
     public GoogleMap(String apiKey) {
-        CustomLayout layout = new CustomLayout("google_map");
-        setCompositionRoot(layout);
-        setSizeFull();
-        layout.setSizeFull();
+        String id = UUID.randomUUID().toString();
+        setId(id);
 
-        JavaScript.getCurrent().execute("new GoogleMap('" + apiKey + "');");
+        JavaScript.getCurrent().execute(
+                "new GoogleMap('" + id + "', '" + apiKey + "');");
     }
 }

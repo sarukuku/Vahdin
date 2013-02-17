@@ -51,162 +51,162 @@
   		float: right;
   	}
   
-/* Marks list */
-
-.marks-list-container {
-	display: block;
-	position: relative;
-	max-width: 450px;
-	min-width: 300px;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-}
-
-.marks-list-top-header {
-	display: block;
-	width: 100%;
-	height: 100px;
-  position: absolute;
-  top: 0;
-  left: 0;
-	text-align: center;
-	font-size: 2em;
-	line-height: 100%;
-	z-index: 10;
-	background: #a7c7dc; /* Old browsers */
-	background: -moz-linear-gradient(top, #a7c7dc 0%, #516c7f 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a7c7dc), color-stop(100%,#516c7f)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #a7c7dc 0%,#516c7f 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #a7c7dc 0%,#516c7f 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #a7c7dc 0%,#516c7f 100%); /* IE10+ */
-	background: linear-gradient(to bottom, #a7c7dc 0%,#516c7f 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7c7dc', endColorstr='#516c7f',GradientType=0 ); /* IE6-9 */
-}
-
-.marks-list-scrollable-area {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: red;
-  overflow: scroll;
-}
-
-.marks-list-scrollable-area::-webkit-scrollbar { 
-    display: none; 
-}
-
-.marks-list-bottom-filter {
-	display: block;
-	position: absolute;
-	width: 100%;
-	bottom: 0;
-	left: 0;
-	z-index: 10;
-	padding: 5px;
-	background: #516c7f; /* Old browsers */
-	background: -moz-linear-gradient(top, #516c7f 0%, #a7c7dc 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#516c7f), color-stop(100%,#a7c7dc)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #516c7f 0%,#a7c7dc 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #516c7f 0%,#a7c7dc 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #516c7f 0%,#a7c7dc 100%); /* IE10+ */
-	background: linear-gradient(to bottom, #516c7f 0%,#a7c7dc 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#516c7f', endColorstr='#a7c7dc',GradientType=0 ); /* IE6-9 */
-}
-
-.marks-list-bottom-filter h3,
-.marks-list-bottom-filter select {
-	display: inline-block;
-	width: 50%;
-	max-width: 49%;
-	min-width: 49%;
-	margin: 0;
-	padding: 5px;
-}
-
-.marks-list-bottom-filter select {
-	float: right;
-}
-
-.marks-list-bottom-filter input {
-	display: block;
-	width: 100%;
-	padding: 5px;
-	margin: 0 auto;
-}
-
-/* Single Mark */
-
-.mark {
-	display: block;
-	width: 100%;
-	height: 120px;
-	border-bottom: 2px solid black;
-	background: #a7c7dc; /* Old browsers */
-	background: -moz-radial-gradient(center, ellipse cover, #a7c7dc 0%, #85b2d3 100%); /* FF3.6+ */
-	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#a7c7dc), color-stop(100%,#85b2d3)); /* Chrome,Safari4+ */
-	background: -webkit-radial-gradient(center, ellipse cover, #a7c7dc 0%,#85b2d3 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-radial-gradient(center, ellipse cover, #a7c7dc 0%,#85b2d3 100%); /* Opera 12+ */
-	background: -ms-radial-gradient(center, ellipse cover, #a7c7dc 0%,#85b2d3 100%); /* IE10+ */
-	background: radial-gradient(ellipse at center, #a7c7dc 0%,#85b2d3 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7c7dc', endColorstr='#85b2d3',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-}
-
-.mark:first-child {
-	margin-top: 100px;
-}
-
-.mark:last-child {
-	margin-bottom: 78px;
-}
-
-.mark-left-container {
-	display: block;
-	position: absolute; 
-	width: 45px;
-	height: 118px;
-	z-index: 5;
-}
-
-.mark-upvote-image,
-.mark-downvote-image {
-	display: block;
-	width: 100%;
-}
-
-.mark-upvote-image img,
-.mark-downvote-image img {
-	display: block;
-	max-width: 100%;
-	height: auto;
-	margin: 0 auto;
-}
-
-.mark-upvote-image {
-	padding-top: 4px;
-}
-
-.mark-vote-count {
-	width: 100%;
-	text-align: center;
-	font-weight: bold;
-}
-
-.mark-title-container {
-	display: block;
-	float: right;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	padding-left: 50px;
-}
-
-.mark-title-container h3 {
-	font-size: 1.8em;
-	line-height: 100%;
-	height: 100%;
-	padding-top: 18px;
-}
+	/* Marks list */
+	
+	.marks-list-container {
+		display: block;
+		position: relative;
+		max-width: 450px;
+		min-width: 300px;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+	
+	.marks-list-top-header {
+		display: block;
+		width: 100%;
+		height: 100px;
+	  	position: absolute;
+	  	top: 0;
+	  	left: 0;
+		text-align: center;
+		font-size: 2em;
+		line-height: 100%;
+		z-index: 10;
+		background: #a7c7dc;
+		/* background: -moz-linear-gradient(top, #a7c7dc 0%, #516c7f 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a7c7dc), color-stop(100%,#516c7f));
+		background: -webkit-linear-gradient(top, #a7c7dc 0%,#516c7f 100%);
+		background: -o-linear-gradient(top, #a7c7dc 0%,#516c7f 100%);
+		background: -ms-linear-gradient(top, #a7c7dc 0%,#516c7f 100%);
+		background: linear-gradient(to bottom, #a7c7dc 0%,#516c7f 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7c7dc', endColorstr='#516c7f',GradientType=0 ); */
+	}
+	
+	.marks-list-scrollable-area {
+	  display: block;
+	  position: absolute;
+	  width: 100%;
+	  height: 100%;
+	  background: red;
+	  overflow: scroll;
+	}
+	
+	.marks-list-scrollable-area::-webkit-scrollbar { 
+	    display: none; 
+	}
+	
+	.marks-list-bottom-filter {
+		display: block;
+		position: absolute;
+		width: 100%;
+		bottom: 0;
+		left: 0;
+		z-index: 10;
+		padding: 5px;
+		background: #516c7f;
+		/* background: -moz-linear-gradient(top, #516c7f 0%, #a7c7dc 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#516c7f), color-stop(100%,#a7c7dc));
+		background: -webkit-linear-gradient(top, #516c7f 0%,#a7c7dc 100%);
+		background: -o-linear-gradient(top, #516c7f 0%,#a7c7dc 100%);
+		background: -ms-linear-gradient(top, #516c7f 0%,#a7c7dc 100%);
+		background: linear-gradient(to bottom, #516c7f 0%,#a7c7dc 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#516c7f', endColorstr='#a7c7dc',GradientType=0 ); */
+	}
+	
+	.marks-list-bottom-filter h3,
+	.marks-list-bottom-filter select {
+		display: inline-block;
+		width: 50%;
+		max-width: 49%;
+		min-width: 49%;
+		margin: 0;
+		padding: 5px;
+	}
+	
+	.marks-list-bottom-filter select {
+		float: right;
+	}
+	
+	.marks-list-bottom-filter input {
+		display: block;
+		width: 100%;
+		padding: 5px;
+		margin: 0 auto;
+	}
+	
+	/* Single Mark */
+	
+	.mark {
+		display: block;
+		width: 100%;
+		height: 120px;
+		border-bottom: 2px solid black;
+		background: #a7c7dc;
+		/* background: -moz-radial-gradient(center, ellipse cover, #a7c7dc 0%, #85b2d3 100%);
+		background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#a7c7dc), color-stop(100%,#85b2d3));
+		background: -webkit-radial-gradient(center, ellipse cover, #a7c7dc 0%,#85b2d3 100%);
+		background: -o-radial-gradient(center, ellipse cover, #a7c7dc 0%,#85b2d3 100%);
+		background: -ms-radial-gradient(center, ellipse cover, #a7c7dc 0%,#85b2d3 100%);
+		background: radial-gradient(ellipse at center, #a7c7dc 0%,#85b2d3 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7c7dc', endColorstr='#85b2d3',GradientType=1 ); */
+	}
+	
+	.mark:first-child {
+		margin-top: 100px;
+	}
+	
+	.mark:last-child {
+		margin-bottom: 78px;
+	}
+	
+	.mark-left-container {
+		display: block;
+		position: absolute; 
+		width: 45px;
+		height: 118px;
+		z-index: 5;
+	}
+	
+	.mark-upvote-image,
+	.mark-downvote-image {
+		display: block;
+		width: 100%;
+	}
+	
+	.mark-upvote-image img,
+	.mark-downvote-image img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		margin: 0 auto;
+	}
+	
+	.mark-upvote-image {
+		padding-top: 4px;
+	}
+	
+	.mark-vote-count {
+		width: 100%;
+		text-align: center;
+		font-weight: bold;
+	}
+	
+	.mark-title-container {
+		display: block;
+		float: right;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		padding-left: 50px;
+	}
+	
+	.mark-title-container h3 {
+		font-size: 1.8em;
+		line-height: 100%;
+		height: 100%;
+		padding-top: 18px;
+	}
   
 }

@@ -1,7 +1,5 @@
 (function () {
     
-    var window = this;
-    
     var loadAPI = function (apiKey, callback) {
         var script = document.createElement('script');
         script.type = 'text/javascript';
@@ -16,11 +14,9 @@
         document.body.appendChild(script);
     };
     
-    window.GoogleMap = function (apiKey) {
+    window.GoogleMap = function (elementId, apiKey) {
         
-        var that = this;
-        
-        var dom = Array.prototype.pop.apply(document.getElementsByName('google_map'));
+        var dom = document.getElementById(elementId);
         
         loadAPI(apiKey, function () {
             var map = new google.maps.Map(dom, {
