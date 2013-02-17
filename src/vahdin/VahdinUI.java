@@ -1,6 +1,7 @@
 package vahdin;
 
 import vahdin.component.GoogleMap;
+import vahdin.data.User;
 import vahdin.layout.MenuBar;
 import vahdin.layout.SideBar;
 
@@ -20,6 +21,8 @@ import com.vaadin.ui.VerticalLayout;
 public class VahdinUI extends UI {
 
     private static final String GOOGLE_MAPS_API_KEY = "AIzaSyD723LQ68aCdI37_yhUNDQVHj3zzAfPDVo";
+
+    private User currentUser = User.guest();
 
     /** Initializes the UI. */
     @Override
@@ -42,5 +45,15 @@ public class VahdinUI extends UI {
                 sidebar);
         Navigator navigator = new Navigator(UI.getCurrent(), viewDisplay);
         navigator.addView("", SideBar.class);
+    }
+
+    /** Returns the current user. */
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    /** Sets the current user. */
+    public void setCurrentUser(User user) {
+        currentUser = user;
     }
 }
