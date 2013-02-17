@@ -45,7 +45,11 @@ public class User implements Item {
         row = item;
     }
 
-    /** Returns true if the user is currently marked as logged in. */
+    /**
+     * Returns true if the user is currently marked as logged in.
+     * 
+     * @return The current login status of the user.
+     */
     public boolean isLoggedIn() {
         return loggedIn;
     }
