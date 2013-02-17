@@ -8,7 +8,6 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.util.PropertysetItem;
-import com.vaadin.data.util.sqlcontainer.RowItem;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 
@@ -39,11 +38,11 @@ public class User implements Item {
         return new User(item);
     }
 
-    private RowItem row;
+    private Item row;
     private boolean loggedIn = false;
 
     private User(Item item) {
-        row = (RowItem) item;
+        row = item;
     }
 
     /** Returns true if the user is currently marked as logged in. */
