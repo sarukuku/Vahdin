@@ -11,3 +11,5 @@ local.properties
 *.war
 *.ear
 .classpath
+# Don't ignore libraries
+!WebContent/WEB-INF/lib/*.jar
