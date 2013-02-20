@@ -18,7 +18,7 @@ public class User implements Item {
 
     static {
         logger.info("Initializing users");
-        TableQuery table = new TableQuery("users", DB.pool);
+        TableQuery table = new TableQuery("User", DB.pool);
         table.setVersionColumn("version");
         try {
             container = new SQLContainer(table);
