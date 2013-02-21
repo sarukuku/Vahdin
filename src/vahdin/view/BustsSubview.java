@@ -1,5 +1,7 @@
 package vahdin.view;
 
+import java.util.Date;
+
 import vahdin.data.Bust;
 import vahdin.data.Mark;
 
@@ -12,7 +14,7 @@ public class BustsSubview extends Subview {
     @Override
     public void show(String[] params) {
         // FOR TESTING ONLY
-        Mark m1 = new Mark("Markin nimi", "aika", "Kuvaus", 1, 1);
+        Mark m1 = new Mark("Markin nimi", new Date(), "Kuvaus", 1, 1);
         m1.addBust(new Bust("Title", 0, "Kuvaus", 0, "aika", 2.2, 1.1));
         m1.addBust(new Bust("Title2", 1, "Toinen kuvaus", 1, "toka aika", 3.3,
                 4.4));
