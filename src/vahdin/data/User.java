@@ -33,8 +33,8 @@ public class User implements Item {
 
     public static User guest() {
         PropertysetItem item = new PropertysetItem();
-        item.addItemProperty("id", new ObjectProperty<String>("guest"));
-        item.addItemProperty("screenname", new ObjectProperty<String>("guest"));
+        item.addItemProperty("Id", new ObjectProperty<Integer>(-1));
+        item.addItemProperty("Name", new ObjectProperty<String>("guest"));
         return new User(item);
     }
 
