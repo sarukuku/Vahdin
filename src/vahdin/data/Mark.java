@@ -61,7 +61,8 @@ public class Mark implements Item {
     }
 
     public int getId() {
-        return (Integer) row.getItemProperty("Id").getValue();
+        Integer id = (Integer) row.getItemProperty("Id").getValue();
+        return id == null ? 0 : id;
     }
 
     public ArrayList<Bust> getBusts() {
