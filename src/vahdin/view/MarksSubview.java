@@ -1,6 +1,7 @@
 package vahdin.view;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import vahdin.data.Mark;
 
@@ -20,9 +21,9 @@ public class MarksSubview extends Subview {
         VerticalLayout tmp = new VerticalLayout();
 
         ArrayList<Mark> marks = new ArrayList<Mark>();
-        Mark m = new Mark("Tissiposki", "20.2.2013",
+        Mark m = new Mark("Tissiposki", new Date(),
                 "Tissiposki nähty mordorissa", 1, 1);
-        Mark m2 = new Mark("HeMan", "20.2.2013", "Hiimän Turussa", 2, 2);
+        Mark m2 = new Mark("HeMan", new Date(), "Hiimän Turussa", 2, 2);
         marks.add(m);
         marks.add(m2);
 

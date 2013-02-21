@@ -33,8 +33,8 @@ public class User implements Item {
 
     public static User guest() {
         PropertysetItem item = new PropertysetItem();
-        item.addItemProperty("id", new ObjectProperty<String>("guest"));
-        item.addItemProperty("screenname", new ObjectProperty<String>("guest"));
+        item.addItemProperty("Id", new ObjectProperty<Integer>(-1));
+        item.addItemProperty("Name", new ObjectProperty<String>("guest"));
         return new User(item);
     }
 
@@ -43,6 +43,12 @@ public class User implements Item {
 
     private User(Item item) {
         row = item;
+    }
+
+    // get raw prestige value from DB
+    private int getPrestigeValue() {
+        int value = (Integer) this.getItemProperty("Prestige").getValue();
+        return value;
     }
 
     /**
@@ -87,4 +93,55 @@ public class User implements Item {
         return row.removeItemProperty(id);
     }
 
+    public String getName() {
+        String name = this.getItemProperty("Name").getValue().toString();
+        return name;
+    }
+
+    public int getExperience() {
+        int value = (Integer) this.getItemProperty("Experience").getValue();
+        return value;
+    }
+
+    public String getPrestigeRank() {
+        int value = getPrestigeValue() / 100;
+        String rank = null;
+
+        if (value < 0) {
+            rank = "Tissiposki";
+        } else if (value < 10) {
+            rank = "Newbie";
+        } else if (value < 20) {
+            rank = "Stalker Wannabe";
+        } else if (value < 40) {
+            rank = "Stalker";
+        } else if (value < 80) {
+            rank = "Pro Stalker";
+        } else if (value < 160) {
+            rank = "Master Stalker";
+        } else {
+            rank = "Homo";
+        }
+        return rank;
+    }
+
+    // returns 2 decimal point float
+    public float getPrestigePower() {
+        int power = (int) (java.lang.Math.sqrt(getPrestigeValue()) * 50);
+        return power / 100;
+    }
+
+    public void setName(String name) {
+        this.getItemProperty("Name").setValue(name);
+    }
+
+    public void addExperience(int experience) {
+        this.getItemProperty("Name").setValue(experience);
+    }
+
+    // parameter prestige is equal to prestigepower
+    public void addPrestige(float prestige) {
+        this.getItemProperty("Prestige").setValue(
+                getPrestigeValue() + (int) (prestige * 100));
+    }
 }

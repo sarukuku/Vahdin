@@ -49,6 +49,8 @@ public class VahdinUI extends UI implements MethodEventSource {
                 sidebar);
         Navigator navigator = new Navigator(UI.getCurrent(), viewDisplay);
         navigator.addView("", SideBar.class);
+
+        setCurrentUser(User.load("testi")); // XXX: logs in a test user
     }
 
     /**
