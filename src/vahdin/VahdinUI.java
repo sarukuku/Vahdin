@@ -38,10 +38,10 @@ public class VahdinUI extends UI implements MethodEventSource {
         VerticalLayout sidebar = new VerticalLayout();
         MenuBar menu = new MenuBar();
 
-        CustomLayout layout = new CustomLayout("main");
-        layout.addComponent(menu, "menu");
-        layout.addComponent(map, "map");
-        layout.addComponent(sidebar, "sidebar");
+        CustomLayout layout = new CustomLayout("base-template");
+        // layout.addComponent(menu, "menu"); // TODO:
+        layout.addComponent(map, "map-container");
+        layout.addComponent(sidebar, "sidebar-container");
         layout.setSizeFull();
 
         setContent(layout);
