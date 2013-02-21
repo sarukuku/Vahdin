@@ -9,6 +9,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public class MarksSubview extends Subview {
@@ -30,8 +31,11 @@ public class MarksSubview extends Subview {
 
             // Button to show BustsSubview with Busts under the clicked Mark
             Button title = new Button(marks.get(i).getTitle());
+            final int id = marks.get(i).getId();
             title.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
+                    UI.getCurrent().getNavigator()
+                            .navigateTo("/busts/" + id + "/");
                     Notification.show("Title clicked");
                 }
 
@@ -68,5 +72,16 @@ public class MarksSubview extends Subview {
         marksList.addComponent(tmp, "marks-list-scrollable-area");
         setCompositionRoot(marksList);
 
+    }
+
+    @Override
+    public void show(String[] params) {
+        if (params.length > 0) {
+            for (int i = 0; i < params.length; i++) {
+                System.out.println(params[i]);
+            }
+        }
+        addStyleName("open");
+        super.show(params);
     }
 }
