@@ -1,0 +1,36 @@
+<!-- Base template, this is the "main view" on which other components are added / changed based on the app state -->
+
+<nav class='top-menu'> <!-- Top menu -->
+  <div location="logo-link" class="logo-link">
+	  <!-- This container acts as a link to the app root url -->
+  </div>
+  <div location="stats-link" class="stats-link">
+	  <!-- This container acts as a link to the stats page (overlay / window) -->
+  </div>
+  <div location="login-logout-link" class="login-link">
+	  <!-- This container acts as a login / logout link. The bg image can be changed to logout style by changing the class of this vontainer to "logout-link" -->
+  </div>
+  <div location="user-score" class="user-score">
+	  <!-- Insert user score here, preferrably just plain text -->
+  </div>
+  <div location="username" class="username">
+	  <!-- Insert username here, preferrably just plain text -->
+  </div>
+</nav>
+
+<div class="map-and-list-wrapper"> <!-- Map & list container -->
+			
+	<div location="map-container" class="map-container"> <!-- Map container -->
+		<!-- Insert map component here, preferrably iframe :) -->
+	</div>
+	
+	<div location="sidebar-container" class="marks-list-container"> <!-- List container -->
+		<!-- This is the place where you inject the list view you want to show. I've listed all the options under this line. -->
+		<!-- marks-sidebar.html (base view, list of all marks) -->
+		<!-- single-mark-sidebar.html (list of busts for a single mark) -->
+		<!-- new-mark-sidebar.html (create a new mark) -->
+		<!-- single-bust-sidebar.html (single bust view) -->
+		<!-- new-bust-sidebar.html (create a new bust) -->
+	</div>
+			
+</div>
