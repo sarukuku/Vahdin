@@ -104,20 +104,20 @@ public class User implements Item {
     }
 
     public String getPrestigeRank() {
-        int value = getPrestigeValue() / 100;
+        int value = getPrestigeValue();
         String rank = null;
 
         if (value < 0) {
             rank = "Tissiposki";
-        } else if (value < 10) {
+        } else if (value < 1000) {
             rank = "Newbie";
-        } else if (value < 20) {
+        } else if (value < 2000) {
             rank = "Stalker Wannabe";
-        } else if (value < 40) {
+        } else if (value < 4000) {
             rank = "Stalker";
-        } else if (value < 80) {
+        } else if (value < 8000) {
             rank = "Pro Stalker";
-        } else if (value < 160) {
+        } else if (value < 16000) {
             rank = "Master Stalker";
         } else {
             rank = "Homo";
