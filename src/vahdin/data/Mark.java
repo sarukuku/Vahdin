@@ -29,7 +29,10 @@ public class Mark implements Item {
 
     private Item row;
 
-    private int voteCount = 0;
+    // the emphasis of one vote determines on the PrestigePower of the user,
+    // which is a 2 decimal float;
+    // Changed voteCount type from int to float.
+    private float voteCount = 0;
     private ArrayList<Bust> busts;
 
     @SuppressWarnings("unchecked")
@@ -56,7 +59,7 @@ public class Mark implements Item {
         return getId();
     }
 
-    public int getVoteCount() {
+    public float getVoteCount() {
         return this.voteCount; // TODO:
     }
 
