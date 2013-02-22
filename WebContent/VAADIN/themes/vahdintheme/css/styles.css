@@ -660,6 +660,15 @@ html, body {
 	
 }
 
+/* Vaadin random layout component fixes */
+
+.sidebar-container,
+.sidebar-container > .v-layout,
+.sidebar-container > .v-layout > .v-slot,
+.sidebar-container > .v-layout > .v-slot > .v-layout {
+	height: 100%;
+}
+
 
 /* ==========================================================================
    Helper classes
