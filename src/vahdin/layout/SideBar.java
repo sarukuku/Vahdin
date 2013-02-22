@@ -11,12 +11,12 @@ import com.vaadin.ui.UI;
 
 public class SideBar extends CustomLayout implements View {
 
-    private static final String defaultSubview = "sidebar-container";
+    private static final String defaultSubview = "list-view-container";
 
     /** Constructs the sidebar and its subviews. */
     public SideBar() {
-        super("base-template");
-        addComponent(new MarksSubview(), "sidebar-container");
+        super("sidebar-container");
+        addComponent(new MarksSubview(), "list-view-container");
         // addComponent(new BustsSubview(), "busts-list");
 
     }
