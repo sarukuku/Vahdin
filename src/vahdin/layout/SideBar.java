@@ -1,7 +1,6 @@
 package vahdin.layout;
 
 import vahdin.VahdinUI;
-import vahdin.view.BustsSubview;
 import vahdin.view.MarksSubview;
 import vahdin.view.Subview;
 
@@ -12,13 +11,13 @@ import com.vaadin.ui.UI;
 
 public class SideBar extends CustomLayout implements View {
 
-    private static final String defaultSubview = "marks";
+    private static final String defaultSubview = "sidebar-container";
 
     /** Constructs the sidebar and its subviews. */
     public SideBar() {
-        super("sidebar");
-        addComponent(new MarksSubview(), "marks");
-        addComponent(new BustsSubview(), "busts");
+        super("base-template");
+        addComponent(new MarksSubview(), "sidebar-container");
+        // addComponent(new BustsSubview(), "busts-list");
 
     }
 
