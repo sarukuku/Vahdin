@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 
 import vahdin.component.GoogleMap;
 import vahdin.data.User;
-import vahdin.layout.MenuBar;
 import vahdin.layout.SideBar;
 
 import com.vaadin.annotations.Theme;
@@ -12,8 +11,12 @@ import com.vaadin.event.MethodEventSource;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.Navigator.ComponentContainerViewDisplay;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -36,10 +39,9 @@ public class VahdinUI extends UI implements MethodEventSource {
         GoogleMap map = new GoogleMap(GOOGLE_MAPS_API_KEY);
         map.setSizeFull();
         VerticalLayout sidebar = new VerticalLayout();
-        MenuBar menu = new MenuBar();
 
         CustomLayout layout = new CustomLayout("base-template");
-        // layout.addComponent(menu, "menu"); // TODO:
+        buildMenuBar(layout);
         layout.addComponent(map, "map-container");
         layout.addComponent(sidebar, "sidebar-container");
         layout.setSizeFull();
@@ -49,8 +51,80 @@ public class VahdinUI extends UI implements MethodEventSource {
                 sidebar);
         Navigator navigator = new Navigator(UI.getCurrent(), viewDisplay);
         navigator.addView("", SideBar.class);
+    }
 
-        setCurrentUser(User.load("testi")); // XXX: logs in a test user
+    /**
+     * Builds the menu bar by adding the necessary components.
+     * 
+     * @param layout
+     *            The layout to add the components to.
+     */
+    private void buildMenuBar(CustomLayout layout) {
+
+        final VahdinUI ui = (VahdinUI) UI.getCurrent();
+
+        Button logoLink = new Button();
+        logoLink.setSizeFull();
+        logoLink.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                ui.getNavigator().navigateTo("/");
+            }
+        });
+
+        Button statsLink = new Button();
+        statsLink.setSizeFull();
+        statsLink.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        final Button loginLink = new Button();
+        loginLink.setSizeFull();
+        loginLink.addStyleName("login-link");
+        loginLink.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                User currentUser = ui.getCurrentUser();
+                if (currentUser.isLoggedIn()) {
+                    // logout actions
+                    ui.setCurrentUser(User.guest());
+                } else {
+                    // login actions
+                    ui.setCurrentUser(User.load("testi")); // XXX: logs in a
+                                                           // test user
+                    // TODO: actual login
+                }
+            }
+        });
+
+        Label score = new Label(""); // TODO: user score
+
+        final Label username = new Label(getCurrentUser().getName());
+
+        addLoginListener(new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User currentUser = ui.getCurrentUser();
+                if (currentUser.isLoggedIn()) {
+                    loginLink.removeStyleName("login-link");
+                    loginLink.addStyleName("logout-link");
+                } else {
+                    loginLink.removeStyleName("logout-link");
+                    loginLink.addStyleName("login-link");
+                }
+                username.setValue(currentUser.getName());
+            }
+        });
+
+        layout.addComponent(logoLink, "logo-link");
+        layout.addComponent(statsLink, "stats-link");
+        layout.addComponent(loginLink, "login-logout-link");
+        layout.addComponent(score, "user-score");
+        layout.addComponent(username, "username");
+
     }
 
     /**
@@ -71,7 +145,9 @@ public class VahdinUI extends UI implements MethodEventSource {
     public void setCurrentUser(User user) {
         currentUser.markLoggedOut();
         currentUser = user;
-        currentUser.markLoggedIn();
+        if (!currentUser.isGuest()) {
+            currentUser.markLoggedIn();
+        }
         fireEvent(new LoginEvent(this));
     }
 

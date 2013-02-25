@@ -8,6 +8,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.util.PropertysetItem;
+import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 
@@ -28,12 +29,12 @@ public class User implements Item {
     }
 
     public static User load(String id) {
-        return new User(container.getItem(id));
+        return new User(container.getItem(new RowId(new Object[] { id })));
     }
 
     public static User guest() {
         PropertysetItem item = new PropertysetItem();
-        item.addItemProperty("Id", new ObjectProperty<Integer>(-1));
+        item.addItemProperty("Id", new ObjectProperty<String>(""));
         item.addItemProperty("Name", new ObjectProperty<String>("guest"));
         return new User(item);
     }
@@ -49,6 +50,11 @@ public class User implements Item {
     private int getPrestigeValue() {
         int value = (Integer) this.getItemProperty("Prestige").getValue();
         return value;
+    }
+
+    /** Returns true if the user is a guest. */
+    public boolean isGuest() {
+        return "".equals(getItemProperty("Id").getValue());
     }
 
     /**
