@@ -101,6 +101,7 @@ textarea {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
           font-family: 'Cabin', sans-serif;
+          outline: none;
 }
 
 ::-webkit-scrollbar {
@@ -162,6 +163,7 @@ html, body {
 	right: 0;
 	width: 200px;
 	height: 100%;
+	background-repeat: no-repeat;
 }
 
 .login-link {
@@ -185,6 +187,10 @@ html, body {
 
 .user-score {
 	margin-right: 210px;
+}
+
+.user-score > .v-label {
+	display: inline;
 }
 
 .user-score:before {
@@ -379,12 +385,14 @@ html, body {
 
 .upvote,
 .downvote,
-.vote-count {
+.vote-count,
+.vote-count * {
 	display: block;
 }
 
-.upvote,
-.downvote {
+.upvote img,
+.downvote img {
+	display: block;
 	margin: 0 auto;
 }
 
@@ -392,9 +400,11 @@ html, body {
 	text-align: center;
 	font-weight: bold;
 	padding: 2px 0;
+	color: black;
+	font-size: 16px;
 }
 
-.mark-title {
+.mark-title .v-button-caption {
 	display: block;
 	position: absolute;
 	top: 0;
@@ -404,6 +414,9 @@ html, body {
 	margin-left: 45px;
 	padding: 5px 0;
 	white-space: nowrap;
+	font-size: 24px;
+	margin-top: 19px;
+	margin-bottom: 19px;
 }
 
 .fadeout {
@@ -627,7 +640,7 @@ html, body {
 .bust-voting-container {
 	display: block;
 	position: absolute;
-	top: 90px;
+	top: 0;
 	left: 0;
 	width: 40px;
 	height: 100%;

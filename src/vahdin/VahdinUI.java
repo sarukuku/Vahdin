@@ -82,7 +82,6 @@ public class VahdinUI extends UI implements MethodEventSource {
         });
 
         final Button loginLink = new Button();
-        loginLink.setSizeFull();
         loginLink.addStyleName("login-link");
         loginLink.addClickListener(new ClickListener() {
             @Override

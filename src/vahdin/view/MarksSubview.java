@@ -36,6 +36,7 @@ public class MarksSubview extends Subview {
 
             // Button to show BustsSubview with Busts under the clicked Mark
             Button title = new Button(marks.get(i).getTitle());
+            title.setStyleName("mark-title");
             final int id = marks.get(i).getId();
             title.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
@@ -46,8 +47,8 @@ public class MarksSubview extends Subview {
 
             });
 
-            // Button to give upvode to Mark
-            Button voteUp = new Button("voteUp");
+            // Button to give upvote to Mark
+            Button voteUp = new Button();
             voteUp.setIcon(new ExternalResource(
                     "VAADIN/themes/vahdintheme/img/up-arrow.png"));
             voteUp.setStyleName("upvote");
@@ -58,9 +59,9 @@ public class MarksSubview extends Subview {
             });
 
             // Button to give downvote to Mark
-            Button voteDown = new Button("voteDown");
+            Button voteDown = new Button();
             voteDown.setIcon(new ExternalResource(
-                    "VAADIN/themes/vahdintheme/img/down-arror.png"));
+                    "VAADIN/themes/vahdintheme/img/down-arrow.png"));
             voteDown.setStyleName("downvote");
             voteDown.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
