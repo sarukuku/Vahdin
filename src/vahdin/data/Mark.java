@@ -33,7 +33,7 @@ public class Mark implements Item {
     // which is a 2 decimal float;
     // Changed voteCount type from int to float.
     private float voteCount = 0;
-    private ArrayList<Bust> busts;
+    private ArrayList<Bust> busts = new ArrayList<Bust>();
 
     @SuppressWarnings("unchecked")
     public Mark(String name, Date time, String description, int photoId, int id) {

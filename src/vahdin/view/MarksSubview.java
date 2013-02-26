@@ -5,6 +5,7 @@ import java.util.Date;
 
 import vahdin.data.Mark;
 
+import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
@@ -16,7 +17,10 @@ import com.vaadin.ui.VerticalLayout;
 public class MarksSubview extends Subview {
 
     public MarksSubview() {
+    }
 
+    @Override
+    public void show(String[] params) {
         CustomLayout marksList = new CustomLayout("marks-sidebar");
         VerticalLayout tmp = new VerticalLayout();
 
@@ -37,13 +41,16 @@ public class MarksSubview extends Subview {
                 public void buttonClick(ClickEvent event) {
                     UI.getCurrent().getNavigator()
                             .navigateTo("/busts/" + id + "/");
-                    Notification.show("Title clicked");
+                    // Notification.show("Title clicked");
                 }
 
             });
 
             // Button to give upvode to Mark
             Button voteUp = new Button("voteUp");
+            voteUp.setIcon(new ExternalResource(
+                    "VAADIN/themes/vahdintheme/img/up-arrow.png"));
+            voteUp.setStyleName("upvote");
             voteUp.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
                     Notification.show("Upvote clicked");
@@ -52,6 +59,9 @@ public class MarksSubview extends Subview {
 
             // Button to give downvote to Mark
             Button voteDown = new Button("voteDown");
+            voteDown.setIcon(new ExternalResource(
+                    "VAADIN/themes/vahdintheme/img/down-arror.png"));
+            voteDown.setStyleName("downvote");
             voteDown.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
                     Notification.show("Downvote clicked");
@@ -59,6 +69,7 @@ public class MarksSubview extends Subview {
             });
 
             Label voteCount = new Label(marks.get(i).getVoteCount() + "");
+            voteCount.setStyleName("vote-count");
 
             layout.addComponent(voteUp, "mark-row-upvote-arrow");
             layout.addComponent(voteCount, "mark-row-vote-count");
@@ -73,15 +84,6 @@ public class MarksSubview extends Subview {
         marksList.addComponent(tmp, "marks-list");
         setCompositionRoot(marksList);
 
-    }
-
-    @Override
-    public void show(String[] params) {
-        if (params.length > 0) {
-            for (int i = 0; i < params.length; i++) {
-                System.out.println(params[i]);
-            }
-        }
         addStyleName("open");
         super.show(params);
     }
