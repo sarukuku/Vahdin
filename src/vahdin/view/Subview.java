@@ -12,13 +12,11 @@ abstract public class Subview extends CustomComponent {
      */
     public void show(String[] params) {
         addStyleName("open");
-        removeStyleName("closed");
     }
 
     /** Hides the subview. */
     public void hide() {
         removeStyleName("open");
-        addStyleName("closed");
     }
 
 }

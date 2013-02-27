@@ -11,6 +11,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public class BustsSubview extends Subview {
@@ -53,6 +54,13 @@ public class BustsSubview extends Subview {
         back.setStyleName("back-button.png");
         back.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/back-button.png"));
+        back.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                UI.getCurrent().getNavigator().navigateTo("/");
+            }
+        });
 
         for (int i = 0; i < m1.getBusts().size(); i++) {
             CustomLayout layout = new CustomLayout("bust-row");

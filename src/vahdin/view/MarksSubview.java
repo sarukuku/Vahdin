@@ -44,8 +44,7 @@ public class MarksSubview extends Subview {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                // TODO Auto-generated method stub
-                Notification.show("Adding new Mark");
+                UI.getCurrent().getNavigator().navigateTo("/newmark/");
             }
         });
 
