@@ -5,6 +5,7 @@ import vahdin.component.ImageUpload;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
@@ -26,6 +27,7 @@ public class NewBustSubview extends Subview {
         TextArea description = new TextArea();
         Upload up = new ImageUpload().createImageUpload("tissit");
         // TODO: date input
+        DateField date = new DateField();
         Label lat = new Label("<h4>123.123</h4>", Label.CONTENT_XHTML);
         Label lon = new Label("<h4>456.456</h4>", Label.CONTENT_XHTML);
 
@@ -53,6 +55,7 @@ public class NewBustSubview extends Subview {
         newBustLayout.addComponent(title, "new-bust-title-input");
         newBustLayout.addComponent(description, "new-bust-desc-texarea");
         newBustLayout.addComponent(up, "new-bust-image-input");
+        newBustLayout.addComponent(date, "new-bust-datetime-input");
         newBustLayout.addComponent(lat, "latitude");
         newBustLayout.addComponent(lon, "longtitude");
         newBustLayout.addComponent(cancel, "new-bust-cancel-button");
