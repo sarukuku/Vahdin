@@ -23,6 +23,8 @@ public class NewBustSubview extends Subview {
 
         CustomLayout newBustLayout = new CustomLayout("new-bust-sidebar");
 
+        final String markId = params[1];
+
         TextField title = new TextField();
         TextArea description = new TextArea();
         Upload up = new ImageUpload().createImageUpload("tissit");
@@ -37,7 +39,8 @@ public class NewBustSubview extends Subview {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                UI.getCurrent().getNavigator().navigateTo("/busts/");
+                UI.getCurrent().getNavigator()
+                        .navigateTo("/busts/" + markId + "/");
             }
         });
 

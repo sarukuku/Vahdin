@@ -27,8 +27,7 @@ public class BustsSubview extends Subview {
         m1.addBust(new Bust("Title2", 1, "Toinen kuvaus", 1, "toka aika", 3.3,
                 4.4));
 
-        // String view = params[0];
-        // String markId = params[1];
+        final String markId = params[1];
 
         CustomLayout bustsList = new CustomLayout("single-mark-sidebar");
         VerticalLayout tmp = new VerticalLayout();
@@ -44,7 +43,8 @@ public class BustsSubview extends Subview {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                UI.getCurrent().getNavigator().navigateTo("/newbust/");
+                UI.getCurrent().getNavigator()
+                        .navigateTo("/newbust/" + markId + "/");
             }
         });
 
@@ -67,6 +67,38 @@ public class BustsSubview extends Subview {
             Label title = new Label("<h2>" + m1.getBusts().get(i).getTitle()
                     + "</h2>", Label.CONTENT_XHTML);
 
+            Button upvote = new Button();
+            upvote.setStyleName("upvote");
+            upvote.setIcon(new ExternalResource(
+                    "VAADIN/themes/vahdintheme/img/up-arrow.png"));
+            upvote.addClickListener(new Button.ClickListener() {
+
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+
+            Button downvote = new Button();
+            downvote.setStyleName("downvote");
+            downvote.setIcon(new ExternalResource(
+                    "VAADIN/themes/vahdintheme/img/down-arrow.png"));
+            downvote.addClickListener(new Button.ClickListener() {
+
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+
+            Label votes = new Label("234"); // TODO: real votes count
+            votes.setStyleName("vote-count");
+
+            layout.addComponent(upvote, "bust-row-upvote-arrow");
+            layout.addComponent(votes, "bust-row-vote-count");
+            layout.addComponent(downvote, "bust-row-downvote-arrow");
             layout.addComponent(title, "bust-row-title");
             tmp.addComponent(layout);
         }

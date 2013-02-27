@@ -96,7 +96,8 @@ public class MarksSubview extends Subview {
             layout.addComponent(title, "mark-row-title");
 
             // FOR TESTING ONLY
-            System.out.println(i + " " + marks.get(i).getTitle());
+            System.out.println(i + " " + marks.get(i).getTitle() + "id:"
+                    + marks.get(i).getId());
 
             tmp.addComponent(layout);
         }
