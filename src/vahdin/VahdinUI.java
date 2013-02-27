@@ -6,6 +6,7 @@ import vahdin.component.GoogleMap;
 import vahdin.data.User;
 import vahdin.layout.SideBar;
 
+import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
 import com.vaadin.event.MethodEventSource;
 import com.vaadin.navigator.Navigator;
@@ -19,6 +20,8 @@ import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+
+@JavaScript({ "component/js/jquery-1.9.1.min.js", "component/js/plugins.js" })
 
 /**
  * Main UI class
