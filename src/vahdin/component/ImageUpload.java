@@ -29,11 +29,13 @@ public class ImageUpload {
             public OutputStream receiveUpload(String filename, String mimeType) {
                 FileOutputStream fos = null;
                 String dir = "/Users/roopemerikukka/Dropbox/testi/";
+                dir = "";
                 String filetype = mimeType.split("/")[1];
                 filename = UpFilename;
                 if (checkMimeType(mimeType)) {
                     try {
                         file = new File(dir + filename + "." + filetype);
+                        System.out.println(file.getAbsolutePath());
                         fos = new FileOutputStream(file);
                     } catch (final java.io.FileNotFoundException e) {
                         Notification

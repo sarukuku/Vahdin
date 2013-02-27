@@ -22,7 +22,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @JavaScript({ "component/js/jquery-1.9.1.min.js", "component/js/plugins.js" })
-
 /**
  * Main UI class
  */
@@ -37,6 +36,7 @@ public class VahdinUI extends UI implements MethodEventSource {
     /** Initializes the UI. */
     @Override
     protected void init(VaadinRequest request) {
+
         getPage().setTitle("Vahdin");
 
         GoogleMap map = new GoogleMap(GOOGLE_MAPS_API_KEY);
