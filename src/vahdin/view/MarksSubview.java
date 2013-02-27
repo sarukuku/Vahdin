@@ -3,6 +3,7 @@ package vahdin.view;
 import java.util.ArrayList;
 import java.util.Date;
 
+import vahdin.VahdinUI;
 import vahdin.data.Mark;
 
 import com.vaadin.server.ExternalResource;
@@ -15,6 +16,8 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public class MarksSubview extends Subview {
+
+    final private VahdinUI ui = (VahdinUI) UI.getCurrent();
 
     public MarksSubview() {
     }
@@ -31,6 +34,21 @@ public class MarksSubview extends Subview {
         marks.add(m);
         marks.add(m2);
 
+        // The button to add a new Mark is only shown if user is logged in
+
+        Button newMark = new Button();
+        newMark.setStyleName("new-mark-button");
+        newMark.setIcon(new ExternalResource(
+                "VAADIN/themes/vahdintheme/img/add-button.png"));
+        newMark.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+                Notification.show("Adding new Mark");
+            }
+        });
+
         for (int i = 0; i < marks.size(); i++) {
             CustomLayout layout = new CustomLayout("mark-row");
 
@@ -39,6 +57,7 @@ public class MarksSubview extends Subview {
             title.setStyleName("mark-title");
             final int id = marks.get(i).getId();
             title.addClickListener(new Button.ClickListener() {
+
                 public void buttonClick(ClickEvent event) {
                     UI.getCurrent().getNavigator()
                             .navigateTo("/busts/" + id + "/");
@@ -82,6 +101,8 @@ public class MarksSubview extends Subview {
 
             tmp.addComponent(layout);
         }
+
+        marksList.addComponent(newMark, "new-mark-button");
         marksList.addComponent(tmp, "marks-list");
         setCompositionRoot(marksList);
 

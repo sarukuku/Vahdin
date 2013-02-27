@@ -10,7 +10,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
 public class BustsSubview extends Subview {
@@ -35,7 +35,24 @@ public class BustsSubview extends Subview {
 
         Label markTitle = new Label("<h2>" + m1.getTitle() + "</h2>",
                 Label.CONTENT_XHTML);
-        bustsList.addComponent(markTitle, "mark-title");
+
+        Button newBust = new Button();
+        newBust.setStyleName("new-mark-button");
+        newBust.setIcon(new ExternalResource(
+                "VAADIN/themes/vahdintheme/img/add-button.png"));
+        newBust.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+                Notification.show("Adding new Bust");
+            }
+        });
+
+        Button back = new Button();
+        back.setStyleName("back-button.png");
+        back.setIcon(new ExternalResource(
+                "VAADIN/themes/vahdintheme/img/back-button.png"));
 
         for (int i = 0; i < m1.getBusts().size(); i++) {
             CustomLayout layout = new CustomLayout("bust-row");
@@ -44,22 +61,13 @@ public class BustsSubview extends Subview {
             Label title = new Label("<h2>" + m1.getBusts().get(i).getTitle()
                     + "</h2>", Label.CONTENT_XHTML);
 
-            // Creating back-button
-            Button back = new Button("back");
-            back.setIcon(new ExternalResource(
-                    "VAADIN/themes/vahdintheme/img/back-button.png"));
-            back.setStyleName("go-back-button");
-            back.addClickListener(new Button.ClickListener() {
-                public void buttonClick(ClickEvent event) {
-                    UI.getCurrent().getNavigator().navigateTo("/");
-                }
-            });
-
-            layout.addComponent(back, "back-button");
             layout.addComponent(title, "bust-row-title");
             tmp.addComponent(layout);
         }
 
+        bustsList.addComponent(markTitle, "mark-title");
+        bustsList.addComponent(newBust, "new-bust-button");
+        bustsList.addComponent(back, "back-button");
         bustsList.addComponent(tmp, "busts-list");
         setCompositionRoot(bustsList);
 
