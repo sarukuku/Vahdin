@@ -45,7 +45,10 @@ GoogleMap = function (elementId, apiKey) {
         map = new google.maps.Map(dom, {
             'center': new google.maps.LatLng(-34.397, 150.644),
             'zoom': 8,
-            'mapTypeId': google.maps.MapTypeId.HYBRID
+            'mapTypeId': google.maps.MapTypeId.ROADMAP
+        });
+        google.maps.event.addListener(map, 'click', function (event) {
+            GoogleMap.click(event.latLng.lat(), event.latLng.lng());
         });
     })();
     
@@ -61,5 +64,10 @@ GoogleMap = function (elementId, apiKey) {
     this.removeMarker = apiCall(function (id) {
         markers[id].setMap(null);
         delete markers[id];
+    });
+    
+    /** Centers the map at the specified coordinates. */
+    this.center = apiCall(function (lat, lng) {
+        map.panTo(new google.maps.LatLng(lat, lng));
     });
 };

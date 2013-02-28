@@ -39,8 +39,24 @@ public class VahdinUI extends UI implements MethodEventSource {
 
         getPage().setTitle("Vahdin");
 
-        GoogleMap map = new GoogleMap(GOOGLE_MAPS_API_KEY);
+        final GoogleMap map = new GoogleMap(GOOGLE_MAPS_API_KEY);
         map.setSizeFull();
+
+        // XXX: GoogleMap usage example
+        map.addClickListener(new GoogleMap.ClickListener() {
+
+            private GoogleMap.Marker marker = null;
+
+            @Override
+            public void click(GoogleMap.ClickEvent event) {
+                if (marker != null) {
+                    map.removeMarker(marker);
+                }
+                marker = map.addMarker(event.latitude, event.longitude);
+                map.center(event.latitude, event.longitude);
+            }
+        });
+
         VerticalLayout sidebar = new VerticalLayout();
 
         CustomLayout layout = new CustomLayout("base-template");
