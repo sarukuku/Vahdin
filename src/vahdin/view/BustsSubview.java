@@ -36,7 +36,7 @@ public class BustsSubview extends Subview {
                 Label.CONTENT_XHTML);
 
         Button newBust = new Button();
-        newBust.setStyleName("new-mark-button");
+        newBust.setStyleName("new-bust-button");
         newBust.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/add-button.png"));
         newBust.addClickListener(new Button.ClickListener() {
@@ -49,7 +49,7 @@ public class BustsSubview extends Subview {
         });
 
         Button back = new Button();
-        back.setStyleName("back-button.png");
+        back.setStyleName("go-back-button");
         back.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/back-button.png"));
         back.addClickListener(new Button.ClickListener() {
