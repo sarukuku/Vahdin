@@ -5,6 +5,7 @@ import vahdin.view.BustsSubview;
 import vahdin.view.MarksSubview;
 import vahdin.view.NewBustSubview;
 import vahdin.view.NewMarkSubview;
+import vahdin.view.SingleBustSubview;
 import vahdin.view.Subview;
 
 import com.vaadin.navigator.View;
@@ -23,6 +24,7 @@ public class SideBar extends CustomLayout implements View {
         addComponent(new BustsSubview(), "busts");
         addComponent(new NewMarkSubview(), "newmark");
         addComponent(new NewBustSubview(), "newbust");
+        addComponent(new SingleBustSubview(), "bust");
 
     }
 
