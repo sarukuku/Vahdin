@@ -29,6 +29,7 @@ OAuth2Button = function (elementId, provider) {
             poll();
         });
         
+        jso_wipe();
         $.oajax({
             'url': 'https://www.googleapis.com/oauth2/v1/userinfo',
             'jso_provider': 'google',
