@@ -1,6 +1,7 @@
 package vahdin.data;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -48,7 +49,10 @@ public class Mark implements Item {
     }
 
     public String getTime() {
-        return (String) getItemProperty("CreationTime").getValue();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        StringBuilder date = new StringBuilder(
+                dateFormat.format(getItemProperty("CreationTime").getValue()));
+        return date.toString();
     }
 
     public String getDescription() {
