@@ -480,6 +480,16 @@ div.marks-list-container! > div.open {
 	right: 0;
 }
 
+.suggested {
+	background-color: rgba(174,207,40,0.6);
+}
+
+.new-button {
+	position: absolute;
+	top: 22px;
+	left: 5px;
+}
+
 /* New mark view */
 
 .input-block {
