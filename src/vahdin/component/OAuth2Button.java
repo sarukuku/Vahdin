@@ -21,7 +21,8 @@ public class OAuth2Button extends CustomComponent {
         setId(id);
         addStyleName(provider);
 
-        JavaScript.getCurrent().addFunction("OAuth2Button.authenticate",
+        JavaScript.getCurrent().addFunction(
+                "OAuth2Button.authenticate_" + provider,
                 new JavaScriptFunction() {
 
                     @Override

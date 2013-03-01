@@ -37,7 +37,7 @@ OAuth2Button = function (elementId, provider) {
             'jso_scopes': [ 'https://www.googleapis.com/auth/userinfo.profile' ],
             'dataType': 'json',
             'success': function (data) {
-                OAuth2Button.authenticate(data.id);
+                OAuth2Button['authenticate_' + provider](data.id);
             },
             'error': function () {
                 console.log('OAjax error.'); // TODO: error handling
