@@ -150,7 +150,7 @@ html, body {
 }
 
 .stats-link {
-	display: block;
+	display: none;
 	position: absolute;
 	top: 0;
 	left: 215px;
@@ -166,7 +166,7 @@ html, body {
 	display: block;
 	position: absolute;
 	top: 0;
-	left: 305px;
+	left: 215px;
 	width: 1px;
 	height: 100%;
 	border-left: 1px solid #45484d;
@@ -546,13 +546,14 @@ div.marks-list-container! > div.open {
 
 .cancel-button:hover,
 .submit-button:hover {
-	text-decoration: underline;
+	margin-top: 7px;
+	box-shadow: 0px 0px 5px 5px black;
 }
 
 .cancel-button:active,
 .submit-button:active {
-	margin-top: 7px;
-	box-shadow: 0px 0px 5px 5px black;
+	margin-top: 9px;
+	box-shadow: 0px 0px 3px 3px black;
 }
 
 .cancel-button {
