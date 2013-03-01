@@ -12,7 +12,6 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.JavaScriptFunction;
 
-@com.vaadin.annotations.JavaScript("js/google_map.js")
 public class GoogleMap extends CustomComponent implements MethodEventSource {
 
     private final String id;

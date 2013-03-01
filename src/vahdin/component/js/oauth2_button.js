@@ -1,5 +1,3 @@
-var jso_jquery = $;
-
 jso_configure({
     'google': {
         'client_id': '412257911068.apps.googleusercontent.com',
@@ -31,7 +29,7 @@ OAuth2Button = function (elementId, provider) {
             poll();
         });
         
-        jso_jquery.oajax({
+        $.oajax({
             'url': 'https://www.googleapis.com/oauth2/v1/userinfo',
             'jso_provider': 'google',
             'jso_allowia': true,

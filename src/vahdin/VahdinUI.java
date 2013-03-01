@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import vahdin.component.GoogleMap;
 import vahdin.component.OAuth2Button;
+import vahdin.component.OAuth2Button.AuthEvent;
 import vahdin.data.User;
 import vahdin.layout.SideBar;
 
@@ -23,11 +24,13 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-@JavaScript({ "component/js/jquery-1.9.1.min.js", "component/js/plugins.js" })
 /**
  * Main UI class
  */
 @Theme("vahdintheme")
+@JavaScript({ "component/js/jquery-1.9.1.min.js", "component/js/plugins.js",
+        "component/js/google_map.js", "component/js/jso.js",
+        "component/js/oauth2_button.js" })
 @SuppressWarnings("serial")
 public class VahdinUI extends UI implements MethodEventSource {
 
@@ -102,12 +105,7 @@ public class VahdinUI extends UI implements MethodEventSource {
             }
         });
 
-        final Window loginWindow = new Window("Log in");
-        loginWindow.setModal(true);
-        loginWindow.setStyleName("login-window");
-        VerticalLayout loginWindowLayout = new VerticalLayout();
-        loginWindowLayout.addComponent(new OAuth2Button("google"));
-        loginWindow.setContent(loginWindowLayout);
+        final Window loginWindow = buildLoginWindow();
 
         final Button loginLink = new Button();
         loginLink.addStyleName("login-link");
@@ -116,16 +114,9 @@ public class VahdinUI extends UI implements MethodEventSource {
             public void buttonClick(ClickEvent event) {
                 User currentUser = ui.getCurrentUser();
                 if (currentUser.isLoggedIn()) {
-                    // logout actions
                     ui.setCurrentUser(User.guest());
                 } else {
-                    // login actions
                     UI.getCurrent().addWindow(loginWindow);
-
-                    /*
-                     * ui.setCurrentUser(User.load("testi")); // XXX: logs in a
-                     * // test user // TODO: actual login
-                     */
                 }
             }
         });
@@ -155,6 +146,33 @@ public class VahdinUI extends UI implements MethodEventSource {
         layout.addComponent(score, "user-score");
         layout.addComponent(username, "username");
 
+    }
+
+    /**
+     * Builds the login window.
+     * 
+     * @return The window that was built.
+     */
+    private Window buildLoginWindow() {
+        final VahdinUI ui = (VahdinUI) UI.getCurrent();
+
+        OAuth2Button google = new OAuth2Button("google");
+        google.addAuthListener(new OAuth2Button.AuthListener() {
+            @Override
+            public void auth(AuthEvent event) {
+                ui.setCurrentUser(User.load("google:" + event.userId));
+            }
+        });
+
+        VerticalLayout layout = new VerticalLayout();
+        layout.addComponent(google);
+
+        Window window = new Window("Log in");
+        window.setModal(true);
+        window.setStyleName("login-window");
+        window.setContent(layout);
+
+        return window;
     }
 
     /**

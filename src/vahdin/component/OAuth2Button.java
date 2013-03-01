@@ -11,13 +11,11 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.JavaScriptFunction;
 
-@com.vaadin.annotations.JavaScript({ "js/jquery-1.9.1.min.js", "js/jso.js",
-        "js/oauth2_button.js" })
 public class OAuth2Button extends CustomComponent {
 
     private final String id;
 
-    public OAuth2Button(String provider) {
+    public OAuth2Button(final String provider) {
         final OAuth2Button button = this;
         id = UUID.randomUUID().toString();
         setId(id);
@@ -33,8 +31,14 @@ public class OAuth2Button extends CustomComponent {
 
                 });
 
-        JavaScript.getCurrent().execute(
-                "window['" + id + "'] = new OAuth2Button('" + id + "');");
+        addAttachListener(new AttachListener() {
+            @Override
+            public void attach(AttachEvent event) {
+                JavaScript.getCurrent().execute(
+                        "window['" + id + "'] = new OAuth2Button('" + id
+                                + "', '" + provider + "');");
+            }
+        });
     }
 
     /**
