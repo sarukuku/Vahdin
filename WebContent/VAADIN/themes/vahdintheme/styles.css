@@ -665,7 +665,8 @@ div.marks-list-container! > div.open {
 	color: #d7d7d7;
 }
 
-.mark-header .bust-voting-container .vote-count {
+.mark-header .bust-voting-container .vote-count,
+.bust-header .bust-voting-container .vote-count {
 	color: white;
 }
 
@@ -747,6 +748,10 @@ div.marks-list-container! > div.open {
 	color: white;
 }
 
+.bust-header .new-mark-button img {
+	top: 0;
+}
+
 /* Login window stuff */
 
 .v-window-modalitycurtain {
@@ -759,7 +764,8 @@ div.marks-list-container! > div.open {
 	background-color: rgba(0, 0, 0, 0.8);
 }
 
-.login-window {
+.login-window,
+.registration-window {
 	display: block;
 	width: 350px;
 	height: 260px;
@@ -769,7 +775,8 @@ div.marks-list-container! > div.open {
 	border: 1px solid black;
 }
 
-.login-window div.v-window-closebox {
+.login-window div.v-window-closebox,
+.registration-window div.v-window-closebox {
 	display: block;
 	width: 40px;
 	height: 40px;
@@ -784,7 +791,8 @@ div.marks-list-container! > div.open {
 	background-color: #9d9d9d;
 }
 
-.login-window div.v-window-closebox:before {
+.login-window div.v-window-closebox:before,
+.registration-window div.v-window-closebox:before {
 	content: "X";
 	position: absolute;
 	top: 3px;
@@ -793,7 +801,8 @@ div.marks-list-container! > div.open {
 	font-size: 25px;
 }
 
-.login-window .v-window-header {
+.login-window .v-window-header,
+.registration-window .v-window-header {
 	display: block;
 	width: 100%;
 	color: black;
@@ -804,7 +813,11 @@ div.marks-list-container! > div.open {
 .login-window .popup-content,
 .login-window .v-window-wrap,
 .login-window .v-verticallayout,
-.login-window .v-scrollable {
+.login-window .v-scrollable,
+.registration-window .popup-content,
+.registration-window .v-window-wrap,
+.registration-window .v-verticallayout,
+.registration-window .v-scrollable {
 	display: block;
 	position: absolute;
 	width: 100%;
@@ -837,7 +850,19 @@ div.marks-list-container! > div.open {
 	background-image: url("img/sign-in-facebook.png");
 }
 
+/* Registration window */
 
+.registration-window .v-label,
+.registration-window .v-textfield,
+.registration-window .submit-button {
+	position: relative;
+	margin: 10px;
+	width: 95%;
+}
+
+.registration-window .submit-button {
+	box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
+}
 
 @media only screen and (min-width: 1630px) {
 	

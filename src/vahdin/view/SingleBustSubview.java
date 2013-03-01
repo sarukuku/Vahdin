@@ -38,8 +38,8 @@ public class SingleBustSubview extends Subview {
                 Label.CONTENT_XHTML);
         Label date = new Label("<h4>" + b1.getTime() + "</h4>",
                 Label.CONTENT_XHTML);
-        Label user = new Label("<h4>Riku Riski</h4>", Label.CONTENT_XHTML);
-        user.setStyleName("username");
+        Label user = new Label("Riku Riski");
+        user.setStyleName("nickname");
 
         Button voteup = new Button();
         voteup.setStyleName("upvote");

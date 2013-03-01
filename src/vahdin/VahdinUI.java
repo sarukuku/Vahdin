@@ -20,6 +20,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -160,7 +161,15 @@ public class VahdinUI extends UI implements MethodEventSource {
         window.setModal(true);
         window.setStyleName("registration-window");
 
+        Label nicktitle = new Label("Invent your self an alias");
+        TextField alias = new TextField();
+        Button okgo = new Button("Ok, go!");
+        okgo.setStyleName("submit-button");
+        
         VerticalLayout layout = new VerticalLayout();
+        layout.addComponent(nicktitle);
+        layout.addComponent(alias);
+        layout.addComponent(okgo);
 
         window.setContent(layout);
 
