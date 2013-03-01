@@ -114,7 +114,7 @@ public class SingleBustSubview extends Subview {
         SingleBust.addComponent(date, "bust-datetime");
         SingleBust.addComponent(user, "bust-submitter-nickname");
         SingleBust.addComponent(voteup, "bust-upvote-arrow");
-        SingleBust.addComponent(votes, "vote-count");
+        SingleBust.addComponent(votes, "bust-vote-count");
         SingleBust.addComponent(votedown, "bust-downvote-arrow");
         SingleBust.addComponent(delete, "bust-delete-button");
         SingleBust.addComponent(back, "bust-back-button");
