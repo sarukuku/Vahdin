@@ -156,20 +156,22 @@ public class VahdinUI extends UI implements MethodEventSource {
     private Window buildLoginWindow() {
         final VahdinUI ui = (VahdinUI) UI.getCurrent();
 
+        final Window window = new Window("Log in");
+        window.setModal(true);
+        window.setStyleName("login-window");
+
         OAuth2Button google = new OAuth2Button("google");
         google.addAuthListener(new OAuth2Button.AuthListener() {
             @Override
             public void auth(AuthEvent event) {
                 ui.setCurrentUser(User.load("google:" + event.userId));
+                ui.removeWindow(window);
             }
         });
 
         VerticalLayout layout = new VerticalLayout();
         layout.addComponent(google);
 
-        Window window = new Window("Log in");
-        window.setModal(true);
-        window.setStyleName("login-window");
         window.setContent(layout);
 
         return window;
