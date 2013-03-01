@@ -116,7 +116,7 @@ public class BustsSubview extends Subview {
                 @Override
                 public void buttonClick(ClickEvent event) {
                     UI.getCurrent().getNavigator()
-                            .navigateTo("/bust/" + bustId + "/");
+                            .navigateTo("/bust/" + markId + "/" + bustId + "/");
                 }
             });
 
