@@ -149,8 +149,29 @@ public class VahdinUI extends UI implements MethodEventSource {
     }
 
     /**
+     * Builds the registration window.
+     * 
+     * @return The window that was built.
+     */
+    private Window buildRegistrationWindow(User user) {
+        final VahdinUI ui = (VahdinUI) UI.getCurrent();
+
+        final Window window = new Window("Register");
+        window.setModal(true);
+        window.setStyleName("registration-window");
+
+        VerticalLayout layout = new VerticalLayout();
+
+        window.setContent(layout);
+
+        return window;
+    }
+
+    /**
      * Builds the login window.
      * 
+     * @param registrationWindow
+     *            The window to open if the user isn't found in the database.
      * @return The window that was built.
      */
     private Window buildLoginWindow() {
@@ -164,13 +185,22 @@ public class VahdinUI extends UI implements MethodEventSource {
         google.addAuthListener(new OAuth2Button.AuthListener() {
             @Override
             public void auth(AuthEvent event) {
-                ui.setCurrentUser(User.load("google:" + event.userId));
                 ui.removeWindow(window);
+                User user = User.load("google:" + event.userId);
+                if (user == null) { // new user
+                    user = User.create("google:" + event.userId);
+                    ui.addWindow(buildRegistrationWindow(user));
+                } else {
+                    ui.setCurrentUser(user);
+                }
             }
         });
 
+        OAuth2Button facebook = new OAuth2Button("facebook");
+
         VerticalLayout layout = new VerticalLayout();
         layout.addComponent(google);
+        layout.addComponent(facebook);
 
         window.setContent(layout);
 

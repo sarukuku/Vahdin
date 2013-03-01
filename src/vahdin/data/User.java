@@ -29,7 +29,19 @@ public class User implements Item {
     }
 
     public static User load(String id) {
-        return new User(container.getItem(new RowId(new Object[] { id })));
+        Item item = container.getItem(new RowId(new Object[] { id }));
+        if (item == null) {
+            return null;
+        }
+        return new User(item);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static User create(String id) {
+        RowId tmpId = (RowId) container.addItem();
+        Item item = container.getItem(tmpId);
+        item.getItemProperty("Id").setValue(id);
+        return new User(item);
     }
 
     public static User guest() {
