@@ -427,7 +427,7 @@ div.marks-list-container! > div.open {
 	top: 0;
 	left: 0;
 	width: 40px;
-	height: 100%;
+	height: 80px;
 	padding: 5px 0;
 }
 
@@ -623,6 +623,7 @@ div.marks-list-container! > div.open {
 	font-size: 0.75em;
 	margin: 0 5px 5px 40px;
 	text-align: justify;
+	min-height: 105px;
 }
 
 .view-image-button {
@@ -663,17 +664,31 @@ div.marks-list-container! > div.open {
 	color: #d7d7d7;
 }
 
+.mark-header .bust-voting-container .vote-count {
+	color: white;
+}
+
 /* Single suggested mark */
 
-.suggested-mark-header > h4:before,
-.mark-header > h4:before,
-.bust-header > h4:before {
+.nickname,
+.suggested-mark-header h4,
+.mark-header h4,
+.bust-header h4 {
+	color: white;
+	font-size: 0.9em;
+	font-weight: 300;
+	margin: 3px 0;
+}
+
+.suggested-mark-header h4:before,
+.mark-header h4:before,
+.bust-header h4:before {
 	content: "submitted ";
 }
 
-.suggested-mark-header > h4.nickname:before,
-.mark-header > h4.nickname:before,
-.bust-header > h4.nickname:before {
+.suggested-mark-header .nickname:before,
+.mark-header .nickname:before,
+.bust-header .nickname:before {
 	content: "by ";
 }
 
@@ -726,7 +741,7 @@ div.marks-list-container! > div.open {
 	top: 115px;
 	left: 0;
 	width: 40px;
-	height: 100%;
+	height: 80px;
 	padding: 5px 0;
 	color: white;
 }
@@ -829,7 +844,7 @@ div.marks-list-container! > div.open {
 		width: 80%;
 	}
 
-	.marks-list-container {
+	.sidebar-container {
 		width: 20%;
 	}
 	
@@ -841,7 +856,7 @@ div.marks-list-container! > div.open {
 		width: 85%;
 	}
 
-	.marks-list-container {
+	.sidebar-container {
 		width: 15%;
 	}
 	
