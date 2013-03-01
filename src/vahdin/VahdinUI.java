@@ -196,8 +196,11 @@ public class VahdinUI extends UI implements MethodEventSource {
             }
         });
 
+        OAuth2Button facebook = new OAuth2Button("facebook");
+
         VerticalLayout layout = new VerticalLayout();
         layout.addComponent(google);
+        layout.addComponent(facebook);
 
         window.setContent(layout);
 
