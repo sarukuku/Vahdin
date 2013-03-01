@@ -3,6 +3,7 @@ package vahdin;
 import java.lang.reflect.Method;
 
 import vahdin.component.GoogleMap;
+import vahdin.component.OAuth2Button;
 import vahdin.data.User;
 import vahdin.layout.SideBar;
 
@@ -20,6 +21,7 @@ import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 @JavaScript({ "component/js/jquery-1.9.1.min.js", "component/js/plugins.js" })
 /**
@@ -100,6 +102,13 @@ public class VahdinUI extends UI implements MethodEventSource {
             }
         });
 
+        final Window loginWindow = new Window("Log in");
+        loginWindow.setModal(true);
+        loginWindow.setStyleName("login-window");
+        VerticalLayout loginWindowLayout = new VerticalLayout();
+        loginWindowLayout.addComponent(new OAuth2Button("google"));
+        loginWindow.setContent(loginWindowLayout);
+
         final Button loginLink = new Button();
         loginLink.addStyleName("login-link");
         loginLink.addClickListener(new ClickListener() {
@@ -111,9 +120,12 @@ public class VahdinUI extends UI implements MethodEventSource {
                     ui.setCurrentUser(User.guest());
                 } else {
                     // login actions
-                    ui.setCurrentUser(User.load("testi")); // XXX: logs in a
-                                                           // test user
-                    // TODO: actual login
+                    UI.getCurrent().addWindow(loginWindow);
+
+                    /*
+                     * ui.setCurrentUser(User.load("testi")); // XXX: logs in a
+                     * // test user // TODO: actual login
+                     */
                 }
             }
         });
