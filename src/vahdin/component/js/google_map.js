@@ -56,7 +56,8 @@ GoogleMap = function (elementId, apiKey) {
     this.addMarker = apiCall(function (lat, lng, id) {
         markers[id] = new google.maps.Marker({
             'position': new google.maps.LatLng(lat, lng),
-            'map': map
+            'map': map,
+            'icon': 'VAADIN/themes/vahdintheme/img/google-maps-icon-red.png'
         });
     });
     
