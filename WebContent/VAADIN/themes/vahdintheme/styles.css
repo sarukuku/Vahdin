@@ -663,6 +663,24 @@ div.marks-list-container! > div.open {
 	color: #d7d7d7;
 }
 
+/* Single suggested mark */
+
+.suggested-mark-header > h4:before,
+.mark-header > h4:before,
+.bust-header > h4:before {
+	content: "submitted ";
+}
+
+.suggested-mark-header > h4.nickname:before,
+.mark-header > h4.nickname:before,
+.bust-header > h4.nickname:before {
+	content: "by ";
+}
+
+.suggested-mark-header .mark-description {
+	margin: 5px;
+}
+
 /* Single bust */
 
 .bust-header {
@@ -705,7 +723,7 @@ div.marks-list-container! > div.open {
 .bust-voting-container {
 	display: block;
 	position: absolute;
-	top: 0;
+	top: 115px;
 	left: 0;
 	width: 40px;
 	height: 100%;
