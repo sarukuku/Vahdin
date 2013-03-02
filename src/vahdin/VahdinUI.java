@@ -97,15 +97,6 @@ public class VahdinUI extends UI implements MethodEventSource {
             }
         });
 
-        Button statsLink = new Button();
-        statsLink.setSizeFull();
-        statsLink.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                // TODO Auto-generated method stub
-            }
-        });
-
         final Window loginWindow = buildLoginWindow();
 
         final Button loginLink = new Button();
@@ -142,7 +133,6 @@ public class VahdinUI extends UI implements MethodEventSource {
         });
 
         layout.addComponent(logoLink, "logo-link");
-        layout.addComponent(statsLink, "stats-link");
         layout.addComponent(loginLink, "login-logout-link");
         layout.addComponent(score, "user-score");
         layout.addComponent(username, "username");
@@ -165,7 +155,7 @@ public class VahdinUI extends UI implements MethodEventSource {
         TextField alias = new TextField();
         Button okgo = new Button("Ok, go!");
         okgo.setStyleName("submit-button");
-        
+
         VerticalLayout layout = new VerticalLayout();
         layout.addComponent(nicktitle);
         layout.addComponent(alias);
