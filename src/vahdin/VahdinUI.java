@@ -1,6 +1,8 @@
 package vahdin;
 
 import java.lang.reflect.Method;
+import java.sql.SQLException;
+import java.util.logging.Logger;
 
 import vahdin.component.GoogleMap;
 import vahdin.component.OAuth2Button;
@@ -10,6 +12,8 @@ import vahdin.layout.SideBar;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.MethodEventSource;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.Navigator.ComponentContainerViewDisplay;
@@ -36,6 +40,7 @@ import com.vaadin.ui.Window;
 public class VahdinUI extends UI implements MethodEventSource {
 
     private static final String GOOGLE_MAPS_API_KEY = "AIzaSyD723LQ68aCdI37_yhUNDQVHj3zzAfPDVo";
+    private static final Logger logger = Logger.getGlobal();
 
     private User currentUser = User.guest();
 
@@ -144,22 +149,56 @@ public class VahdinUI extends UI implements MethodEventSource {
      * 
      * @return The window that was built.
      */
-    private Window buildRegistrationWindow(User user) {
-        final VahdinUI ui = (VahdinUI) UI.getCurrent();
-
+    private Window buildRegistrationWindow(final User user) {
         final Window window = new Window("Register");
         window.setModal(true);
         window.setStyleName("registration-window");
 
-        Label nicktitle = new Label("Invent your self an alias");
-        TextField alias = new TextField();
-        Button okgo = new Button("Ok, go!");
+        final Label nicktitle = new Label("Invent your self an alias");
+        final TextField alias = new TextField();
+        final Button okgo = new Button("Ok, go!");
         okgo.setStyleName("submit-button");
 
         VerticalLayout layout = new VerticalLayout();
         layout.addComponent(nicktitle);
         layout.addComponent(alias);
         layout.addComponent(okgo);
+
+        okgo.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                String name = alias.getValue();
+                if (name.length() > 0) {
+                    // save and log in
+                    user.setName(name);
+                    try {
+                        logger.info("Registering a new user: " + name);
+                        User.save();
+                        setCurrentUser(user);
+                        UI.getCurrent().removeWindow(window);
+                        return;
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        user.setName("");
+                    }
+                }
+                // something went wrong, mark the name invalid
+                alias.addStyleName("invalid");
+                alias.addTextChangeListener(new TextChangeListener() {
+                    @Override
+                    public void textChange(TextChangeEvent event) {
+                        alias.removeStyleName("invalid");
+                        alias.addTextChangeListener(new TextChangeListener() {
+                            @Override
+                            public void textChange(TextChangeEvent event) {
+                                alias.removeStyleName("invalid");
+                                alias.removeTextChangeListener(this);
+                            }
+                        });
+                    }
+                });
+            }
+        });
 
         window.setContent(layout);
 

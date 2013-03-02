@@ -41,6 +41,9 @@ public class User implements Item {
         RowId tmpId = (RowId) container.addItem();
         Item item = container.getItem(tmpId);
         item.getItemProperty("ID").setValue(id);
+        item.getItemProperty("ADMIN").setValue(false);
+        item.getItemProperty("EXPERIENCE").setValue(0);
+        item.getItemProperty("PRESTIGE").setValue(0);
         return new User(item);
     }
 
@@ -161,5 +164,14 @@ public class User implements Item {
     public void addPrestige(float prestige) {
         this.getItemProperty("Prestige").setValue(
                 getPrestigeValue() + (int) (prestige * 100));
+    }
+
+    /**
+     * Saves all the changes to the user table.
+     * 
+     * @throws SQLException
+     */
+    public static void save() throws SQLException {
+        container.commit();
     }
 }
