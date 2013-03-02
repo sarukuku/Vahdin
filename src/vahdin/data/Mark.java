@@ -18,9 +18,9 @@ public class Mark implements Item {
     private static final Logger logger = Logger.getGlobal();
 
     static {
-        logger.info("Initializing users");
+        logger.info("Initializing marks");
         TableQuery table = new TableQuery("Mark", DB.pool);
-        table.setVersionColumn("version");
+        table.setVersionColumn("VERSION");
         try {
             container = new SQLContainer(table);
         } catch (SQLException e) {
@@ -39,24 +39,24 @@ public class Mark implements Item {
     @SuppressWarnings("unchecked")
     public Mark(String name, Date time, String description, int photoId, int id) {
         row = container.getItem(container.addItem());
-        row.getItemProperty("Name").setValue(name);
-        row.getItemProperty("CreationTime").setValue(time);
-        row.getItemProperty("Description").setValue(description);
+        row.getItemProperty("NAME").setValue(name);
+        row.getItemProperty("CREATIONTIME").setValue(time);
+        row.getItemProperty("DESCRIPTION").setValue(description);
     }
 
     public String getTitle() {
-        return (String) getItemProperty("Name").getValue();
+        return (String) getItemProperty("NAME").getValue();
     }
 
     public String getTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         StringBuilder date = new StringBuilder(
-                dateFormat.format(getItemProperty("CreationTime").getValue()));
+                dateFormat.format(getItemProperty("CREATIONTIME").getValue()));
         return date.toString();
     }
 
     public String getDescription() {
-        return (String) getItemProperty("Description").getValue();
+        return (String) getItemProperty("DESCRIPTION").getValue();
     }
 
     public int getPhotoId() {
@@ -68,7 +68,7 @@ public class Mark implements Item {
     }
 
     public int getId() {
-        Integer id = (Integer) row.getItemProperty("Id").getValue();
+        Integer id = (Integer) row.getItemProperty("ID").getValue();
         return id == null ? 0 : id;
     }
 
