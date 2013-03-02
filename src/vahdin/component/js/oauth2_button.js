@@ -9,9 +9,10 @@ jso_configure({
 OAuth2Button = function (elementId, provider) {
     var dom = document.getElementById(elementId);
     dom.addEventListener('click', function () {
-        var authWin = window.open();
+        var authWin = window.open("", "", "menubar=no,location=no,status=no,width=640,height=480");
         
         var poll = function () {
+            if (authWin.closed) return;
             try {
                 if (authWin.location.host === location.host) {
                     jso_checkfortoken(provider, authWin.location.href);
