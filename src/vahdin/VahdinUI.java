@@ -233,6 +233,19 @@ public class VahdinUI extends UI implements MethodEventSource {
         });
 
         OAuth2Button facebook = new OAuth2Button("facebook");
+        facebook.addAuthListener(new OAuth2Button.AuthListener() {
+            @Override
+            public void auth(AuthEvent event) {
+                ui.removeWindow(window);
+                User user = User.load("facebook:" + event.userId);
+                if (user == null) { // new user
+                    user = User.create("facebook:" + event.userId);
+                    ui.addWindow(buildRegistrationWindow(user));
+                } else {
+                    ui.setCurrentUser(user);
+                }
+            }
+        });
 
         VerticalLayout layout = new VerticalLayout();
         layout.addComponent(google);

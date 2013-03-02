@@ -3,6 +3,10 @@ jso_configure({
         'client_id': '412257911068.apps.googleusercontent.com',
         'redirect_uri': location.protocol + '//' + location.host + location.pathname,
         'authorization': 'https://accounts.google.com/o/oauth2/auth'
+    },
+    'facebook': {
+        // TODO: facebook oauth config
+        // jso documentation: http://github.com/andreassolberg/jso
     }
 });
 
@@ -31,18 +35,30 @@ OAuth2Button = function (elementId, provider) {
         });
         
         jso_wipe();
+        
+        switch (provider) {
+        case 'google':
+            var url = 'https://www.googleapis.com/oauth2/v1/userinfo',
+                scopes = [ 'https://www.googleapis.com/auth/userinfo.profile' ],
+                id_field_name = 'id';
+            break;
+        case 'facebook':
+            // TODO: declare the url, scopes and the name of a field in the response json that can be used as an id
+            throw new Error("Facebook login not yet implemented.");
+            break;
+        default:
+            throw new Error("Unknown OAuth provider.");
+        }
         $.oajax({
-            'url': 'https://www.googleapis.com/oauth2/v1/userinfo',
-            'jso_provider': 'google',
+            'url': url,
+            'jso_provider': provider,
             'jso_allowia': true,
-            'jso_scopes': [ 'https://www.googleapis.com/auth/userinfo.profile' ],
+            'jso_scopes': scopes,
             'dataType': 'json',
             'success': function (data) {
-                OAuth2Button['authenticate_' + provider](data.id);
+                OAuth2Button['authenticate_' + provider](data[id_field_name]);
             },
-            'error': function () {
-                console.log('OAjax error.'); // TODO: error handling
-            }
+            'error': function () { }
         });
     });
 };
