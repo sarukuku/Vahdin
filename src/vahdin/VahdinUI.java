@@ -208,8 +208,6 @@ public class VahdinUI extends UI implements MethodEventSource {
     /**
      * Builds the login window.
      * 
-     * @param registrationWindow
-     *            The window to open if the user isn't found in the database.
      * @return The window that was built.
      */
     private Window buildLoginWindow() {
