@@ -5,10 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 
@@ -101,6 +104,21 @@ public class Mark implements Item {
     public boolean removeItemProperty(Object id)
             throws UnsupportedOperationException {
         return row.removeItemProperty(id);
+    }
+
+    private Mark(Item item) {
+        row = item;
+    }
+
+    public static List<Mark> loadAll() {
+        ArrayList<Mark> marks = new ArrayList<>(container.size());
+        for (@SuppressWarnings("rawtypes")
+        Iterator i = container.getItemIds().iterator(); i.hasNext();) {
+            RowId id = (RowId) i.next();
+            Item item = container.getItem(id);
+            marks.add(new Mark(item));
+        }
+        return marks;
     }
 
 }

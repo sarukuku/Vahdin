@@ -1,7 +1,6 @@
 package vahdin.view;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import vahdin.VahdinUI;
 import vahdin.data.Mark;
@@ -27,12 +26,7 @@ public class MarksSubview extends Subview {
         CustomLayout marksList = new CustomLayout("marks-sidebar");
         VerticalLayout tmp = new VerticalLayout();
 
-        ArrayList<Mark> marks = new ArrayList<Mark>();
-        Mark m = new Mark("Tissiposki", new Date(),
-                "Tissiposki nähty mordorissa", 1, 1);
-        Mark m2 = new Mark("HeMan", new Date(), "Hiimän Turussa", 2, 2);
-        marks.add(m);
-        marks.add(m2);
+        List<Mark> marks = Mark.loadAll();
 
         // The button to add a new Mark is only shown if user is logged in
 
