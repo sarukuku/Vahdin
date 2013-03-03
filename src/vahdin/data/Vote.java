@@ -14,9 +14,9 @@ public class Vote implements Item {
     private static final Logger logger = Logger.getGlobal();
 
     static {
-        logger.info("Initializing users");
+        logger.info("Initializing votes");
         TableQuery table = new TableQuery("Vote", DB.pool);
-        table.setVersionColumn("version");
+        table.setVersionColumn("VERSION");
         try {
             container = new SQLContainer(table);
         } catch (SQLException e) {

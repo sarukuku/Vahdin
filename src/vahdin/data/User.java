@@ -20,7 +20,7 @@ public class User implements Item {
     static {
         logger.info("Initializing users");
         TableQuery table = new TableQuery("User", DB.pool);
-        table.setVersionColumn("version");
+        table.setVersionColumn("VERSION");
         try {
             container = new SQLContainer(table);
         } catch (SQLException e) {
@@ -40,14 +40,17 @@ public class User implements Item {
     public static User create(String id) {
         RowId tmpId = (RowId) container.addItem();
         Item item = container.getItem(tmpId);
-        item.getItemProperty("Id").setValue(id);
+        item.getItemProperty("ID").setValue(id);
+        item.getItemProperty("ADMIN").setValue(false);
+        item.getItemProperty("EXPERIENCE").setValue(0);
+        item.getItemProperty("PRESTIGE").setValue(0);
         return new User(item);
     }
 
     public static User guest() {
         PropertysetItem item = new PropertysetItem();
-        item.addItemProperty("Id", new ObjectProperty<String>(""));
-        item.addItemProperty("Name", new ObjectProperty<String>("guest"));
+        item.addItemProperty("ID", new ObjectProperty<String>(""));
+        item.addItemProperty("NAME", new ObjectProperty<String>("guest"));
         return new User(item);
     }
 
@@ -60,13 +63,13 @@ public class User implements Item {
 
     // get raw prestige value from DB
     private int getPrestigeValue() {
-        int value = (Integer) this.getItemProperty("Prestige").getValue();
+        int value = (Integer) this.getItemProperty("PRESTIGE").getValue();
         return value;
     }
 
     /** Returns true if the user is a guest. */
     public boolean isGuest() {
-        return "".equals(getItemProperty("Id").getValue());
+        return "".equals(getItemProperty("ID").getValue());
     }
 
     /**
@@ -112,12 +115,12 @@ public class User implements Item {
     }
 
     public String getName() {
-        String name = this.getItemProperty("Name").getValue().toString();
+        String name = this.getItemProperty("NAME").getValue().toString();
         return name;
     }
 
     public int getExperience() {
-        int value = (Integer) this.getItemProperty("Experience").getValue();
+        int value = (Integer) this.getItemProperty("EXPERIENCE").getValue();
         return value;
     }
 
@@ -150,16 +153,25 @@ public class User implements Item {
     }
 
     public void setName(String name) {
-        this.getItemProperty("Name").setValue(name);
+        this.getItemProperty("NAME").setValue(name);
     }
 
     public void addExperience(int experience) {
-        this.getItemProperty("Name").setValue(experience);
+        this.getItemProperty("NAME").setValue(experience);
     }
 
     // parameter prestige is equal to prestigepower
     public void addPrestige(float prestige) {
         this.getItemProperty("Prestige").setValue(
                 getPrestigeValue() + (int) (prestige * 100));
+    }
+
+    /**
+     * Saves all the changes to the user table.
+     * 
+     * @throws SQLException
+     */
+    public static void save() throws SQLException {
+        container.commit();
     }
 }
