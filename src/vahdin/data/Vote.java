@@ -10,6 +10,7 @@ import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 
 public class Vote implements Item {
+
     private static final SQLContainer container;
     private static final Logger logger = Logger.getGlobal();
 
@@ -26,30 +27,27 @@ public class Vote implements Item {
 
     private Item row;
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Property getItemProperty(Object id) {
-        // TODO Auto-generated method stub
-        return null;
+        return row.getItemProperty(id);
     }
 
     @Override
     public Collection<?> getItemPropertyIds() {
-        // TODO Auto-generated method stub
-        return null;
+        return row.getItemPropertyIds();
     }
 
     @Override
-    public boolean addItemProperty(Object id, Property property)
-            throws UnsupportedOperationException {
-        // TODO Auto-generated method stub
-        return false;
+    public boolean addItemProperty(Object id, @SuppressWarnings("rawtypes")
+    Property property) throws UnsupportedOperationException {
+        return row.addItemProperty(id, property);
     }
 
     @Override
     public boolean removeItemProperty(Object id)
             throws UnsupportedOperationException {
-        // TODO Auto-generated method stub
-        return false;
+        return row.removeItemProperty(id);
     }
 
 }
