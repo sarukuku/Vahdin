@@ -34,6 +34,7 @@ public class Mark implements Item {
     // which is a 2 decimal float;
     // Changed voteCount type from int to float.
     private float voteCount = 0;
+    private int id;
     private ArrayList<Bust> busts = new ArrayList<Bust>();
 
     @SuppressWarnings("unchecked")
@@ -42,6 +43,7 @@ public class Mark implements Item {
         row.getItemProperty("Name").setValue(name);
         row.getItemProperty("CreationTime").setValue(time);
         row.getItemProperty("Description").setValue(description);
+        this.id = id;
     }
 
     public String getTitle() {
@@ -68,8 +70,11 @@ public class Mark implements Item {
     }
 
     public int getId() {
-        Integer id = (Integer) row.getItemProperty("Id").getValue();
-        return id == null ? 0 : id;
+        /*
+         * Integer id = (Integer) row.getItemProperty("Id").getValue(); return
+         * id == null ? 0 : id;
+         */
+        return this.id;
     }
 
     public ArrayList<Bust> getBusts() {

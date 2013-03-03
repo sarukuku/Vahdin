@@ -7,6 +7,7 @@ import vahdin.view.NewBustSubview;
 import vahdin.view.NewMarkSubview;
 import vahdin.view.SingleBustSubview;
 import vahdin.view.Subview;
+import vahdin.view.SuggestedMarkSubview;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -25,6 +26,7 @@ public class SideBar extends CustomLayout implements View {
         addComponent(new NewMarkSubview(), "newmark");
         addComponent(new NewBustSubview(), "newbust");
         addComponent(new SingleBustSubview(), "bust");
+        addComponent(new SuggestedMarkSubview(), "suggested");
 
     }
 
