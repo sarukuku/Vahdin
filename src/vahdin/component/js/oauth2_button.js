@@ -5,8 +5,9 @@ jso_configure({
         'authorization': 'https://accounts.google.com/o/oauth2/auth'
     },
     'facebook': {
-        // TODO: facebook oauth config
-        // jso documentation: http://github.com/andreassolberg/jso
+    	'client_id': '135567833284360',
+    	'redirect_uri': 'http://vahdin.jelastic.servint.net',
+        'authorization': 'https://www.facebook.com/dialog/oauth'
     }
 });
 
@@ -43,8 +44,9 @@ OAuth2Button = function (elementId, provider) {
                 id_field_name = 'id';
             break;
         case 'facebook':
-            // TODO: declare the url, scopes and the name of a field in the response json that can be used as an id
-            throw new Error("Facebook login not yet implemented.");
+        	var url = 'https://graph.facebook.com/1586747406?fields=id',
+            	scopes = [ '' ],
+            	id_field_name = 'id';
             break;
         default:
             throw new Error("Unknown OAuth provider.");
