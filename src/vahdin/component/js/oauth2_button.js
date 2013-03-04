@@ -44,7 +44,7 @@ OAuth2Button = function (elementId, provider) {
                 id_field_name = 'id';
             break;
         case 'facebook':
-        	var url = 'https://graph.facebook.com/1586747406?fields=id',
+        	var url = 'https://graph.facebook.com/1586747406?fields=id', // Joonas' user id
             	scopes = [ '' ],
             	id_field_name = 'id';
             break;

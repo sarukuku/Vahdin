@@ -370,6 +370,31 @@ div.marks-list-container! > div.open {
 	top: 22px;
 }
 
+.v-datefield-button {
+	position: absolute;
+	top: 70px;
+	right: 5px;
+	display: block;
+	width: 30px;
+	height: 30px;
+	background-color: #f5f5f5;
+	background-image: url('img/calendar-icon.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.v-datefield-popup {
+	background-color: #f5f5f5;
+	border: 1px solid gray;
+	padding: 5px;
+	border-radius: 3px;
+	box-shadow: 0 0 10px black;
+}
+
+.v-datefield-calendarpanel-day {
+	cursor: pointer;
+}
+
 .mark-list-filter {
 	position: absolute;
 	bottom: 0;
