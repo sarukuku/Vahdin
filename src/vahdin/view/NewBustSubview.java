@@ -29,7 +29,7 @@ public class NewBustSubview extends Subview {
         TextArea description = new TextArea();
         Upload up = new ImageUpload().createImageUpload("tissit");
         // TODO: date input
-        DateField date = new DateField();
+        DateField date = new DateField("Pick date");
         Label lat = new Label("<h4>123.123</h4>", Label.CONTENT_XHTML);
         Label lon = new Label("<h4>456.456</h4>", Label.CONTENT_XHTML);
 
