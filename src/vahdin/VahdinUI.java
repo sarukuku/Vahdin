@@ -173,7 +173,8 @@ public class VahdinUI extends UI implements MethodEventSource {
                     user.setName(name);
                     try {
                         logger.info("Registering a new user: " + name);
-                        User.save();
+                        user.save();
+                        User.commit();
                         setCurrentUser(user);
                         UI.getCurrent().removeWindow(window);
                         return;
@@ -224,7 +225,7 @@ public class VahdinUI extends UI implements MethodEventSource {
                 ui.removeWindow(window);
                 User user = User.load("google:" + event.userId);
                 if (user == null) { // new user
-                    user = User.create("google:" + event.userId);
+                    user = new User("google:" + event.userId);
                     ui.addWindow(buildRegistrationWindow(user));
                 } else {
                     ui.setCurrentUser(user);
@@ -239,7 +240,7 @@ public class VahdinUI extends UI implements MethodEventSource {
                 ui.removeWindow(window);
                 User user = User.load("facebook:" + event.userId);
                 if (user == null) { // new user
-                    user = User.create("facebook:" + event.userId);
+                    user = new User("facebook:" + event.userId);
                     ui.addWindow(buildRegistrationWindow(user));
                 } else {
                     ui.setCurrentUser(user);

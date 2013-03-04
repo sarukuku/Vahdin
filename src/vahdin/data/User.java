@@ -36,15 +36,13 @@ public class User implements Item {
         return new User(item);
     }
 
-    @SuppressWarnings("unchecked")
-    public static User create(String id) {
-        RowId tmpId = (RowId) container.addItem();
-        Item item = container.getItem(tmpId);
-        item.getItemProperty("ID").setValue(id);
-        item.getItemProperty("ADMIN").setValue(false);
-        item.getItemProperty("EXPERIENCE").setValue(0);
-        item.getItemProperty("PRESTIGE").setValue(0);
-        return new User(item);
+    public User(String id) {
+        row = new PropertysetItem();
+        row.addItemProperty("ID", new ObjectProperty<String>(id));
+        row.addItemProperty("NAME", new ObjectProperty<String>(""));
+        row.addItemProperty("ADMIN", new ObjectProperty<Boolean>(false));
+        row.addItemProperty("EXPERIENCE", new ObjectProperty<Integer>(0));
+        row.addItemProperty("PRESTIGE", new ObjectProperty<Integer>(0));
     }
 
     public static User guest() {
@@ -167,11 +165,32 @@ public class User implements Item {
     }
 
     /**
-     * Saves all the changes to the user table.
+     * Commits all the changes to the user table.
      * 
      * @throws SQLException
      */
-    public static void save() throws SQLException {
+    public static void commit() throws SQLException {
         container.commit();
+    }
+
+    /**
+     * Saves a newly created user to the database.
+     * 
+     * @throws SQLException
+     */
+    @SuppressWarnings("unchecked")
+    public void save() throws SQLException {
+        Item item = row;
+        row = container.getItem(container.addItem());
+        row.getItemProperty("ID").setValue(
+                item.getItemProperty("ID").getValue());
+        row.getItemProperty("NAME").setValue(
+                item.getItemProperty("NAME").getValue());
+        row.getItemProperty("ADMIN").setValue(
+                item.getItemProperty("ADMIN").getValue());
+        row.getItemProperty("EXPERIENCE").setValue(
+                item.getItemProperty("EXPERIENCE").getValue());
+        row.getItemProperty("PRESTIGE").setValue(
+                item.getItemProperty("PRESTIGE").getValue());
     }
 }
