@@ -43,6 +43,7 @@ public class VahdinUI extends UI implements MethodEventSource {
 
     private static final String GOOGLE_MAPS_API_KEY = "AIzaSyD723LQ68aCdI37_yhUNDQVHj3zzAfPDVo";
     private static final Logger logger = Logger.getGlobal();
+    public final GoogleMap map = new GoogleMap(GOOGLE_MAPS_API_KEY);
 
     public static Label lat = new Label("Lat:");
     public static Label lon = new Label("Lon:");
@@ -55,7 +56,6 @@ public class VahdinUI extends UI implements MethodEventSource {
 
         getPage().setTitle("Vahdin");
 
-        final GoogleMap map = new GoogleMap(GOOGLE_MAPS_API_KEY);
         map.setSizeFull();
 
         // XXX: GoogleMap usage example
