@@ -1,5 +1,6 @@
 package vahdin.view;
 
+import vahdin.VahdinUI;
 import vahdin.component.ImageUpload;
 
 import com.vaadin.ui.Button;
@@ -30,8 +31,14 @@ public class NewBustSubview extends Subview {
         Upload up = new ImageUpload().createImageUpload("tissit");
         // TODO: date input
         DateField date = new DateField("Pick date");
-        Label lat = new Label("<h4>123.123</h4>", Label.CONTENT_XHTML);
-        Label lon = new Label("<h4>456.456</h4>", Label.CONTENT_XHTML);
+
+        // Label lat = new Label("<h4>" + VahdinUI.lat + "</h4>",
+        // Label.CONTENT_XHTML);
+        // Label lon = new Label("<h4>" + VahdinUI.lon + "</h4>",
+        // Label.CONTENT_XHTML);
+
+        Label lat = VahdinUI.lat;
+        Label lon = VahdinUI.lon;
 
         Button cancel = new Button("Cancel");
         cancel.setStyleName("cancel-button");

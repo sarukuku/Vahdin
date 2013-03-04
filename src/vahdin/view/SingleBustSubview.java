@@ -25,7 +25,8 @@ public class SingleBustSubview extends Subview {
             UI.getCurrent().getNavigator().navigateTo("/");
         }
 
-        final String markId = params[2];
+        final String markId = params[1];
+        System.out.println("Mark id: " + markId);
 
         CustomLayout SingleBust = new CustomLayout("single-bust-sidebar");
 
@@ -91,7 +92,8 @@ public class SingleBustSubview extends Subview {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                UI.getCurrent().getNavigator().navigateTo("/" + markId + "/");
+                UI.getCurrent().getNavigator()
+                        .navigateTo("/busts/" + markId + "/");
             }
         });
 
