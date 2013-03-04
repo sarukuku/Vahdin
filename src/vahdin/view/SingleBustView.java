@@ -5,6 +5,8 @@ import java.util.Date;
 import vahdin.data.Bust;
 import vahdin.data.Mark;
 
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -13,22 +15,14 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 
-public class SingleBustSubview extends Subview {
+public class SingleBustView extends CustomLayout implements View {
 
-    public SingleBustSubview() {
+    private int markId;
 
-    }
+    public SingleBustView() {
+        super("single-bust-sidebar");
 
-    @Override
-    public void show(String[] params) {
-        if (params.length < 3) {
-            UI.getCurrent().getNavigator().navigateTo("/");
-        }
-
-        final String markId = params[1];
         System.out.println("Mark id: " + markId);
-
-        CustomLayout SingleBust = new CustomLayout("single-bust-sidebar");
 
         Mark m1 = new Mark("Markin nimi", new Date(), "Markin kuvaus", 1, 1);
         Bust b1 = new Bust("Bustin nimi", 1, "Bustin kuvaus", 1, "1.3.2013",
@@ -93,7 +87,7 @@ public class SingleBustSubview extends Subview {
             @Override
             public void buttonClick(ClickEvent event) {
                 UI.getCurrent().getNavigator()
-                        .navigateTo("/busts/" + markId + "/");
+                        .navigateTo("busts/" + markId + "/");
             }
         });
 
@@ -112,18 +106,20 @@ public class SingleBustSubview extends Subview {
             }
         });
 
-        SingleBust.addComponent(title, "bust-title");
-        SingleBust.addComponent(date, "bust-datetime");
-        SingleBust.addComponent(user, "bust-submitter-nickname");
-        SingleBust.addComponent(voteup, "bust-upvote-arrow");
-        SingleBust.addComponent(votes, "bust-vote-count");
-        SingleBust.addComponent(votedown, "bust-downvote-arrow");
-        SingleBust.addComponent(delete, "bust-delete-button");
-        SingleBust.addComponent(back, "bust-back-button");
-        SingleBust.addComponent(desc, "bust-description");
+        addComponent(title, "bust-title");
+        addComponent(date, "bust-datetime");
+        addComponent(user, "bust-submitter-nickname");
+        addComponent(voteup, "bust-upvote-arrow");
+        addComponent(votes, "bust-vote-count");
+        addComponent(votedown, "bust-downvote-arrow");
+        addComponent(delete, "bust-delete-button");
+        addComponent(back, "bust-back-button");
+        addComponent(desc, "bust-description");
+    }
 
-        setCompositionRoot(SingleBust);
-        addStyleName("open");
-        super.show(params);
+    @Override
+    public void enter(ViewChangeEvent event) {
+        // TODO Auto-generated method stub
+
     }
 }

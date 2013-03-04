@@ -8,12 +8,14 @@ import vahdin.component.GoogleMap;
 import vahdin.component.OAuth2Button;
 import vahdin.component.OAuth2Button.AuthEvent;
 import vahdin.data.User;
-import vahdin.layout.SideBar;
+import vahdin.view.BustsView;
+import vahdin.view.MarksView;
+import vahdin.view.NewBustView;
+import vahdin.view.NewMarkView;
+import vahdin.view.SingleBustView;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.MethodEventSource;
@@ -43,10 +45,7 @@ public class VahdinUI extends UI implements MethodEventSource {
 
     private static final String GOOGLE_MAPS_API_KEY = "AIzaSyD723LQ68aCdI37_yhUNDQVHj3zzAfPDVo";
     private static final Logger logger = Logger.getGlobal();
-    public final GoogleMap map = new GoogleMap(GOOGLE_MAPS_API_KEY);
-
-    public static Label lat = new Label("Lat:");
-    public static Label lon = new Label("Lon:");
+    private GoogleMap map;
 
     private User currentUser = User.guest();
 
@@ -56,45 +55,8 @@ public class VahdinUI extends UI implements MethodEventSource {
 
         getPage().setTitle("Vahdin");
 
+        map = new GoogleMap(GOOGLE_MAPS_API_KEY);
         map.setSizeFull();
-
-        // XXX: GoogleMap usage example
-        map.addClickListener(new GoogleMap.ClickListener() {
-
-            private GoogleMap.Marker marker = null;
-
-            @SuppressWarnings("deprecation")
-            @Override
-            public void click(GoogleMap.ClickEvent event) {
-                if (marker != null) {
-                    map.removeMarker(marker);
-                }
-                marker = map.addMarker(event.latitude, event.longitude);
-                map.center(event.latitude, event.longitude);
-
-                lon.setValue("Lon: " + event.longitude + "");
-                lon.addListener(new Property.ValueChangeListener() {
-
-                    @Override
-                    public void valueChange(ValueChangeEvent event) {
-                        // TODO Auto-generated method stub
-
-                    }
-                });
-                lon.setImmediate(true);
-
-                lat.setValue("Lat: " + event.latitude + "");
-                lat.addListener(new Property.ValueChangeListener() {
-
-                    @Override
-                    public void valueChange(ValueChangeEvent event) {
-                        // TODO Auto-generated method stub
-
-                    }
-                });
-                lat.setImmediate(true);
-            }
-        });
 
         VerticalLayout sidebar = new VerticalLayout();
 
@@ -108,15 +70,60 @@ public class VahdinUI extends UI implements MethodEventSource {
         ComponentContainerViewDisplay viewDisplay = new ComponentContainerViewDisplay(
                 sidebar);
         Navigator navigator = new Navigator(UI.getCurrent(), viewDisplay);
-        navigator.addView("", SideBar.class);
+        navigator.addView("", MarksView.class);
+        navigator.addView("bust", SingleBustView.class);
+        navigator.addView("busts", BustsView.class);
+        navigator.addView("newbust", NewBustView.class);
+        navigator.addView("newmark", NewMarkView.class);
     }
 
-    public Label getLon() {
-        return this.lon;
+    /**
+     * Adds a click listener to the map.
+     * 
+     * @param listener
+     *            The listener to add.
+     */
+    public void addMapClickListener(GoogleMap.ClickListener listener) {
+        map.addClickListener(listener);
     }
 
-    public Label getLat() {
-        return this.lat;
+    /**
+     * Removes a click listener from the map.
+     * 
+     * @param listener
+     *            The listener to remove.
+     */
+    public void removeMapClickListener(GoogleMap.ClickListener listener) {
+        map.removeClickListener(listener);
+    }
+
+    /**
+     * Adds a marker to the map.
+     * 
+     * @param latitude
+     * @param longitude
+     */
+    public GoogleMap.Marker addMarker(double latitude, double longitude) {
+        return map.addMarker(latitude, longitude);
+    }
+
+    /**
+     * Removes a marker from the map.
+     * 
+     * @param marker
+     */
+    public void removeMarker(GoogleMap.Marker marker) {
+        map.removeMarker(marker);
+    }
+
+    /**
+     * Centers the map on the given coordinates.
+     * 
+     * @param latitude
+     * @param longitude
+     */
+    public void centerMapOn(double latitude, double longitude) {
+        map.center(latitude, longitude);
     }
 
     /**
