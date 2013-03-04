@@ -43,7 +43,7 @@ public class VahdinUI extends UI implements MethodEventSource {
 
     private static final String GOOGLE_MAPS_API_KEY = "AIzaSyD723LQ68aCdI37_yhUNDQVHj3zzAfPDVo";
     private static final Logger logger = Logger.getGlobal();
-    public final GoogleMap map = new GoogleMap(GOOGLE_MAPS_API_KEY);
+    private GoogleMap map;
 
     public static Label lat = new Label("Lat:");
     public static Label lon = new Label("Lon:");
@@ -56,8 +56,9 @@ public class VahdinUI extends UI implements MethodEventSource {
 
         getPage().setTitle("Vahdin");
 
+        map = new GoogleMap(GOOGLE_MAPS_API_KEY);
         map.setSizeFull();
-
+        
         // XXX: GoogleMap usage example
         map.addClickListener(new GoogleMap.ClickListener() {
 
@@ -109,6 +110,10 @@ public class VahdinUI extends UI implements MethodEventSource {
                 sidebar);
         Navigator navigator = new Navigator(UI.getCurrent(), viewDisplay);
         navigator.addView("", SideBar.class);
+    }
+    
+    public void addMapClickListener(GoogleMap.ClickListener listener) {
+    	map.addClickListener(listener);
     }
 
     public Label getLon() {
