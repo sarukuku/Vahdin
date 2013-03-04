@@ -73,6 +73,10 @@ public class Bust implements Item {
     public double getLocationLon() {
         return this.locationLon;
     }
+    
+    public int getVoteCount() {
+        return 12; // TODO:
+    }
 
     @SuppressWarnings("rawtypes")
     @Override

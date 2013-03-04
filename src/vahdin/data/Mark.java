@@ -66,8 +66,8 @@ public class Mark implements Item {
         return getId();
     }
 
-    public float getVoteCount() {
-        return this.voteCount; // TODO:
+    public int getVoteCount() {
+        return (int) this.voteCount; // TODO:
     }
 
     public int getId() {

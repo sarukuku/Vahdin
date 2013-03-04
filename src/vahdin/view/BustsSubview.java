@@ -146,7 +146,7 @@ public class BustsSubview extends Subview {
                 }
             });
 
-            Label votes = new Label("234"); // TODO: real votes count
+            Label votes = new Label(m1.getBusts().get(i).getVoteCount() + ""); // TODO: real votes count
             votes.setStyleName("vote-count");
 
             layout.addComponent(upvote, "bust-row-upvote-arrow");
