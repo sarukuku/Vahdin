@@ -44,8 +44,8 @@ public class VahdinUI extends UI implements MethodEventSource {
     private static final String GOOGLE_MAPS_API_KEY = "AIzaSyD723LQ68aCdI37_yhUNDQVHj3zzAfPDVo";
     private static final Logger logger = Logger.getGlobal();
 
-    public static Label lat = new Label("Lat:");
-    public static Label lon = new Label("Lon:");
+    public static Label lat = new Label("<h4>Lat:</h4>", Label.CONTENT_XHTML);
+    public static Label lon = new Label("<h4>Lon:</h4>", Label.CONTENT_XHTML);
 
     private User currentUser = User.guest();
 
@@ -72,7 +72,7 @@ public class VahdinUI extends UI implements MethodEventSource {
                 marker = map.addMarker(event.latitude, event.longitude);
                 map.center(event.latitude, event.longitude);
 
-                lon.setValue("Lon: " + event.longitude + "");
+                lon.setValue("<h4>Lon: " + event.longitude + "</h4>");
                 lon.addListener(new Property.ValueChangeListener() {
 
                     @Override
@@ -81,9 +81,9 @@ public class VahdinUI extends UI implements MethodEventSource {
 
                     }
                 });
-                lon.setImmediate(true);
+                // lon.setImmediate(true);
 
-                lat.setValue("Lat: " + event.latitude + "");
+                lat.setValue("<h4>Lat: " + event.latitude + "</h4>");
                 lat.addListener(new Property.ValueChangeListener() {
 
                     @Override
@@ -92,7 +92,7 @@ public class VahdinUI extends UI implements MethodEventSource {
 
                     }
                 });
-                lat.setImmediate(true);
+                // lat.setImmediate(true);
             }
         });
 
@@ -109,14 +109,6 @@ public class VahdinUI extends UI implements MethodEventSource {
                 sidebar);
         Navigator navigator = new Navigator(UI.getCurrent(), viewDisplay);
         navigator.addView("", SideBar.class);
-    }
-
-    public Label getLon() {
-        return this.lon;
-    }
-
-    public Label getLat() {
-        return this.lat;
     }
 
     /**

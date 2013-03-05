@@ -126,4 +126,12 @@ public class Mark implements Item {
         return marks;
     }
 
+    @SuppressWarnings("unchecked")
+    public void save() throws SQLException {
+        Item item = row;
+        row = container.getItem(container.addItem());
+        row.getItemProperty("NAME").setValue(
+                item.getItemProperty("NAME").getValue());
+    }
+
 }

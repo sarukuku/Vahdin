@@ -1,6 +1,10 @@
 package vahdin.view;
 
+import java.sql.SQLException;
+import java.util.Date;
+
 import vahdin.component.ImageUpload;
+import vahdin.data.Mark;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -41,6 +45,16 @@ public class NewMarkSubview extends Subview {
 
             @Override
             public void buttonClick(ClickEvent event) {
+                String name = title.getValue();
+                String desc = description.getValue();
+                Date time = new Date();
+                Mark m = new Mark(name, time, desc, 1, 1);
+                try {
+                    m.save();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 Notification.show("Created new Mark with title: "
                         + title.getValue());
                 // TODO: create new mark and add it to sql
