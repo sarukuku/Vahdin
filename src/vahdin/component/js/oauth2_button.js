@@ -7,7 +7,8 @@ jso_configure({
     'facebook': {
     	'client_id': '135567833284360',
     	'redirect_uri': 'http://vahdin.jelastic.servint.net',
-        'authorization': 'https://www.facebook.com/dialog/oauth'
+        'authorization': 'https://www.facebook.com/dialog/oauth',
+        'presenttoken': "qs"
     }
 });
 
@@ -44,8 +45,8 @@ OAuth2Button = function (elementId, provider) {
                 id_field_name = 'id';
             break;
         case 'facebook':
-        	var url = 'https://graph.facebook.com/1586747406?fields=id', // Joonas' user id
-            	scopes = [ '' ],
+        	var url = 'https://graph.facebook.com/me?fields=id',
+            	scopes = false,
             	id_field_name = 'id';
             break;
         default:
@@ -59,6 +60,7 @@ OAuth2Button = function (elementId, provider) {
             'dataType': 'json',
             'success': function (data) {
                 OAuth2Button['authenticate_' + provider](data[id_field_name]);
+                console.log(data);
             },
             'error': function () { }
         });

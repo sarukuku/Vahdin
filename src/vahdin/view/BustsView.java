@@ -5,6 +5,8 @@ import java.util.Date;
 import vahdin.data.Bust;
 import vahdin.data.Mark;
 
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -14,17 +16,12 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-public class BustsSubview extends Subview {
+public class BustsView extends CustomLayout implements View {
 
-    public BustsSubview() {
+    private String markId;
 
-    }
-
-    @Override
-    public void show(String[] params) {
-        if (params.length < 2) {
-            UI.getCurrent().getNavigator().navigateTo("/");
-        }
+    public BustsView() {
+        super("single-mark-sidebar");
 
         // FOR TESTING ONLY
         Mark m1 = new Mark("Markin nimi", new Date(), "Kuvaus", 1, 1);
@@ -32,10 +29,6 @@ public class BustsSubview extends Subview {
         m1.addBust(new Bust("Title2", 1, "Toinen kuvaus", 1, "toka aika", 3.3,
                 4.4));
 
-        // Marks id from the URL
-        final String markId = params[1];
-
-        CustomLayout bustsList = new CustomLayout("single-mark-sidebar");
         VerticalLayout tmp = new VerticalLayout();
 
         Label markTitle = new Label("<h2>" + m1.getTitle() + "</h2>",
@@ -50,7 +43,7 @@ public class BustsSubview extends Subview {
             @Override
             public void buttonClick(ClickEvent event) {
                 UI.getCurrent().getNavigator()
-                        .navigateTo("/newbust/" + markId + "/");
+                        .navigateTo("newbust/" + markId + "/");
             }
         });
 
@@ -62,7 +55,7 @@ public class BustsSubview extends Subview {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                UI.getCurrent().getNavigator().navigateTo("/");
+                UI.getCurrent().getNavigator().navigateTo("");
             }
         });
 
@@ -116,7 +109,7 @@ public class BustsSubview extends Subview {
                 @Override
                 public void buttonClick(ClickEvent event) {
                     UI.getCurrent().getNavigator()
-                            .navigateTo("/bust/" + markId + "/" + bustId + "/");
+                            .navigateTo("bust/" + markId + "/" + bustId + "/");
                 }
             });
 
@@ -146,7 +139,10 @@ public class BustsSubview extends Subview {
                 }
             });
 
-            Label votes = new Label("234"); // TODO: real votes count
+            Label votes = new Label(m1.getBusts().get(i).getVoteCount() + ""); // TODO:
+                                                                               // real
+                                                                               // votes
+                                                                               // count
             votes.setStyleName("vote-count");
 
             layout.addComponent(upvote, "bust-row-upvote-arrow");
@@ -156,20 +152,22 @@ public class BustsSubview extends Subview {
             tmp.addComponent(layout);
         }
 
-        bustsList.addComponent(markVotes, "vote-count");
-        bustsList.addComponent(viewImage, "view-image-button");
-        bustsList.addComponent(markDesc, "mark-description");
-        bustsList.addComponent(markUpvote, "upvote-arrow");
-        bustsList.addComponent(markDownvote, "downvote-arrow");
-        bustsList.addComponent(ownerNick, "mark-submitter-nickname");
-        bustsList.addComponent(creationDate, "mark-creation-date");
-        bustsList.addComponent(markTitle, "mark-title");
-        bustsList.addComponent(newBust, "new-bust-button");
-        bustsList.addComponent(back, "back-button");
-        bustsList.addComponent(tmp, "busts-list");
-        setCompositionRoot(bustsList);
+        addComponent(markVotes, "vote-count");
+        addComponent(viewImage, "view-image-button");
+        addComponent(markDesc, "mark-description");
+        addComponent(markUpvote, "upvote-arrow");
+        addComponent(markDownvote, "downvote-arrow");
+        addComponent(ownerNick, "mark-submitter-nickname");
+        addComponent(creationDate, "mark-creation-date");
+        addComponent(markTitle, "mark-title");
+        addComponent(newBust, "new-bust-button");
+        addComponent(back, "back-button");
+        addComponent(tmp, "busts-list");
+    }
 
-        addStyleName("open");
-        super.show(params);
+    @Override
+    public void enter(ViewChangeEvent event) {
+        // TODO Auto-generated method stub
+
     }
 }

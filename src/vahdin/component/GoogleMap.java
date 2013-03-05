@@ -88,6 +88,16 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
         addListener(ClickEvent.class, listener, ClickListener.CLICK_METHOD);
     }
 
+    /**
+     * Removes a click listener.
+     * 
+     * @param listener
+     *            The listener to remove.
+     */
+    public void removeClickListener(ClickListener listener) {
+        removeListener(ClickEvent.class, listener, ClickListener.CLICK_METHOD);
+    }
+
     /** Click event listener. */
     public static abstract class ClickListener {
 

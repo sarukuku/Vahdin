@@ -6,6 +6,8 @@ import java.util.Date;
 import vahdin.component.ImageUpload;
 import vahdin.data.Mark;
 
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
@@ -15,16 +17,10 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload;
 
-public class NewMarkSubview extends Subview {
+public class NewMarkView extends CustomLayout implements View {
 
-    public NewMarkSubview() {
-
-    }
-
-    @Override
-    public void show(String[] params) {
-
-        CustomLayout newMarkLayout = new CustomLayout("new-mark-sidebar");
+    public NewMarkView() {
+        super("new-mark-sidebar");
 
         final TextField title = new TextField();
         final TextArea description = new TextArea();
@@ -35,7 +31,7 @@ public class NewMarkSubview extends Subview {
         cancel.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                UI.getCurrent().getNavigator().navigateTo("/");
+                UI.getCurrent().getNavigator().navigateTo("");
             }
         });
 
@@ -61,14 +57,16 @@ public class NewMarkSubview extends Subview {
             }
         });
 
-        newMarkLayout.addComponent(submit, "new-mark-submit-button");
-        newMarkLayout.addComponent(cancel, "new-mark-cancel-button");
-        newMarkLayout.addComponent(up, "new-mark-image-input");
-        newMarkLayout.addComponent(description, "new-mark-desc-textarea");
-        newMarkLayout.addComponent(title, "new-mark-title-input");
+        addComponent(submit, "new-mark-submit-button");
+        addComponent(cancel, "new-mark-cancel-button");
+        addComponent(up, "new-mark-image-input");
+        addComponent(description, "new-mark-desc-textarea");
+        addComponent(title, "new-mark-title-input");
+    }
 
-        setCompositionRoot(newMarkLayout);
-        addStyleName("open");
-        super.show(params);
+    @Override
+    public void enter(ViewChangeEvent event) {
+        // TODO Auto-generated method stub
+
     }
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import vahdin.VahdinUI;
 import vahdin.data.Mark;
 
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -14,16 +16,12 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-public class MarksSubview extends Subview {
+public class MarksView extends CustomLayout implements View {
 
     final private VahdinUI ui = (VahdinUI) UI.getCurrent();
 
-    public MarksSubview() {
-    }
-
-    @Override
-    public void show(String[] params) {
-        CustomLayout marksList = new CustomLayout("marks-sidebar");
+    public MarksView() {
+        super("marks-sidebar");
         VerticalLayout tmp = new VerticalLayout();
 
         List<Mark> marks = Mark.loadAll();
@@ -38,7 +36,7 @@ public class MarksSubview extends Subview {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                UI.getCurrent().getNavigator().navigateTo("/newmark/");
+                UI.getCurrent().getNavigator().navigateTo("newmark/");
             }
         });
 
@@ -53,7 +51,7 @@ public class MarksSubview extends Subview {
 
                 public void buttonClick(ClickEvent event) {
                     UI.getCurrent().getNavigator()
-                            .navigateTo("/busts/" + id + "/");
+                            .navigateTo("busts/" + id + "/");
                     // Notification.show("Title clicked");
                 }
 
@@ -96,11 +94,13 @@ public class MarksSubview extends Subview {
             tmp.addComponent(layout);
         }
 
-        marksList.addComponent(newMark, "new-mark-button");
-        marksList.addComponent(tmp, "marks-list");
-        setCompositionRoot(marksList);
+        addComponent(newMark, "new-mark-button");
+        addComponent(tmp, "marks-list");
+    }
 
-        addStyleName("open");
-        super.show(params);
+    @Override
+    public void enter(ViewChangeEvent event) {
+        // TODO Auto-generated method stub
+
     }
 }
