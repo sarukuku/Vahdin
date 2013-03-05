@@ -16,8 +16,6 @@ import vahdin.view.SingleBustView;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.MethodEventSource;
@@ -59,44 +57,6 @@ public class VahdinUI extends UI implements MethodEventSource {
 
         map = new GoogleMap(GOOGLE_MAPS_API_KEY);
         map.setSizeFull();
-
-        // XXX: GoogleMap usage example
-        map.addClickListener(new GoogleMap.ClickListener() {
-
-            private GoogleMap.Marker marker = null;
-
-            @SuppressWarnings("deprecation")
-            @Override
-            public void click(GoogleMap.ClickEvent event) {
-                if (marker != null) {
-                    map.removeMarker(marker);
-                }
-                marker = map.addMarker(event.latitude, event.longitude);
-                map.center(event.latitude, event.longitude);
-
-                lon.setValue("Lon: " + event.longitude + "");
-                lon.addListener(new Property.ValueChangeListener() {
-
-                    @Override
-                    public void valueChange(ValueChangeEvent event) {
-                        // TODO Auto-generated method stub
-
-                    }
-                });
-                lon.setImmediate(true);
-
-                lat.setValue("Lat: " + event.latitude + "");
-                lat.addListener(new Property.ValueChangeListener() {
-
-                    @Override
-                    public void valueChange(ValueChangeEvent event) {
-                        // TODO Auto-generated method stub
-
-                    }
-                });
-                lat.setImmediate(true);
-            }
-        });
 
         VerticalLayout sidebar = new VerticalLayout();
 
