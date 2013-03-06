@@ -49,11 +49,20 @@ public class NewBustView extends CustomLayout implements View {
 
     private GoogleMap.ClickListener mapListener;
 
-    private LoginListener loginListener;
+    private final LoginListener loginListener;
 
     public NewBustView() {
         super("new-bust-sidebar");
 
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                if (!user.isLoggedIn()) {
+                    ui.getNavigator().navigateTo("");
+                }
+            }
+        };
     }
 
     @Override
@@ -85,16 +94,6 @@ public class NewBustView extends CustomLayout implements View {
         };
 
         ui.addMapClickListener(mapListener);
-
-        loginListener = new LoginListener() {
-            @Override
-            public void login(LoginEvent event) {
-                User user = ui.getCurrentUser();
-                if (!user.isLoggedIn()) {
-                    ui.getNavigator().navigateTo("");
-                }
-            }
-        };
 
         cancel.setStyleName("cancel-button");
         cancel.addClickListener(new Button.ClickListener() {

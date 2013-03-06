@@ -49,6 +49,7 @@ public class User implements Item {
         PropertysetItem item = new PropertysetItem();
         item.addItemProperty("ID", new ObjectProperty<String>(""));
         item.addItemProperty("NAME", new ObjectProperty<String>("guest"));
+        item.addItemProperty("PRESTIGE", new ObjectProperty<Integer>(-1000));
         return new User(item);
     }
 

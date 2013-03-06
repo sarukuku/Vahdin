@@ -1,13 +1,17 @@
 package vahdin.data;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.util.PropertysetItem;
+import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 
@@ -29,12 +33,33 @@ public class Vote implements Item {
 
     private Item row;
 
-    public Vote(String userId, int targetItemId, String type) {
+    public Vote(String userId, int targetItemId, String type, double power) {
         row = new PropertysetItem();
         row.addItemProperty("USERID", new ObjectProperty<String>(userId));
         row.addItemProperty("TARGETITEMID", new ObjectProperty<Integer>(
                 targetItemId));
         row.addItemProperty("TYPE", new ObjectProperty<String>(type));
+        row.addItemProperty("POWER", new ObjectProperty<Double>(power));
+    }
+
+    private Vote(Item item) {
+        row = item;
+    }
+
+    public String getUserId() {
+        return (String) getItemProperty("USERID").getValue();
+    }
+
+    public String getType() {
+        return (String) getItemProperty("TYPE").getValue();
+    }
+
+    public int getTargetItemId() {
+        return (Integer) getItemProperty("TARGETITEMID").getValue();
+    }
+
+    public double getPower() {
+        return (Double) getItemProperty("POWER").getValue();
     }
 
     @SuppressWarnings("rawtypes")
@@ -60,6 +85,40 @@ public class Vote implements Item {
         return row.removeItemProperty(id);
     }
 
+    public static List<Vote> getVotesByTargetItemId(int id, String type) {
+        List<Vote> all = loadAll();
+        List<Vote> votes = new ArrayList<>();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getTargetItemId() == id
+                    && all.get(i).getType().equals(type)) {
+                votes.add(all.get(i));
+                System.out.println("jeh");
+            }
+        }
+        return votes;
+    }
+    
+    public static boolean hasVoted(int itemId, String itemType, String userId) {
+    	List<Vote> votes = getVotesByTargetItemId(itemId, itemType);
+    	for (int i = 0; i < votes.size(); i++) {
+    		if (votes.get(i).getUserId() == userId) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+
+    public static List<Vote> loadAll() {
+        ArrayList<Vote> votes = new ArrayList<>(container.size());
+        for (@SuppressWarnings("rawtypes")
+        Iterator i = container.getItemIds().iterator(); i.hasNext();) {
+            RowId id = (RowId) i.next();
+            Item item = container.getItem(id);
+            votes.add(new Vote(item));
+        }
+        return votes;
+    }
+
     public static void commit() throws SQLException {
         container.commit();
     }
@@ -74,6 +133,8 @@ public class Vote implements Item {
                 item.getItemProperty("TARGETITEMID").getValue());
         row.getItemProperty("TYPE").setValue(
                 item.getItemProperty("TYPE").getValue());
+        row.getItemProperty("POWER").setValue(
+                item.getItemProperty("POWER").getValue());
     }
 
 }

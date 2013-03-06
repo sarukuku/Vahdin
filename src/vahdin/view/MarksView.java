@@ -1,5 +1,6 @@
 package vahdin.view;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import vahdin.VahdinUI;
@@ -7,6 +8,7 @@ import vahdin.VahdinUI.LoginEvent;
 import vahdin.VahdinUI.LoginListener;
 import vahdin.data.Mark;
 import vahdin.data.User;
+import vahdin.data.Vote;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -15,7 +17,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -29,6 +30,8 @@ public class MarksView extends CustomLayout implements View {
         VerticalLayout marksList = new VerticalLayout();
 
         List<Mark> marks = Mark.loadAll();
+
+        final User user = ui.getCurrentUser();
 
         // The button to add a new Mark is only shown if user is logged in
 
@@ -61,6 +64,11 @@ public class MarksView extends CustomLayout implements View {
 
             });
 
+            final double votes = marks.get(i).getVoteCount();
+
+            final Label voteCount = new Label(votes + "");
+            voteCount.setStyleName("vote-count");
+
             // Button to give upvote to Mark
             Button voteUp = new Button();
             voteUp.setIcon(new ExternalResource(
@@ -68,7 +76,16 @@ public class MarksView extends CustomLayout implements View {
             voteUp.setStyleName("upvote");
             voteUp.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
-                    Notification.show("Upvote clicked");
+                    Vote vote = new Vote(user.getUserId(), id, "Mark", user
+                            .getPrestigePower());
+                    try {
+                        vote.save();
+                        vote.commit();
+                    } catch (SQLException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    voteCount.setValue(votes + "");
                 }
             });
 
@@ -79,12 +96,17 @@ public class MarksView extends CustomLayout implements View {
             voteDown.setStyleName("downvote");
             voteDown.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
-                    Notification.show("Downvote clicked");
+                    Vote vote = new Vote(user.getUserId(), id, "Mark", -user
+                            .getPrestigePower());
+                    try {
+                        vote.save();
+                        vote.commit();
+                    } catch (SQLException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
             });
-
-            Label voteCount = new Label(marks.get(i).getVoteCount() + "");
-            voteCount.setStyleName("vote-count");
 
             layout.addComponent(voteUp, "mark-row-upvote-arrow");
             layout.addComponent(voteCount, "mark-row-vote-count");

@@ -3,7 +3,10 @@ package vahdin.view;
 import java.io.File;
 
 import vahdin.VahdinUI;
+import vahdin.VahdinUI.LoginEvent;
+import vahdin.VahdinUI.LoginListener;
 import vahdin.data.Bust;
+import vahdin.data.User;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -25,9 +28,20 @@ public class SingleBustView extends CustomLayout implements View {
 
     private int markId;
     private int bustId;
+    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
+    private final LoginListener loginListener;
+    private Button delete;
 
     public SingleBustView() {
         super("single-bust-sidebar");
+
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                delete.setVisible(user.isLoggedIn());
+            }
+        };
 
     }
 
@@ -76,7 +90,7 @@ public class SingleBustView extends CustomLayout implements View {
             }
         });
 
-        Button delete = new Button();
+        delete = new Button();
         delete.setStyleName("new-mark-button");
         delete.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/delete-button.png"));
@@ -128,6 +142,19 @@ public class SingleBustView extends CustomLayout implements View {
         addComponent(desc, "bust-description");
         addComponent(viewImage, "view-bust-image-button");
 
+        loginListener.login(null); // force login actions
+    }
+
+    @Override
+    public void attach() {
+        super.attach();
+        ui.addLoginListener(loginListener);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        ui.removeLoginListener(loginListener);
     }
 
     /*
