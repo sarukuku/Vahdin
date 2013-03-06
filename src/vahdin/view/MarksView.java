@@ -73,7 +73,7 @@ public class MarksView extends CustomLayout implements View {
             final Button voteUp = new Button();
 
             if (Vote.hasVoted(id, "Mark", user.getUserId())
-                    && user.getVote(m).getPower() < 0) {
+                    && user.getVote(m).getPower() > 0) {
                 voteUp.setIcon(new ExternalResource(
                         "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
             } else {

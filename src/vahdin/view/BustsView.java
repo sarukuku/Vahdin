@@ -208,7 +208,7 @@ public class BustsView extends CustomLayout implements View {
             upvote.setStyleName("upvote");
 
             if (Vote.hasVoted(bustId, "Bust", user.getUserId())
-                    && user.getVote(bust).getPower() < 0) {
+                    && user.getVote(bust).getPower() > 0) {
                 upvote.setIcon(new ExternalResource(
                         "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
             } else {
@@ -240,8 +240,8 @@ public class BustsView extends CustomLayout implements View {
             final Button downvote = new Button();
             downvote.setStyleName("downvote");
 
-            if (Vote.hasVoted(id, "Mark", user.getUserId())
-                    && user.getVote(mark).getPower() < 0) {
+            if (Vote.hasVoted(bustId, "Bust", user.getUserId())
+                    && user.getVote(bust).getPower() < 0) {
                 downvote.setIcon(new ExternalResource(
                         "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
             } else {
