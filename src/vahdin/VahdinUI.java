@@ -28,6 +28,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -146,6 +147,16 @@ public class VahdinUI extends UI implements MethodEventSource {
             }
         });
 
+        Button userGuideLink = new Button("asdf");
+        userGuideLink.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                Notification.show("Ohjeet tähän");
+
+            }
+        });
+
         final Window loginWindow = buildLoginWindow();
 
         final Button loginLink = new Button();
@@ -182,6 +193,7 @@ public class VahdinUI extends UI implements MethodEventSource {
         });
 
         layout.addComponent(logoLink, "logo-link");
+        layout.addComponent(userGuideLink, "stats-link");
         layout.addComponent(loginLink, "login-logout-link");
         layout.addComponent(score, "user-score");
         layout.addComponent(username, "username");
