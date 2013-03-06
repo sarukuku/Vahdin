@@ -83,8 +83,14 @@ public class Bust implements Item {
         return (Double) getItemProperty("COORDINATESLON").getValue();
     }
 
-    public int getVoteCount() {
-        return 12; // TODO:
+    public double getVoteCount() {
+        int id = (Integer) getItemProperty("ID").getValue();
+        double count = 0.0;
+        List<Vote> votes = Vote.getVotesByTargetItemId(id, "Bust");
+        for (int i = 0; i < votes.size(); i++) {
+            count += votes.get(i).getPower();
+        }
+        return count;
     }
 
     @SuppressWarnings("rawtypes")

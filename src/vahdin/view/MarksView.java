@@ -70,9 +70,17 @@ public class MarksView extends CustomLayout implements View {
             voteCount.setStyleName("vote-count");
 
             // Button to give upvote to Mark
-            Button voteUp = new Button();
-            voteUp.setIcon(new ExternalResource(
-                    "VAADIN/themes/vahdintheme/img/up-arrow.png"));
+            final Button voteUp = new Button();
+
+            if (Vote.hasVoted(id, "Mark", user.getUserId())
+                    && user.getVote(m).getPower() > 0) {
+                voteUp.setIcon(new ExternalResource(
+                        "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
+            } else {
+                voteUp.setIcon(new ExternalResource(
+                        "VAADIN/themes/vahdintheme/img/up-arrow.png"));
+            }
+
             voteUp.setStyleName("upvote");
             voteUp.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
@@ -87,8 +95,8 @@ public class MarksView extends CustomLayout implements View {
                             e.printStackTrace();
                         }
                         voteCount.setValue((int) m.getVoteCount() + "");
-                    } else {
-
+                        voteUp.setIcon(new ExternalResource(
+                                "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                     }
                 }
             });
