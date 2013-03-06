@@ -1,6 +1,10 @@
 package vahdin.view;
 
+import vahdin.VahdinUI;
+import vahdin.VahdinUI.LoginEvent;
+import vahdin.VahdinUI.LoginListener;
 import vahdin.component.ImageUpload;
+import vahdin.data.User;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -14,6 +18,9 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload;
 
 public class NewMarkView extends CustomLayout implements View {
+
+    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
+    private final LoginListener loginListener;
 
     public NewMarkView() {
         super("new-mark-sidebar");
@@ -48,11 +55,32 @@ public class NewMarkView extends CustomLayout implements View {
         addComponent(up, "new-mark-image-input");
         addComponent(description, "new-mark-desc-textarea");
         addComponent(title, "new-mark-title-input");
+
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                if (!user.isLoggedIn()) {
+                    ui.getNavigator().navigateTo("");
+                }
+            }
+        };
     }
 
     @Override
     public void enter(ViewChangeEvent event) {
-        // TODO Auto-generated method stub
+        loginListener.login(null); // force login actions
+    }
 
+    @Override
+    public void attach() {
+        super.attach();
+        ui.addLoginListener(loginListener);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        ui.removeLoginListener(loginListener);
     }
 }
