@@ -153,6 +153,17 @@ public class User implements Item {
         }
         return null;
     }
+    
+    public static Vote getVote(Bust bust) {
+    	final VahdinUI ui = (VahdinUI) UI.getCurrent();
+    	List<Vote> all = Vote.loadAll();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getTargetItemId() == bust.getId() && all.get(i).getType().equals("Bust") && all.get(i).getUserId() == ui.getCurrentUser().getUserId()) {
+                return all.get(i);
+            }
+        }
+        return null;
+    }
 
     /*
      * Get the verbal Prestige rank of the user
