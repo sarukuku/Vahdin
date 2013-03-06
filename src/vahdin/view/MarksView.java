@@ -94,10 +94,19 @@ public class MarksView extends CustomLayout implements View {
             });
 
             // Button to give downvote to Mark
-            Button voteDown = new Button();
-            voteDown.setIcon(new ExternalResource(
-                    "VAADIN/themes/vahdintheme/img/down-arrow.png"));
+            final Button voteDown = new Button();
+
+            if (Vote.hasVoted(id, "Mark", user.getUserId())
+                    && user.getVote(m).getPower() < 0) {
+                voteDown.setIcon(new ExternalResource(
+                        "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
+            } else {
+                voteDown.setIcon(new ExternalResource(
+                        "VAADIN/themes/vahdintheme/img/down-arrow.png"));
+            }
+
             voteDown.setStyleName("downvote");
+
             voteDown.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
                     if (!Vote.hasVoted(id, "Mark", user.getUserId())) {
@@ -111,6 +120,8 @@ public class MarksView extends CustomLayout implements View {
                             e.printStackTrace();
                         }
                         voteCount.setValue((int) m.getVoteCount() + "");
+                        voteDown.setIcon(new ExternalResource(
+                                "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                     }
                 }
             });
