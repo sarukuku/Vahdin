@@ -97,6 +97,16 @@ public class Vote implements Item {
         }
         return votes;
     }
+    
+    public static boolean hasVoted(int itemId, String itemType, String userId) {
+    	List<Vote> votes = getVotesByTargetItemId(itemId, itemType);
+    	for (int i = 0; i < votes.size(); i++) {
+    		if (votes.get(i).getUserId() == userId) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 
     public static List<Vote> loadAll() {
         ArrayList<Vote> votes = new ArrayList<>(container.size());
