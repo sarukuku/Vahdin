@@ -161,7 +161,7 @@ public class User implements Item {
      */
     public float getPrestigePower() {
         int power = (int) (java.lang.Math.sqrt(getPrestigeValue()) * 50);
-        return power / 100;
+        return power / 100 + 1;
     }
 
     public void setName(String name) {
