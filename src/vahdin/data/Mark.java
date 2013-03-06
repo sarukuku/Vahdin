@@ -86,12 +86,8 @@ public class Mark implements Item {
         return id == null ? 0 : id;
     }
 
-    public ArrayList<Bust> getBusts() {
-        return this.busts; // TODO:
-    }
-
-    public void addBust(Bust bust) {
-        this.busts.add(bust); // TODO:
+    public List<Bust> getBusts() {
+        return Bust.getBustByMarkId(getId());
     }
 
     @SuppressWarnings("rawtypes")
