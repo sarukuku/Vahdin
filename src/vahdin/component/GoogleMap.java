@@ -16,7 +16,13 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
 
     private final String id;
 
-    /** Constructs a new GoogleMap with the specified API key. */
+    /**
+     * Constructs a new GoogleMap with the specified API key.
+     * 
+     * @param apiKey
+     *            The specified API key
+     * 
+     * */
     public GoogleMap(String apiKey) {
         final GoogleMap map = this;
         id = UUID.randomUUID().toString();
@@ -41,6 +47,10 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
     /**
      * Adds a marker at the given coordinates.
      * 
+     * @param lat
+     *            coordinate latitude
+     * @param lng
+     *            coordinate longitude
      * @return The created Marker object.
      */
     public Marker addMarker(double lat, double lng) {
@@ -51,13 +61,25 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
         return new Marker(lat, lng, markerId);
     }
 
-    /** Removes the specified marker. */
+    /**
+     * Removes the specified marker.
+     * 
+     * @param marker
+     *            Marker to remove
+     * */
     public void removeMarker(Marker marker) {
         JavaScript.getCurrent().execute(
                 "window['" + id + "'].removeMarker('" + marker.id + "')");
     }
 
-    /** Centers the map at the specified coordinates. */
+    /**
+     * Centers the map at the specified coordinates.
+     * 
+     * @param lat
+     *            coordinate latitude
+     * @param lng
+     *            coordinate longitude
+     * */
     public void center(double lat, double lng) {
         JavaScript.getCurrent().execute(
                 "window['" + id + "'].center(" + lat + "," + lng + ");");
@@ -70,7 +92,17 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
 
         private final String id;
 
-        /** Constructs a new marker with the given coordinates. */
+        /**
+         * Constructs a new map marker with the given coordinates.
+         * 
+         * @param lat
+         *            coordinate latitude
+         * @param lng
+         *            coordinate longitude
+         * @param id
+         *            Unique id for marker, to communicate betweewn Java and
+         *            Vaadin
+         * */
         private Marker(double lat, double lng, String id) {
             latitude = lat;
             longitude = lng;
@@ -112,7 +144,10 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
             }
         }
 
-        /***/
+        /**
+         * What happens when you click the map
+         * 
+         * */
         public abstract void click(ClickEvent event);
 
     }
