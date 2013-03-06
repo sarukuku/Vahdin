@@ -71,15 +71,17 @@ public class Mark implements Item {
         return getId();
     }
 
-    public int getVoteCount() {
-        return (int) this.voteCount; // TODO:
+    public double getVoteCount() {
+        int id = (Integer) getItemProperty("ID").getValue();
+        double count = 0.0;
+        List<Vote> votes = Vote.getVotesByTargetItemId(id, "Mark");
+        for (int i = 0; i < votes.size(); i++) {
+            count += votes.get(i).getPower();
+        }
+        return count;
     }
 
     public int getId() {
-        /*
-         * Integer id = (Integer) row.getItemProperty("Id").getValue(); return
-         * id == null ? 0 : id;
-         */
         Integer id = (Integer) row.getItemProperty("ID").getValue();
         return id == null ? 0 : id;
     }

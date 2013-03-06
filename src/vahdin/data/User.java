@@ -49,6 +49,7 @@ public class User implements Item {
         PropertysetItem item = new PropertysetItem();
         item.addItemProperty("ID", new ObjectProperty<String>(""));
         item.addItemProperty("NAME", new ObjectProperty<String>("guest"));
+        item.addItemProperty("PRESTIGE", new ObjectProperty<Integer>(-1000));
         return new User(item);
     }
 
@@ -152,7 +153,7 @@ public class User implements Item {
     // returns 2 decimal point float
     public float getPrestigePower() {
         int power = (int) (java.lang.Math.sqrt(getPrestigeValue()) * 50);
-        return power / 100;
+        return power / 100 + 1;
     }
 
     public void setName(String name) {
