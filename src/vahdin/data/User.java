@@ -1,8 +1,12 @@
 package vahdin.data;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
+
+import vahdin.VahdinUI;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
@@ -11,6 +15,7 @@ import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
+import com.vaadin.ui.UI;
 
 public class User implements Item {
 
@@ -136,6 +141,18 @@ public class User implements Item {
     public int getExperience() {
         int value = (Integer) this.getItemProperty("EXPERIENCE").getValue();
         return value;
+    }
+    
+    public static Vote getVote(Mark mark) {
+    	final VahdinUI ui = (VahdinUI) UI.getCurrent();
+    	List<Vote> all = Vote.loadAll();
+        List<Vote> votes = new ArrayList<>();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getTargetItemId() == mark.getId() && all.get(i).getType().equals("Mark") && all.get(i).getUserId() == ui.getCurrentUser().getUserId()) {
+                return all.get(i);
+            }
+        }
+        return null;
     }
 
     /*
