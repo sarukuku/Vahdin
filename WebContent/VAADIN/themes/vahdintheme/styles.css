@@ -298,6 +298,8 @@ html, body {
 	float: right;
 	position: relative;
 	display: table;
+	overflow: hidden;
+	box-shadow: 0 0 6px black;
 }
 
 /* Marks list */
@@ -370,9 +372,29 @@ div.marks-list-container! > div.open {
 	top: 22px;
 }
 
+.input-block .v-button-caption {
+	display: block;
+	position: relative;
+	width: 96%;
+	color: black;
+	border-radius: 3px;
+	text-align: center;
+	font-size: 1.6em;
+	padding: 5px;
+	box-shadow: 0px 0px 5px 1px black;
+	margin: 5px;
+	cursor: pointer;
+	background-color: yellow;
+}
+
+.gwt-FileUpload {
+	margin-left: 5px;
+	padding: 5px;
+}
+
 .v-datefield-button {
 	position: absolute;
-	top: 70px;
+	top: 48px;
 	right: 5px;
 	display: block;
 	width: 30px;
@@ -760,6 +782,11 @@ div.marks-list-container! > div.open {
 	background-position-y: center;
 	background-position-x: 96%;
 	background-repeat: no-repeat;
+	min-height: 130px;
+}
+
+.location-bg .v-label {
+	margin-left: 5px;
 }
 
 .bust-voting-container {

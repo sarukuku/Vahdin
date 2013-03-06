@@ -34,7 +34,7 @@ public class NewMarkView extends CustomLayout implements View {
 
         final TextField title = new TextField();
         final TextArea description = new TextArea();
-        Upload up = new ImageUpload().createImageUpload("tissit");
+        Upload up = new ImageUpload().createImageUpload("m");
 
         Button cancel = new Button("Cancel");
         cancel.setStyleName("cancel-button");
@@ -64,7 +64,7 @@ public class NewMarkView extends CustomLayout implements View {
                 }
                 Notification.show("Created new Mark with title: "
                         + title.getValue());
-                // TODO: create new mark and add it to sql
+                UI.getCurrent().getNavigator().navigateTo("");
             }
         });
 
