@@ -4,22 +4,23 @@ import java.io.File;
 import java.util.Date;
 
 import vahdin.VahdinUI;
+import vahdin.VahdinUI.LoginEvent;
+import vahdin.VahdinUI.LoginListener;
 import vahdin.data.Bust;
 import vahdin.data.Mark;
+import vahdin.data.User;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -27,6 +28,8 @@ import com.vaadin.ui.Window;
 public class BustsView extends CustomLayout implements View {
 
     private String markId;
+    private final LoginListener loginListener;
+    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
 
     public BustsView() {
         super("single-mark-sidebar");
@@ -37,16 +40,16 @@ public class BustsView extends CustomLayout implements View {
         m1.addBust(new Bust("Title2", 1, "Toinen kuvaus", 1, "toka aika", 3.3,
                 4.4));
 
-        VerticalLayout tmp = new VerticalLayout();
+        VerticalLayout bustsList = new VerticalLayout();
 
         Label markTitle = new Label("<h2>" + m1.getTitle() + "</h2>",
                 Label.CONTENT_XHTML);
 
-        Button newBust = new Button();
-        newBust.setStyleName("new-bust-button");
-        newBust.setIcon(new ExternalResource(
+        final Button newBustButton = new Button();
+        newBustButton.setStyleName("new-bust-button");
+        newBustButton.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/add-button.png"));
-        newBust.addClickListener(new Button.ClickListener() {
+        newBustButton.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
@@ -156,7 +159,7 @@ public class BustsView extends CustomLayout implements View {
             layout.addComponent(votes, "bust-row-vote-count");
             layout.addComponent(downvote, "bust-row-downvote-arrow");
             layout.addComponent(title, "bust-row-title");
-            tmp.addComponent(layout);
+            bustsList.addComponent(layout);
         }
 
         addComponent(markVotes, "vote-count");
@@ -167,17 +170,36 @@ public class BustsView extends CustomLayout implements View {
         addComponent(ownerNick, "mark-submitter-nickname");
         addComponent(creationDate, "mark-creation-date");
         addComponent(markTitle, "mark-title");
-        addComponent(newBust, "new-bust-button");
+        addComponent(newBustButton, "new-bust-button");
         addComponent(back, "back-button");
-        addComponent(tmp, "busts-list");
+        addComponent(bustsList, "busts-list");
+
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                newBustButton.setVisible(user.isLoggedIn());
+            }
+        };
+    }
+
+    @Override
+    public void attach() {
+        super.attach();
+        ui.addLoginListener(loginListener);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        ui.removeLoginListener(loginListener);
     }
 
     @Override
     public void enter(ViewChangeEvent event) {
-        // TODO Auto-generated method stub
-
+        loginListener.login(null); // force login actions
     }
-    
+
     /*
      * Method that shows an image of a mark or bust in a new window on top of the current interface.
      */
@@ -223,5 +245,5 @@ public class BustsView extends CustomLayout implements View {
         imagewin.setContent(layout);
         ui.addWindow(imagewin); // add modal window to main window
     }
-    
+
 }
