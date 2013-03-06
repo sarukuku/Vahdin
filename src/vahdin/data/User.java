@@ -89,6 +89,16 @@ public class User implements Item {
         loggedIn = true;
     }
 
+    /**
+     * Checks if user is admin
+     * 
+     * @return true if admin
+     */
+    public boolean isAdmin() {
+        boolean admin = (boolean) this.getItemProperty("ADMIN").getValue();
+        return admin;
+    }
+
     /** Marks the user as logged out. */
     public void markLoggedOut() {
         loggedIn = false;
