@@ -17,6 +17,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Embedded;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
@@ -193,26 +194,32 @@ public class BustsView extends CustomLayout implements View {
         });
     	layout.addComponent(close);
     	
-    	String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
-    	File directory = new File(basepath + "/VAADIN/themes/vahdintheme/img/contentpictures");
-    	String filename = "m" + mark.getId();
+    	String basepath = System.getProperty("user.home");
+    	File imgDirectory = new File(basepath + "/contentimgs");
+    	String lookingForFilename = "m" + mark.getId();
+    	String tempFilename = null;
+    	String finalFilename = null;
     	
-    	if (directory.isDirectory()) { // check to make sure it is a directory
-    		String filenames[] = directory.list();
+    	if (imgDirectory.isDirectory()) { // check to make sure it is a directory
+    		String filenames[] = imgDirectory.list();
     		for (int i = 0; i < filenames.length; i++) {
-    			if (filenames[i].contains(filename)) {
-        			filename = filenames[i];
+    			if (filenames[i].contains(lookingForFilename)) {
+    				tempFilename = filenames[i];
         			break;
-        		} else {
-        			filename = "notfound.png";
         		}
         	}
     	}
     	
-    	filename = "../vahdintheme/img/contentpictures/" + filename;
+    	if (tempFilename != null) {
+    		finalFilename = basepath + "/contentimgs/" + tempFilename;
+    		FileResource resource = new FileResource(new File(finalFilename));
+        	Image img = new Image(mark.getTitle(), resource);
+        	layout.addComponent(img);
+    	} else {
+    		Embedded img = new Embedded(mark.getTitle(), new ThemeResource("../vahdintheme/img/notfound.jpg"));
+    		layout.addComponent(img);
+    	}
     	
-    	Embedded img = new Embedded(mark.getTitle(), new ThemeResource(filename));
-        layout.addComponent(img);
         imagewin.setContent(layout);
         ui.addWindow(imagewin); // add modal window to main window
     }
