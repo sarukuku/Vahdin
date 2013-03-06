@@ -45,6 +45,7 @@ public class VahdinUI extends UI implements MethodEventSource {
 
     private static final String GOOGLE_MAPS_API_KEY = "AIzaSyD723LQ68aCdI37_yhUNDQVHj3zzAfPDVo";
     private static final Logger logger = Logger.getGlobal();
+
     private GoogleMap map;
 
     private User currentUser = User.guest();

@@ -1,9 +1,13 @@
 package vahdin.view;
 
+import java.sql.SQLException;
+import java.util.Date;
+
 import vahdin.VahdinUI;
 import vahdin.VahdinUI.LoginEvent;
 import vahdin.VahdinUI.LoginListener;
 import vahdin.component.ImageUpload;
+import vahdin.data.Mark;
 import vahdin.data.User;
 
 import com.vaadin.navigator.View;
@@ -25,6 +29,9 @@ public class NewMarkView extends CustomLayout implements View {
     public NewMarkView() {
         super("new-mark-sidebar");
 
+        User user = ui.getCurrentUser();
+        final String userId = user.getUserId();
+
         final TextField title = new TextField();
         final TextArea description = new TextArea();
         Upload up = new ImageUpload().createImageUpload("tissit");
@@ -44,6 +51,17 @@ public class NewMarkView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
+                String name = title.getValue();
+                String desc = description.getValue();
+                Date time = new Date();
+                Mark m = new Mark(name, time, desc, userId);
+                try {
+                    m.save();
+                    m.commit();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 Notification.show("Created new Mark with title: "
                         + title.getValue());
                 // TODO: create new mark and add it to sql

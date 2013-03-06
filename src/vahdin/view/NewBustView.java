@@ -1,10 +1,14 @@
 package vahdin.view;
 
+import java.sql.SQLException;
+import java.util.Date;
+
 import vahdin.VahdinUI;
 import vahdin.VahdinUI.LoginEvent;
 import vahdin.VahdinUI.LoginListener;
 import vahdin.component.GoogleMap;
 import vahdin.component.ImageUpload;
+import vahdin.data.Bust;
 import vahdin.data.User;
 
 import com.vaadin.navigator.View;
@@ -43,11 +47,23 @@ public class NewBustView extends CustomLayout implements View {
     private final Button cancel = new Button("Cancel");
     private final Button submit = new Button("Submit");
 
-    private final GoogleMap.ClickListener mapListener;
-    private final LoginListener loginListener;
+    private GoogleMap.ClickListener mapListener;
+
+    private LoginListener loginListener;
 
     public NewBustView() {
         super("new-bust-sidebar");
+
+    }
+
+    @Override
+    public void enter(ViewChangeEvent event) {
+
+        String[] s = event.getParameters().split("/");
+        markId = Integer.parseInt(s[0]);
+
+        User user = ui.getCurrentUser();
+        final String userId = user.getUserId();
 
         lat.setReadOnly(true);
         lon.setReadOnly(true);
@@ -93,7 +109,18 @@ public class NewBustView extends CustomLayout implements View {
         submit.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                // TODO: submit event handler
+                String name = title.getValue();
+                String desc = description.getValue();
+                Date time = date.getValue();
+                Bust bust = new Bust(name, desc, time, latitude, longitude,
+                        markId, userId);
+                try {
+                    bust.save();
+                    bust.commit();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -105,10 +132,7 @@ public class NewBustView extends CustomLayout implements View {
         addComponent(lon, "longtitude");
         addComponent(cancel, "new-bust-cancel-button");
         addComponent(submit, "new-bust-submit-button");
-    }
 
-    @Override
-    public void enter(ViewChangeEvent event) {
         loginListener.login(null); // force login actions
     }
 
