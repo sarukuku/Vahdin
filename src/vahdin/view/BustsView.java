@@ -95,7 +95,7 @@ public class BustsView extends CustomLayout implements View {
         Label ownerNick = new Label("Riku Riski");
         ownerNick.setStyleName("nickname");
 
-        final Label markVotes = new Label(mark.getVoteCount() + "");
+        final Label markVotes = new Label((int) mark.getVoteCount() + "");
         markVotes.setStyleName("vote-count");
 
         final Button markUpvote = new Button();
@@ -201,7 +201,7 @@ public class BustsView extends CustomLayout implements View {
                 }
             });
 
-            final Label votes = new Label(bust.getVoteCount() + "");
+            final Label votes = new Label((int) bust.getVoteCount() + "");
             votes.setStyleName("vote-count");
 
             final Button upvote = new Button();
