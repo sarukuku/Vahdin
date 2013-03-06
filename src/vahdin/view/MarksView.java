@@ -136,6 +136,10 @@ public class MarksView extends CustomLayout implements View {
                     + marks.get(i).getId());
 
             marksList.addComponent(layout);
+
+            if (i == 0) {
+                ui.showBusts(marks.get(i));
+            }
         }
 
         addComponent(newMarkButton, "new-mark-button");

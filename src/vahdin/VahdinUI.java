@@ -2,11 +2,14 @@ package vahdin;
 
 import java.lang.reflect.Method;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import vahdin.component.GoogleMap;
 import vahdin.component.OAuth2Button;
 import vahdin.component.OAuth2Button.AuthEvent;
+import vahdin.data.Bust;
+import vahdin.data.Mark;
 import vahdin.data.User;
 import vahdin.view.BustsView;
 import vahdin.view.MarksView;
@@ -30,7 +33,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -136,6 +138,24 @@ public class VahdinUI extends UI implements MethodEventSource {
     }
 
     /**
+     * Shows the busts of the specified mark on the map.
+     * 
+     * @param mark
+     */
+    public void showBusts(Mark mark) {
+        clearMap();
+        List<Bust> busts = mark.getBusts();
+        for (Bust bust : busts) {
+            map.addMarker(bust.getLocationLat(), bust.getLocationLon());
+        }
+    }
+
+    /** Clears the map. */
+    public void clearMap() {
+        map.removeMarkers();
+    }
+
+    /**
      * Builds the menu bar by adding the necessary components.
      * 
      * @param layout
@@ -154,7 +174,8 @@ public class VahdinUI extends UI implements MethodEventSource {
             }
         });
 
-        Link userGuideLink = new Link("", new ExternalResource("https://dl.dropbox.com/u/733138/vahdin_user_guide.htm"));
+        Link userGuideLink = new Link("", new ExternalResource(
+                "https://dl.dropbox.com/u/733138/vahdin_user_guide.htm"));
         userGuideLink.setTargetName("_blank");
 
         final Window loginWindow = buildLoginWindow();
