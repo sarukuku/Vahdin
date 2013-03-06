@@ -18,7 +18,7 @@ public class DB {
 
     private static final String H2_DB_NAME = "vahdin";
     private static final String DRIVER = "org.h2.Driver";
-    private static final String CONNECTION_URI = "jdbc:h2:" + H2_DB_NAME
+    private static final String CONNECTION_URI = "jdbc:h2:~/" + H2_DB_NAME
             + ";FILE_LOCK=NO";
     private static final String USER = "vahdin";
     private static final String PASSWORD = "";
