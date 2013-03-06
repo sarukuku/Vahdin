@@ -1,19 +1,26 @@
 package vahdin.view;
 
+import java.io.File;
 import java.util.Date;
 
+import vahdin.VahdinUI;
 import vahdin.data.Bust;
 import vahdin.data.Mark;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.ThemeResource;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 public class SingleBustView extends CustomLayout implements View {
 
@@ -121,5 +128,45 @@ public class SingleBustView extends CustomLayout implements View {
     public void enter(ViewChangeEvent event) {
         // TODO Auto-generated method stub
 
+    }
+    
+    /*
+     * Method that shows an image of a mark or bust in a new window on top of the current interface.
+     */
+    public void showImage(Bust bust) {
+    	final VahdinUI ui = (VahdinUI) UI.getCurrent(); // Get main window
+    	final Window imagewin = new Window(); // Create the window
+    	imagewin.setStyleName("single-image-window"); // Set style name
+    	imagewin.setModal(true); // Make it modal
+    	VerticalLayout layout = new VerticalLayout(); // Create layout for the image
+    	Button close = new Button("Click this bar to close the image", new Button.ClickListener() { // Add a close button for the image
+            public void buttonClick(ClickEvent event) { // inline click-listener
+                ((UI) imagewin.getParent()).removeWindow(imagewin); // close the window by removing it from the parent window
+            }
+        });
+    	layout.addComponent(close);
+    	
+    	String basepath = System.getProperty("user.home");
+    	File directory = new File(basepath + "/contentimgs");
+    	String filename = "b" + bust.getId();
+    	
+    	if (directory.isDirectory()) { // check to make sure it is a directory
+    		String filenames[] = directory.list();
+    		for (int i = 0; i < filenames.length; i++) {
+    			if (filenames[i].contains(filename)) {
+        			filename = filenames[i];
+        			break;
+        		} else {
+        			filename = "notfound.png";
+        		}
+        	}
+    	}
+    	
+    	filename = "../vahdintheme/img/contentpictures/" + filename;
+    	
+    	Embedded img = new Embedded(bust.getTitle(), new ThemeResource(filename));
+        layout.addComponent(img);
+        imagewin.setContent(layout);
+        ui.addWindow(imagewin); // add modal window to main window
     }
 }

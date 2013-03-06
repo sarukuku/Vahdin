@@ -1,20 +1,27 @@
 package vahdin.view;
 
+import java.io.File;
 import java.util.Date;
 
+import vahdin.VahdinUI;
 import vahdin.data.Bust;
 import vahdin.data.Mark;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.ThemeResource;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 public class BustsView extends CustomLayout implements View {
 
@@ -24,7 +31,7 @@ public class BustsView extends CustomLayout implements View {
         super("single-mark-sidebar");
 
         // FOR TESTING ONLY
-        Mark m1 = new Mark("Markin nimi", new Date(), "Kuvaus", 1, 1);
+        final Mark m1 = new Mark("Markin nimi", new Date(), "Kuvaus", 1, 1);
         m1.addBust(new Bust("Title", 0, "Kuvaus", 0, "aika", 2.2, 1.1));
         m1.addBust(new Bust("Title2", 1, "Toinen kuvaus", 1, "toka aika", 3.3,
                 4.4));
@@ -92,8 +99,7 @@ public class BustsView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                // TODO Auto-generated method stub
-                Notification.show("View image");
+                showImage(m1);
             }
         });
 
@@ -170,4 +176,45 @@ public class BustsView extends CustomLayout implements View {
         // TODO Auto-generated method stub
 
     }
+    
+    /*
+     * Method that shows an image of a mark or bust in a new window on top of the current interface.
+     */
+    public void showImage(Mark mark) {
+    	final VahdinUI ui = (VahdinUI) UI.getCurrent(); // Get main window
+    	final Window imagewin = new Window(); // Create the window
+    	imagewin.setStyleName("single-image-window"); // Set style name
+    	imagewin.setModal(true); // Make it modal
+    	VerticalLayout layout = new VerticalLayout(); // Create layout for the image
+    	Button close = new Button("Click this bar to close the image", new Button.ClickListener() { // Add a close button for the image
+            public void buttonClick(ClickEvent event) { // inline click-listener
+                ((UI) imagewin.getParent()).removeWindow(imagewin); // close the window by removing it from the parent window
+            }
+        });
+    	layout.addComponent(close);
+    	
+    	String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+    	File directory = new File(basepath + "/VAADIN/themes/vahdintheme/img/contentpictures");
+    	String filename = "m" + mark.getId();
+    	
+    	if (directory.isDirectory()) { // check to make sure it is a directory
+    		String filenames[] = directory.list();
+    		for (int i = 0; i < filenames.length; i++) {
+    			if (filenames[i].contains(filename)) {
+        			filename = filenames[i];
+        			break;
+        		} else {
+        			filename = "notfound.png";
+        		}
+        	}
+    	}
+    	
+    	filename = "../vahdintheme/img/contentpictures/" + filename;
+    	
+    	Embedded img = new Embedded(mark.getTitle(), new ThemeResource(filename));
+        layout.addComponent(img);
+        imagewin.setContent(layout);
+        ui.addWindow(imagewin); // add modal window to main window
+    }
+    
 }

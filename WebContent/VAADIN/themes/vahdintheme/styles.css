@@ -115,8 +115,6 @@ html, body {
 	height: 100%;
 	min-width: 1024px !important;
 	overflow: hidden;
-	position: relative;
-	overflow: auto;
 }
 
 /* Top menu bar */
@@ -924,6 +922,34 @@ div.marks-list-container! > div.open {
 	height: 100%;
 }
 
+/* Single image window */
+
+.single-image-window {
+	color: black;
+}
+
+.single-image-window .v-button-caption {
+	display: block;
+	text-align: center;
+	font-weight: 900;
+	width: 100%;
+	background: #dcdcdc;
+	border-radius: 5px 5px 0 0;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.single-image-window .v-caption {
+	/* visually hidden */
+	border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
 
 /* ==========================================================================
    Helper classes
