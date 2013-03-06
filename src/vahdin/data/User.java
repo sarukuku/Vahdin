@@ -137,7 +137,7 @@ public class User implements Item {
         String rank = null;
 
         if (value < 0) {
-            rank = "Tissiposki";
+            rank = "Titface :(";
         } else if (value < 1000) {
             rank = "Newbie";
         } else if (value < 2000) {
@@ -149,7 +149,7 @@ public class User implements Item {
         } else if (value < 16000) {
             rank = "Master Stalker";
         } else {
-            rank = "Homo";
+            rank = "Gaylord";
         }
         return rank;
     }
