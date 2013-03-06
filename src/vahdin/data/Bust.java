@@ -1,11 +1,19 @@
 package vahdin.data;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import com.vaadin.data.util.ObjectProperty;
+import com.vaadin.data.util.PropertysetItem;
+import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 
@@ -27,53 +35,54 @@ public class Bust implements Item {
 
     private Item row;
 
-    private String title;
-    private int id;
-    private String description;
-    private int imageId;
-    private String time;
-    private double locationLat;
-    private double locationLon;
+    public Bust(String title, String desc, Date time, double lat, double lon,
+            int markId, String userId) {
+        row = new PropertysetItem();
+        row.addItemProperty("NAME", new ObjectProperty<String>(title));
+        row.addItemProperty("DESCRIPTION", new ObjectProperty<String>(desc));
+        row.addItemProperty("TIME", new ObjectProperty<Date>(time));
+        row.addItemProperty("USERID", new ObjectProperty<String>(userId));
+        row.addItemProperty("MARKID", new ObjectProperty<Integer>(markId));
+        row.addItemProperty("COORDINATESLAT", new ObjectProperty<Double>(lat));
+        row.addItemProperty("COORDINATESLON", new ObjectProperty<Double>(lon));
 
-    public Bust(String title, int id, String desc, int imgId, String time,
-            double lat, double lon) {
-        this.title = title;
-        this.id = id;
-        this.description = desc;
-        this.imageId = imgId;
-        this.time = time;
-        this.locationLat = lat;
-        this.locationLon = lon;
+    }
+
+    private Bust(Item item) {
+        row = item;
     }
 
     public String getTitle() {
-        return this.title;
+        return (String) getItemProperty("NAME").getValue();
     }
 
     public int getId() {
-        return this.id;
+        return (Integer) getItemProperty("ID").getValue();
+    }
+
+    public int getMarkId() {
+        return (Integer) getItemProperty("MARKID").getValue();
     }
 
     public String getDescription() {
-        return this.description;
-    }
-
-    public int getImageId() {
-        return this.imageId;
+        return (String) getItemProperty("DESCRIPTION").getValue();
     }
 
     public String getTime() {
-        return this.time;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        StringBuilder date = new StringBuilder(
+                dateFormat.format(getItemProperty("TIME").getValue()));
+        return date.toString();
     }
 
     public double getLocationLat() {
-        return this.locationLat;
+        return (Double) getItemProperty("COORDINATESLAT").getValue();
     }
 
     public double getLocationLon() {
-        return this.locationLon;
+        return (Double) getItemProperty("COORDINATESLON").getValue();
     }
-    
+
     public int getVoteCount() {
         return 12; // TODO:
     }
@@ -99,6 +108,62 @@ public class Bust implements Item {
     public boolean removeItemProperty(Object id)
             throws UnsupportedOperationException {
         return row.removeItemProperty(id);
+    }
+
+    public static Bust getBustById(int id) {
+        List<Bust> busts = loadAll();
+        for (int i = 0; i < busts.size(); i++) {
+            if (busts.get(i).getId() == id) {
+                return busts.get(i);
+            }
+        }
+        return null;
+    }
+
+    public static List<Bust> getBustByMarkId(int id) {
+        List<Bust> bustsAll = loadAll();
+        List<Bust> busts = new ArrayList<>();
+        for (int i = 0; i < bustsAll.size(); i++) {
+            if (bustsAll.get(i).getId() == id) {
+                busts.add(bustsAll.get(i));
+            }
+        }
+        return busts;
+    }
+
+    public static List<Bust> loadAll() {
+        ArrayList<Bust> busts = new ArrayList<>(container.size());
+        for (@SuppressWarnings("rawtypes")
+        Iterator i = container.getItemIds().iterator(); i.hasNext();) {
+            RowId id = (RowId) i.next();
+            Item item = container.getItem(id);
+            busts.add(new Bust(item));
+        }
+        return busts;
+    }
+
+    public static void commit() throws SQLException {
+        container.commit();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void save() throws SQLException {
+        Item item = row;
+        row = container.getItem(container.addItem());
+        row.getItemProperty("NAME").setValue(
+                item.getItemProperty("NAME").getValue());
+        row.getItemProperty("DESCRIPTION").setValue(
+                item.getItemProperty("DESCRIPTION").getValue());
+        row.getItemProperty("TIME").setValue(
+                item.getItemProperty("TIME").getValue());
+        row.getItemProperty("USERID").setValue(
+                item.getItemProperty("USERID").getValue());
+        row.getItemProperty("MARKID").setValue(
+                item.getItemProperty("MARKID").getValue());
+        row.getItemProperty("COORDINATESLAT").setValue(
+                item.getItemProperty("COORDINATESLAT").getValue());
+        row.getItemProperty("COORDINATESLON").setValue(
+                item.getItemProperty("COORDINATESLON").getValue());
     }
 
 }

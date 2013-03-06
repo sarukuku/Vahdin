@@ -65,6 +65,11 @@ public class User implements Item {
         return value;
     }
 
+    public String getUserId() {
+        String id = (String) this.getItemProperty("ID").getValue();
+        return id;
+    }
+
     /** Returns true if the user is a guest. */
     public boolean isGuest() {
         return "".equals(getItemProperty("ID").getValue());

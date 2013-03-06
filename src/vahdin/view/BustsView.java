@@ -1,9 +1,11 @@
 package vahdin.view;
 
-import java.util.Date;
+import java.util.List;
 
+import vahdin.VahdinUI;
 import vahdin.data.Bust;
 import vahdin.data.Mark;
+import vahdin.data.User;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -18,20 +20,30 @@ import com.vaadin.ui.VerticalLayout;
 
 public class BustsView extends CustomLayout implements View {
 
-    private String markId;
+    final private VahdinUI ui = (VahdinUI) UI.getCurrent();
+
+    private int markId;
 
     public BustsView() {
         super("single-mark-sidebar");
 
-        // FOR TESTING ONLY
-        Mark m1 = new Mark("Markin nimi", new Date(), "Kuvaus", 1, 1);
-        m1.addBust(new Bust("Title", 0, "Kuvaus", 0, "aika", 2.2, 1.1));
-        m1.addBust(new Bust("Title2", 1, "Toinen kuvaus", 1, "toka aika", 3.3,
-                4.4));
+    }
+
+    @Override
+    public void enter(ViewChangeEvent event) {
+        // TODO Auto-generated method stub
+        String[] s = event.getParameters().split("/");
+        markId = Integer.parseInt(s[0]);
+
+        User user = ui.getCurrentUser();
+        String userId = user.getUserId();
+
+        Mark mark = Mark.getMarkById(markId);
+        List<Bust> busts = Bust.getBustByMarkId(markId);
 
         VerticalLayout tmp = new VerticalLayout();
 
-        Label markTitle = new Label("<h2>" + m1.getTitle() + "</h2>",
+        Label markTitle = new Label("<h2>" + mark.getTitle() + "</h2>",
                 Label.CONTENT_XHTML);
 
         Button newBust = new Button();
@@ -59,7 +71,7 @@ public class BustsView extends CustomLayout implements View {
             }
         });
 
-        Label creationDate = new Label("<h4>" + m1.getTime() + "</h4>",
+        Label creationDate = new Label("<h4>" + mark.getTime() + "</h4>",
                 Label.CONTENT_XHTML);
 
         Label ownerNick = new Label("Riku Riski");
@@ -70,7 +82,7 @@ public class BustsView extends CustomLayout implements View {
         markUpvote.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/up-arrow.png"));
 
-        Label markVotes = new Label(m1.getVoteCount() + "");
+        Label markVotes = new Label(mark.getVoteCount() + "");
         markVotes.setStyleName("vote-count");
 
         Button markDownvote = new Button();
@@ -78,7 +90,7 @@ public class BustsView extends CustomLayout implements View {
         markDownvote.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/down-arrow.png"));
 
-        String markDescription = m1.getDescription();
+        String markDescription = mark.getDescription();
         if (markDescription.length() > 310) {
             markDescription.substring(0, 309);
         }
@@ -97,12 +109,12 @@ public class BustsView extends CustomLayout implements View {
             }
         });
 
-        for (int i = 0; i < m1.getBusts().size(); i++) {
+        for (int i = 0; i < busts.size(); i++) {
             CustomLayout layout = new CustomLayout("bust-row");
-            final int bustId = m1.getBusts().get(i).getId();
+            final int bustId = busts.get(i).getId();
 
             // Title of the Bust
-            Button title = new Button(m1.getBusts().get(i).getTitle());
+            Button title = new Button(busts.get(i).getTitle());
             title.setStyleName("mark-title");
             title.addClickListener(new Button.ClickListener() {
 
@@ -139,10 +151,10 @@ public class BustsView extends CustomLayout implements View {
                 }
             });
 
-            Label votes = new Label(m1.getBusts().get(i).getVoteCount() + ""); // TODO:
-                                                                               // real
-                                                                               // votes
-                                                                               // count
+            Label votes = new Label(busts.get(i).getVoteCount() + ""); // TODO:
+                                                                       // real
+                                                                       // votes
+                                                                       // count
             votes.setStyleName("vote-count");
 
             layout.addComponent(upvote, "bust-row-upvote-arrow");
@@ -163,11 +175,6 @@ public class BustsView extends CustomLayout implements View {
         addComponent(newBust, "new-bust-button");
         addComponent(back, "back-button");
         addComponent(tmp, "busts-list");
-    }
-
-    @Override
-    public void enter(ViewChangeEvent event) {
-        // TODO Auto-generated method stub
 
     }
 }

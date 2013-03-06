@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import com.vaadin.data.util.ObjectProperty;
+import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
@@ -41,11 +43,13 @@ public class Mark implements Item {
     private ArrayList<Bust> busts = new ArrayList<Bust>();
 
     @SuppressWarnings("unchecked")
-    public Mark(String name, Date time, String description, int photoId, int id) {
-        row = container.getItem(container.addItem());
-        row.getItemProperty("NAME").setValue(name);
-        row.getItemProperty("CREATIONTIME").setValue(time);
-        row.getItemProperty("DESCRIPTION").setValue(description);
+    public Mark(String name, Date time, String description, String userId) {
+        row = new PropertysetItem();
+        row.addItemProperty("NAME", new ObjectProperty<String>(name));
+        row.addItemProperty("DESCRIPTION", new ObjectProperty<String>(
+                description));
+        row.addItemProperty("CREATIONTIME", new ObjectProperty<Date>(time));
+        row.addItemProperty("USERID", new ObjectProperty<String>(userId));
     }
 
     public String getTitle() {
@@ -115,6 +119,16 @@ public class Mark implements Item {
         row = item;
     }
 
+    public static Mark getMarkById(int id) {
+        List<Mark> marks = loadAll();
+        for (int i = 0; i < marks.size(); i++) {
+            if (marks.get(i).getId() == id) {
+                return marks.get(i);
+            }
+        }
+        return null;
+    }
+
     public static List<Mark> loadAll() {
         ArrayList<Mark> marks = new ArrayList<>(container.size());
         for (@SuppressWarnings("rawtypes")
@@ -126,12 +140,27 @@ public class Mark implements Item {
         return marks;
     }
 
+    /**
+     * Commits all the changes to the user table.
+     * 
+     * @throws SQLException
+     */
+    public static void commit() throws SQLException {
+        container.commit();
+    }
+
     @SuppressWarnings("unchecked")
     public void save() throws SQLException {
         Item item = row;
         row = container.getItem(container.addItem());
         row.getItemProperty("NAME").setValue(
                 item.getItemProperty("NAME").getValue());
+        row.getItemProperty("DESCRIPTION").setValue(
+                item.getItemProperty("DESCRIPTION").getValue());
+        row.getItemProperty("CREATIONTIME").setValue(
+                item.getItemProperty("CREATIONTIME").getValue());
+        row.getItemProperty("USERID").setValue(
+                item.getItemProperty("USERID").getValue());
     }
 
 }

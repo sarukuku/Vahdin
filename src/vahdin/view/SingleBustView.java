@@ -1,9 +1,6 @@
 package vahdin.view;
 
-import java.util.Date;
-
 import vahdin.data.Bust;
-import vahdin.data.Mark;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -18,20 +15,25 @@ import com.vaadin.ui.UI;
 public class SingleBustView extends CustomLayout implements View {
 
     private int markId;
+    private int bustId;
 
     public SingleBustView() {
         super("single-bust-sidebar");
 
-        System.out.println("Mark id: " + markId);
+    }
 
-        Mark m1 = new Mark("Markin nimi", new Date(), "Markin kuvaus", 1, 1);
-        Bust b1 = new Bust("Bustin nimi", 1, "Bustin kuvaus", 1, "1.3.2013",
-                123.123, 456.465);
-        m1.addBust(b1);
+    @Override
+    public void enter(ViewChangeEvent event) {
 
-        Label title = new Label("<h2>" + b1.getTitle() + "</h2>",
+        String[] s = event.getParameters().split("/");
+        markId = Integer.parseInt(s[0]);
+        bustId = Integer.parseInt(s[1]);
+
+        Bust bust = Bust.getBustById(bustId);
+
+        Label title = new Label("<h2>" + bust.getTitle() + "</h2>",
                 Label.CONTENT_XHTML);
-        Label date = new Label("<h4>" + b1.getTime() + "</h4>",
+        Label date = new Label("<h4>" + bust.getTime() + "</h4>",
                 Label.CONTENT_XHTML);
         Label user = new Label("Riku Riski");
         user.setStyleName("nickname");
@@ -91,7 +93,7 @@ public class SingleBustView extends CustomLayout implements View {
             }
         });
 
-        Label desc = new Label("<p>" + b1.getDescription() + "</p>",
+        Label desc = new Label("<p>" + bust.getDescription() + "</p>",
                 Label.CONTENT_XHTML);
         desc.setStyleName("mark-description");
 
@@ -115,11 +117,6 @@ public class SingleBustView extends CustomLayout implements View {
         addComponent(delete, "bust-delete-button");
         addComponent(back, "bust-back-button");
         addComponent(desc, "bust-description");
-    }
-
-    @Override
-    public void enter(ViewChangeEvent event) {
-        // TODO Auto-generated method stub
 
     }
 }

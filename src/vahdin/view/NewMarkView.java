@@ -3,8 +3,10 @@ package vahdin.view;
 import java.sql.SQLException;
 import java.util.Date;
 
+import vahdin.VahdinUI;
 import vahdin.component.ImageUpload;
 import vahdin.data.Mark;
+import vahdin.data.User;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -19,8 +21,13 @@ import com.vaadin.ui.Upload;
 
 public class NewMarkView extends CustomLayout implements View {
 
+    final private VahdinUI ui = (VahdinUI) UI.getCurrent();
+
     public NewMarkView() {
         super("new-mark-sidebar");
+
+        User user = ui.getCurrentUser();
+        final String userId = user.getUserId();
 
         final TextField title = new TextField();
         final TextArea description = new TextArea();
@@ -44,9 +51,10 @@ public class NewMarkView extends CustomLayout implements View {
                 String name = title.getValue();
                 String desc = description.getValue();
                 Date time = new Date();
-                Mark m = new Mark(name, time, desc, 1, 1);
+                Mark m = new Mark(name, time, desc, userId);
                 try {
                     m.save();
+                    m.commit();
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
