@@ -30,7 +30,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -52,6 +51,7 @@ public class VahdinUI extends UI implements MethodEventSource {
     private GoogleMap map;
 
     private User currentUser = User.guest();
+    private Label score = new Label("");
 
     /**
      * Initializes the UI.
@@ -141,6 +141,17 @@ public class VahdinUI extends UI implements MethodEventSource {
      * @param layout
      *            The layout to add the components to.
      */
+    private String getScoreString() {
+        String score;
+        if (currentUser.isLoggedIn()) {
+            score = ("(" + currentUser.getExperience() + " - "
+                    + currentUser.getPrestigeRank() + ")"); // TODO: user score
+        } else {
+            score = ("");
+        }
+        return score;
+    }
+
     private void buildMenuBar(CustomLayout layout) {
 
         final VahdinUI ui = (VahdinUI) UI.getCurrent();
@@ -154,7 +165,8 @@ public class VahdinUI extends UI implements MethodEventSource {
             }
         });
 
-        Link userGuideLink = new Link("", new ExternalResource("https://dl.dropbox.com/u/733138/vahdin_user_guide.htm"));
+        Link userGuideLink = new Link("", new ExternalResource(
+                "https://dl.dropbox.com/u/733138/vahdin_user_guide.htm"));
         userGuideLink.setTargetName("_blank");
 
         final Window loginWindow = buildLoginWindow();
@@ -173,8 +185,6 @@ public class VahdinUI extends UI implements MethodEventSource {
             }
         });
 
-        Label score = new Label(""); // TODO: user score
-
         final Label username = new Label(getCurrentUser().getName());
 
         addLoginListener(new LoginListener() {
@@ -184,6 +194,7 @@ public class VahdinUI extends UI implements MethodEventSource {
                 if (currentUser.isLoggedIn()) {
                     loginLink.removeStyleName("login-link");
                     loginLink.addStyleName("logout-link");
+                    score.setValue(getScoreString());
                 } else {
                     loginLink.removeStyleName("logout-link");
                     loginLink.addStyleName("login-link");
