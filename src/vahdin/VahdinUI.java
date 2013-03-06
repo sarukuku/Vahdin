@@ -21,6 +21,7 @@ import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.MethodEventSource;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.Navigator.ComponentContainerViewDisplay;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -28,6 +29,8 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -151,6 +154,9 @@ public class VahdinUI extends UI implements MethodEventSource {
             }
         });
 
+        Link userGuideLink = new Link("", new ExternalResource("https://dl.dropbox.com/u/733138/vahdin_user_guide.htm"));
+        userGuideLink.setTargetName("_blank");
+
         final Window loginWindow = buildLoginWindow();
 
         final Button loginLink = new Button();
@@ -187,6 +193,7 @@ public class VahdinUI extends UI implements MethodEventSource {
         });
 
         layout.addComponent(logoLink, "logo-link");
+        layout.addComponent(userGuideLink, "stats-link");
         layout.addComponent(loginLink, "login-logout-link");
         layout.addComponent(score, "user-score");
         layout.addComponent(username, "username");

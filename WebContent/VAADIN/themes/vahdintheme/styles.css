@@ -149,14 +149,14 @@ html, body {
 	border-right: 1px solid black;
 }
 
-.stats-link {
-	display: none;
+.stats-link a {
+	display: block;
 	position: absolute;
 	top: 0;
 	left: 215px;
 	width: 90px;
 	height: 100%;
-	background-image: url('img/stats.png');
+	background-image: url('img/help.png');
 	background-repeat: no-repeat;
 	border-left: 1px solid #45484d;
 	border-right: 1px solid black;
@@ -166,7 +166,7 @@ html, body {
 	display: block;
 	position: absolute;
 	top: 0;
-	left: 215px;
+	left: 305px;
 	width: 1px;
 	height: 100%;
 	border-left: 1px solid #45484d;
@@ -222,15 +222,15 @@ html, body {
 	border-right: 1px solid black;
 }
 
-.user-score:before {
-	content: '(';
-	display: inline;
-}
+/* .user-score:before { */
+/* 	content: '('; */
+/* 	display: inline; */
+/* } */
 
-.user-score:after {
-	content: ')';
-	display: inline;
-}
+/* .user-score:after { */
+/* 	content: ')'; */
+/* 	display: inline; */
+/* } */
 
 .username {
 	margin-right: 5px;

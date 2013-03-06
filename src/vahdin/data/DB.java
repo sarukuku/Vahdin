@@ -29,7 +29,8 @@ public class DB {
     static {
         try {
             logger.info("Initializing database connection");
-            File h2File = new File(H2_DB_NAME + ".h2.db");
+            File h2File = new File(System.getProperty("user.home"), H2_DB_NAME
+                    + ".h2.db");
             if (!h2File.exists()) {
                 logger.info("Copying database to working directory from classpath.");
                 InputStream in = DB.class.getResourceAsStream(H2_DB_NAME
