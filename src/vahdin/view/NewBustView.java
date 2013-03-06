@@ -40,7 +40,7 @@ public class NewBustView extends CustomLayout implements View {
     private final TextField title = new TextField();
     private final TextArea description = new TextArea();
     private final Upload up = new ImageUpload().createImageUpload("tissit");
-    private final DateField date = new DateField("Pick date");
+    private final DateField date = new DateField();
     private final Label lat = new Label();
     private final Label lon = new Label();
 
