@@ -15,6 +15,11 @@ public class OAuth2Button extends CustomComponent {
 
     private final String id;
 
+    /*
+     * Constructor for the class
+     * 
+     * @param provider Authentication provider
+     */
     public OAuth2Button(final String provider) {
         final OAuth2Button button = this;
         id = UUID.randomUUID().toString();

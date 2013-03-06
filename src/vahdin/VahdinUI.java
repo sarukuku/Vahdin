@@ -50,7 +50,12 @@ public class VahdinUI extends UI implements MethodEventSource {
 
     private User currentUser = User.guest();
 
-    /** Initializes the UI. */
+    /**
+     * Initializes the UI.
+     * 
+     * @param request
+     *            Vaadin Request
+     */
     @Override
     protected void init(VaadinRequest request) {
 
@@ -191,6 +196,8 @@ public class VahdinUI extends UI implements MethodEventSource {
     /**
      * Builds the registration window.
      * 
+     * @param user
+     *            The user in question
      * @return The window that was built.
      */
     private Window buildRegistrationWindow(final User user) {
