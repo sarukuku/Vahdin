@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import vahdin.VahdinUI;
+import vahdin.VahdinUI.LoginEvent;
+import vahdin.VahdinUI.LoginListener;
 import vahdin.component.GoogleMap;
 import vahdin.component.ImageUpload;
 import vahdin.data.Bust;
@@ -47,6 +49,8 @@ public class NewBustView extends CustomLayout implements View {
 
     private GoogleMap.ClickListener mapListener;
 
+    private LoginListener loginListener;
+
     public NewBustView() {
         super("new-bust-sidebar");
 
@@ -81,6 +85,16 @@ public class NewBustView extends CustomLayout implements View {
         };
 
         ui.addMapClickListener(mapListener);
+
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                if (!user.isLoggedIn()) {
+                    ui.getNavigator().navigateTo("");
+                }
+            }
+        };
 
         cancel.setStyleName("cancel-button");
         cancel.addClickListener(new Button.ClickListener() {
@@ -118,6 +132,14 @@ public class NewBustView extends CustomLayout implements View {
         addComponent(lon, "longtitude");
         addComponent(cancel, "new-bust-cancel-button");
         addComponent(submit, "new-bust-submit-button");
+
+        loginListener.login(null); // force login actions
+    }
+
+    @Override
+    public void attach() {
+        super.attach();
+        ui.addLoginListener(loginListener);
     }
 
     @Override
@@ -127,5 +149,6 @@ public class NewBustView extends CustomLayout implements View {
         if (marker != null) {
             ui.removeMarker(marker);
         }
+        ui.removeLoginListener(loginListener);
     }
 }

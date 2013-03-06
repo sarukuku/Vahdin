@@ -1,16 +1,25 @@
 package vahdin.view;
 
+import java.io.File;
+
+import vahdin.VahdinUI;
 import vahdin.data.Bust;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
+import com.vaadin.ui.Embedded;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 public class SingleBustView extends CustomLayout implements View {
 
@@ -118,5 +127,66 @@ public class SingleBustView extends CustomLayout implements View {
         addComponent(back, "bust-back-button");
         addComponent(desc, "bust-description");
 
+    }
+
+    /*
+     * Method that shows an image of a mark or bust in a new window on top of
+     * the current interface.
+     */
+    public void showImage(Bust bust) {
+        final VahdinUI ui = (VahdinUI) UI.getCurrent(); // Get main window
+        final Window imagewin = new Window(); // Create the window
+        imagewin.setStyleName("single-image-window"); // Set style name
+        imagewin.setModal(true); // Make it modal
+        VerticalLayout layout = new VerticalLayout(); // Create layout for the
+                                                      // image
+        Button close = new Button("Click this bar to close the image",
+                new Button.ClickListener() { // Add a close button for the image
+                    public void buttonClick(ClickEvent event) { // inline
+                                                                // click-listener
+                        ((UI) imagewin.getParent()).removeWindow(imagewin); // close
+                                                                            // the
+                                                                            // window
+                                                                            // by
+                                                                            // removing
+                                                                            // it
+                                                                            // from
+                                                                            // the
+                                                                            // parent
+                                                                            // window
+                    }
+                });
+        layout.addComponent(close);
+
+        String basepath = System.getProperty("user.home");
+        File imgDirectory = new File(basepath + "/contentimgs");
+        String lookingForFilename = "b" + bust.getId();
+        String tempFilename = null;
+        String finalFilename = null;
+
+        if (imgDirectory.isDirectory()) { // check to make sure it is a
+                                          // directory
+            String filenames[] = imgDirectory.list();
+            for (int i = 0; i < filenames.length; i++) {
+                if (filenames[i].contains(lookingForFilename)) {
+                    tempFilename = filenames[i];
+                    break;
+                }
+            }
+        }
+
+        if (tempFilename != null) {
+            finalFilename = basepath + "/contentimgs/" + tempFilename;
+            FileResource resource = new FileResource(new File(finalFilename));
+            Image img = new Image(bust.getTitle(), resource);
+            layout.addComponent(img);
+        } else {
+            Embedded img = new Embedded(bust.getTitle(), new ThemeResource(
+                    "../vahdintheme/img/notfound.jpg"));
+            layout.addComponent(img);
+        }
+
+        imagewin.setContent(layout);
+        ui.addWindow(imagewin); // add modal window to main window
     }
 }

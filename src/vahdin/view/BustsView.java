@@ -1,8 +1,11 @@
 package vahdin.view;
 
+import java.io.File;
 import java.util.List;
 
 import vahdin.VahdinUI;
+import vahdin.VahdinUI.LoginEvent;
+import vahdin.VahdinUI.LoginListener;
 import vahdin.data.Bust;
 import vahdin.data.Mark;
 import vahdin.data.User;
@@ -10,19 +13,23 @@ import vahdin.data.User;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
+import com.vaadin.ui.Embedded;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 public class BustsView extends CustomLayout implements View {
 
-    final private VahdinUI ui = (VahdinUI) UI.getCurrent();
-
     private int markId;
+    private LoginListener loginListener;
+    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
 
     public BustsView() {
         super("single-mark-sidebar");
@@ -31,26 +38,26 @@ public class BustsView extends CustomLayout implements View {
 
     @Override
     public void enter(ViewChangeEvent event) {
-        // TODO Auto-generated method stub
+
         String[] s = event.getParameters().split("/");
         markId = Integer.parseInt(s[0]);
 
         User user = ui.getCurrentUser();
         String userId = user.getUserId();
 
-        Mark mark = Mark.getMarkById(markId);
+        final Mark mark = Mark.getMarkById(markId);
         List<Bust> busts = Bust.getBustByMarkId(markId);
 
-        VerticalLayout tmp = new VerticalLayout();
+        VerticalLayout bustsList = new VerticalLayout();
 
         Label markTitle = new Label("<h2>" + mark.getTitle() + "</h2>",
                 Label.CONTENT_XHTML);
 
-        Button newBust = new Button();
-        newBust.setStyleName("new-bust-button");
-        newBust.setIcon(new ExternalResource(
+        final Button newBustButton = new Button();
+        newBustButton.setStyleName("new-bust-button");
+        newBustButton.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/add-button.png"));
-        newBust.addClickListener(new Button.ClickListener() {
+        newBustButton.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
@@ -104,8 +111,7 @@ public class BustsView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                // TODO Auto-generated method stub
-                Notification.show("View image");
+                showImage(mark);
             }
         });
 
@@ -161,7 +167,7 @@ public class BustsView extends CustomLayout implements View {
             layout.addComponent(votes, "bust-row-vote-count");
             layout.addComponent(downvote, "bust-row-downvote-arrow");
             layout.addComponent(title, "bust-row-title");
-            tmp.addComponent(layout);
+            bustsList.addComponent(layout);
         }
 
         addComponent(markVotes, "vote-count");
@@ -172,9 +178,92 @@ public class BustsView extends CustomLayout implements View {
         addComponent(ownerNick, "mark-submitter-nickname");
         addComponent(creationDate, "mark-creation-date");
         addComponent(markTitle, "mark-title");
-        addComponent(newBust, "new-bust-button");
+        addComponent(newBustButton, "new-bust-button");
         addComponent(back, "back-button");
-        addComponent(tmp, "busts-list");
+        addComponent(bustsList, "busts-list");
 
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                newBustButton.setVisible(user.isLoggedIn());
+            }
+        };
+
+        loginListener.login(null); // force login actions
     }
+
+    @Override
+    public void attach() {
+        super.attach();
+        ui.addLoginListener(loginListener);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        ui.removeLoginListener(loginListener);
+    }
+
+    /*
+     * Method that shows an image of a mark or bust in a new window on top of
+     * the current interface.
+     */
+    public void showImage(Mark mark) {
+        final VahdinUI ui = (VahdinUI) UI.getCurrent(); // Get main window
+        final Window imagewin = new Window(); // Create the window
+        imagewin.setStyleName("single-image-window"); // Set style name
+        imagewin.setModal(true); // Make it modal
+        VerticalLayout layout = new VerticalLayout(); // Create layout for the
+                                                      // image
+        Button close = new Button("Click this bar to close the image",
+                new Button.ClickListener() { // Add a close button for the image
+                    public void buttonClick(ClickEvent event) { // inline
+                                                                // click-listener
+                        ((UI) imagewin.getParent()).removeWindow(imagewin); // close
+                                                                            // the
+                                                                            // window
+                                                                            // by
+                                                                            // removing
+                                                                            // it
+                                                                            // from
+                                                                            // the
+                                                                            // parent
+                                                                            // window
+                    }
+                });
+        layout.addComponent(close);
+
+        String basepath = System.getProperty("user.home");
+        File imgDirectory = new File(basepath + "/contentimgs");
+        String lookingForFilename = "m" + mark.getId();
+        String tempFilename = null;
+        String finalFilename = null;
+
+        if (imgDirectory.isDirectory()) { // check to make sure it is a
+                                          // directory
+            String filenames[] = imgDirectory.list();
+            for (int i = 0; i < filenames.length; i++) {
+                if (filenames[i].contains(lookingForFilename)) {
+                    tempFilename = filenames[i];
+                    break;
+                }
+            }
+        }
+
+        if (tempFilename != null) {
+            finalFilename = basepath + "/contentimgs/" + tempFilename;
+            FileResource resource = new FileResource(new File(finalFilename));
+            Image img = new Image(mark.getTitle(), resource);
+            layout.addComponent(img);
+        } else {
+            Embedded img = new Embedded(mark.getTitle(), new ThemeResource(
+                    "../vahdintheme/img/notfound.jpg"));
+            layout.addComponent(img);
+        }
+
+        imagewin.setContent(layout);
+        ui.addWindow(imagewin); // add modal window to main window
+    }
+
 }
