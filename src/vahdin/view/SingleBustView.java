@@ -3,7 +3,10 @@ package vahdin.view;
 import java.io.File;
 
 import vahdin.VahdinUI;
+import vahdin.VahdinUI.LoginEvent;
+import vahdin.VahdinUI.LoginListener;
 import vahdin.data.Bust;
+import vahdin.data.User;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -25,9 +28,20 @@ public class SingleBustView extends CustomLayout implements View {
 
     private int markId;
     private int bustId;
+    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
+    private final LoginListener loginListener;
+    private Button delete;
 
     public SingleBustView() {
         super("single-bust-sidebar");
+
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                delete.setVisible(user.isLoggedIn());
+            }
+        };
 
     }
 
@@ -38,7 +52,7 @@ public class SingleBustView extends CustomLayout implements View {
         markId = Integer.parseInt(s[0]);
         bustId = Integer.parseInt(s[1]);
 
-        Bust bust = Bust.getBustById(bustId);
+        final Bust bust = Bust.getBustById(bustId);
 
         Label title = new Label("<h2>" + bust.getTitle() + "</h2>",
                 Label.CONTENT_XHTML);
@@ -76,7 +90,7 @@ public class SingleBustView extends CustomLayout implements View {
             }
         });
 
-        Button delete = new Button();
+        delete = new Button();
         delete.setStyleName("new-mark-button");
         delete.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/delete-button.png"));
@@ -113,7 +127,7 @@ public class SingleBustView extends CustomLayout implements View {
             @Override
             public void buttonClick(ClickEvent event) {
                 // TODO Auto-generated method stub
-                Notification.show("View image");
+                showImage(bust);
             }
         });
 
@@ -126,7 +140,21 @@ public class SingleBustView extends CustomLayout implements View {
         addComponent(delete, "bust-delete-button");
         addComponent(back, "bust-back-button");
         addComponent(desc, "bust-description");
+        addComponent(viewImage, "view-bust-image-button");
 
+        loginListener.login(null); // force login actions
+    }
+
+    @Override
+    public void attach() {
+        super.attach();
+        ui.addLoginListener(loginListener);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        ui.removeLoginListener(loginListener);
     }
 
     /*
@@ -134,26 +162,15 @@ public class SingleBustView extends CustomLayout implements View {
      * the current interface.
      */
     public void showImage(Bust bust) {
-        final VahdinUI ui = (VahdinUI) UI.getCurrent(); // Get main window
-        final Window imagewin = new Window(); // Create the window
-        imagewin.setStyleName("single-image-window"); // Set style name
-        imagewin.setModal(true); // Make it modal
-        VerticalLayout layout = new VerticalLayout(); // Create layout for the
-                                                      // image
+        final VahdinUI ui = (VahdinUI) UI.getCurrent();
+        final Window imagewin = new Window();
+        imagewin.setStyleName("single-image-window");
+        imagewin.setModal(true);
+        VerticalLayout layout = new VerticalLayout();
         Button close = new Button("Click this bar to close the image",
-                new Button.ClickListener() { // Add a close button for the image
-                    public void buttonClick(ClickEvent event) { // inline
-                                                                // click-listener
-                        ((UI) imagewin.getParent()).removeWindow(imagewin); // close
-                                                                            // the
-                                                                            // window
-                                                                            // by
-                                                                            // removing
-                                                                            // it
-                                                                            // from
-                                                                            // the
-                                                                            // parent
-                                                                            // window
+                new Button.ClickListener() {
+                    public void buttonClick(ClickEvent event) {
+                        ((UI) imagewin.getParent()).removeWindow(imagewin);
                     }
                 });
         layout.addComponent(close);
@@ -164,8 +181,7 @@ public class SingleBustView extends CustomLayout implements View {
         String tempFilename = null;
         String finalFilename = null;
 
-        if (imgDirectory.isDirectory()) { // check to make sure it is a
-                                          // directory
+        if (imgDirectory.isDirectory()) {
             String filenames[] = imgDirectory.list();
             for (int i = 0; i < filenames.length; i++) {
                 if (filenames[i].contains(lookingForFilename)) {
@@ -187,6 +203,6 @@ public class SingleBustView extends CustomLayout implements View {
         }
 
         imagewin.setContent(layout);
-        ui.addWindow(imagewin); // add modal window to main window
+        ui.addWindow(imagewin);
     }
 }
