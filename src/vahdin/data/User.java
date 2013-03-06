@@ -127,12 +127,17 @@ public class User implements Item {
         return value;
     }
 
+    /*
+     * Get the verbal Prestige rank of the user
+     * 
+     * @return Prestige rank or "title"
+     */
     public String getPrestigeRank() {
         int value = getPrestigeValue();
         String rank = null;
 
         if (value < 0) {
-            rank = "Tissiposki";
+            rank = "Titface :(";
         } else if (value < 1000) {
             rank = "Newbie";
         } else if (value < 2000) {
@@ -144,15 +149,19 @@ public class User implements Item {
         } else if (value < 16000) {
             rank = "Master Stalker";
         } else {
-            rank = "Homo";
+            rank = "Gaylord";
         }
         return rank;
     }
 
-    // returns 2 decimal point float
+    /*
+     * Get the user's Vote Power based on their prestige value
+     * 
+     * @return 2 point decimal float power
+     */
     public float getPrestigePower() {
         int power = (int) (java.lang.Math.sqrt(getPrestigeValue()) * 50);
-        return power / 100;
+        return power / 100 + 1;
     }
 
     public void setName(String name) {
@@ -163,7 +172,11 @@ public class User implements Item {
         this.getItemProperty("NAME").setValue(experience);
     }
 
-    // parameter prestige is equal to prestigepower
+    /*
+     * Add prestige to user
+     * 
+     * @param prestige Prestige POWER of user
+     */
     public void addPrestige(float prestige) {
         this.getItemProperty("Prestige").setValue(
                 getPrestigeValue() + (int) (prestige * 100));
