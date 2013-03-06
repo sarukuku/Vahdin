@@ -48,6 +48,8 @@ public class MarksView extends CustomLayout implements View {
         });
 
         for (int i = 0; i < marks.size(); i++) {
+            final Mark m = marks.get(i);
+
             CustomLayout layout = new CustomLayout("mark-row");
 
             // Button to show BustsSubview with Busts under the clicked Mark
@@ -64,9 +66,7 @@ public class MarksView extends CustomLayout implements View {
 
             });
 
-            final double votes = marks.get(i).getVoteCount();
-
-            final Label voteCount = new Label(votes + "");
+            final Label voteCount = new Label((int) m.getVoteCount() + "");
             voteCount.setStyleName("vote-count");
 
             // Button to give upvote to Mark
@@ -76,16 +76,20 @@ public class MarksView extends CustomLayout implements View {
             voteUp.setStyleName("upvote");
             voteUp.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
-                    Vote vote = new Vote(user.getUserId(), id, "Mark", user
-                            .getPrestigePower());
-                    try {
-                        vote.save();
-                        vote.commit();
-                    } catch (SQLException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    if (!Vote.hasVoted(id, "Mark", user.getUserId())) {
+                        Vote vote = new Vote(user.getUserId(), id, "Mark", user
+                                .getPrestigePower());
+                        try {
+                            vote.save();
+                            vote.commit();
+                        } catch (SQLException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        voteCount.setValue((int) m.getVoteCount() + "");
+                    } else {
+
                     }
-                    voteCount.setValue(votes + "");
                 }
             });
 
@@ -96,14 +100,17 @@ public class MarksView extends CustomLayout implements View {
             voteDown.setStyleName("downvote");
             voteDown.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
-                    Vote vote = new Vote(user.getUserId(), id, "Mark", -user
-                            .getPrestigePower());
-                    try {
-                        vote.save();
-                        vote.commit();
-                    } catch (SQLException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    if (!Vote.hasVoted(id, "Mark", user.getUserId())) {
+                        Vote vote = new Vote(user.getUserId(), id, "Mark",
+                                -user.getPrestigePower());
+                        try {
+                            vote.save();
+                            vote.commit();
+                        } catch (SQLException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        voteCount.setValue((int) m.getVoteCount() + "");
                     }
                 }
             });
