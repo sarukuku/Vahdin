@@ -102,7 +102,7 @@ public class BustsView extends CustomLayout implements View {
         markUpvote.setStyleName("upvote");
 
         if (Vote.hasVoted(id, "Mark", user.getUserId())
-                && user.getVote(mark).getPower() < 0) {
+                && user.getVote(mark).getPower() > 0) {
             markUpvote.setIcon(new ExternalResource(
                     "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
         } else {
