@@ -24,12 +24,10 @@ public class OAuth2Button extends CustomComponent {
         JavaScript.getCurrent().addFunction(
                 "OAuth2Button.authenticate_" + provider,
                 new JavaScriptFunction() {
-
                     @Override
                     public void call(JSONArray arguments) throws JSONException {
                         fireEvent(new AuthEvent(button, arguments.getString(0)));
                     }
-
                 });
 
         addAttachListener(new AttachListener() {

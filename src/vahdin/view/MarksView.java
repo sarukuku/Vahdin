@@ -108,8 +108,12 @@ public class MarksView extends CustomLayout implements View {
                 newMarkButton.setVisible(user.isLoggedIn());
             }
         };
+    }
+
+    @Override
+    public void attach() {
+        super.attach();
         ui.addLoginListener(loginListener);
-        loginListener.login(null); // force login actions
     }
 
     @Override
@@ -120,7 +124,6 @@ public class MarksView extends CustomLayout implements View {
 
     @Override
     public void enter(ViewChangeEvent event) {
-        // TODO Auto-generated method stub
-
+        loginListener.login(null); // force login actions
     }
 }

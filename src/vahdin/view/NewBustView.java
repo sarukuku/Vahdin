@@ -80,8 +80,6 @@ public class NewBustView extends CustomLayout implements View {
             }
         };
 
-        ui.addLoginListener(loginListener);
-
         cancel.setStyleName("cancel-button");
         cancel.addClickListener(new Button.ClickListener() {
             @Override
@@ -112,6 +110,12 @@ public class NewBustView extends CustomLayout implements View {
     @Override
     public void enter(ViewChangeEvent event) {
         loginListener.login(null); // force login actions
+    }
+
+    @Override
+    public void attach() {
+        super.attach();
+        ui.addLoginListener(loginListener);
     }
 
     @Override
