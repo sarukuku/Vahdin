@@ -28,12 +28,20 @@ import com.vaadin.ui.Window;
 public class BustsView extends CustomLayout implements View {
 
     private int markId;
-    private LoginListener loginListener;
+    private final LoginListener loginListener;
     private final VahdinUI ui = (VahdinUI) UI.getCurrent();
+    private Button newBustButton;
 
     public BustsView() {
         super("single-mark-sidebar");
 
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                newBustButton.setVisible(user.isLoggedIn());
+            }
+        };
     }
 
     @Override
@@ -53,7 +61,7 @@ public class BustsView extends CustomLayout implements View {
         Label markTitle = new Label("<h2>" + mark.getTitle() + "</h2>",
                 Label.CONTENT_XHTML);
 
-        final Button newBustButton = new Button();
+        newBustButton = new Button();
         newBustButton.setStyleName("new-bust-button");
         newBustButton.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/add-button.png"));
@@ -181,14 +189,6 @@ public class BustsView extends CustomLayout implements View {
         addComponent(newBustButton, "new-bust-button");
         addComponent(back, "back-button");
         addComponent(bustsList, "busts-list");
-
-        loginListener = new LoginListener() {
-            @Override
-            public void login(LoginEvent event) {
-                User user = ui.getCurrentUser();
-                newBustButton.setVisible(user.isLoggedIn());
-            }
-        };
 
         loginListener.login(null); // force login actions
     }
