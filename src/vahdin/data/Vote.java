@@ -92,20 +92,19 @@ public class Vote implements Item {
             if (all.get(i).getTargetItemId() == id
                     && all.get(i).getType().equals(type)) {
                 votes.add(all.get(i));
-                System.out.println("jeh");
             }
         }
         return votes;
     }
-    
+
     public static boolean hasVoted(int itemId, String itemType, String userId) {
-    	List<Vote> votes = getVotesByTargetItemId(itemId, itemType);
-    	for (int i = 0; i < votes.size(); i++) {
-    		if (votes.get(i).getUserId() == userId) {
-    			return true;
-    		}
-    	}
-    	return false;
+        List<Vote> votes = getVotesByTargetItemId(itemId, itemType);
+        for (int i = 0; i < votes.size(); i++) {
+            if (votes.get(i).getUserId() == userId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static List<Vote> loadAll() {

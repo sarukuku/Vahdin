@@ -113,7 +113,7 @@ public class Bust implements Item {
     public static Bust getBustById(int id) {
         List<Bust> busts = loadAll();
         for (int i = 0; i < busts.size(); i++) {
-            if (busts.get(i).getId() == id) {
+            if (busts.get(i).getMarkId() == id) {
                 return busts.get(i);
             }
         }
