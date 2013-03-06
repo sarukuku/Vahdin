@@ -1,8 +1,11 @@
 package vahdin.view;
 
 import vahdin.VahdinUI;
+import vahdin.VahdinUI.LoginEvent;
+import vahdin.VahdinUI.LoginListener;
 import vahdin.component.GoogleMap;
 import vahdin.component.ImageUpload;
+import vahdin.data.User;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -41,6 +44,7 @@ public class NewBustView extends CustomLayout implements View {
     private final Button submit = new Button("Submit");
 
     private final GoogleMap.ClickListener mapListener;
+    private final LoginListener loginListener;
 
     public NewBustView() {
         super("new-bust-sidebar");
@@ -65,6 +69,18 @@ public class NewBustView extends CustomLayout implements View {
         };
 
         ui.addMapClickListener(mapListener);
+
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                if (!user.isLoggedIn()) {
+                    ui.getNavigator().navigateTo("");
+                }
+            }
+        };
+
+        ui.addLoginListener(loginListener);
 
         cancel.setStyleName("cancel-button");
         cancel.addClickListener(new Button.ClickListener() {
@@ -95,8 +111,7 @@ public class NewBustView extends CustomLayout implements View {
 
     @Override
     public void enter(ViewChangeEvent event) {
-        // TODO Auto-generated method stub
-
+        loginListener.login(null); // force login actions
     }
 
     @Override
@@ -106,5 +121,6 @@ public class NewBustView extends CustomLayout implements View {
         if (marker != null) {
             ui.removeMarker(marker);
         }
+        ui.removeLoginListener(loginListener);
     }
 }
