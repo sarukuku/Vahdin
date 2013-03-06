@@ -18,6 +18,13 @@ public class ImageUpload {
 
     }
 
+    /*
+     * Constructor for the class
+     * 
+     * @param UpFilename filename for the image
+     * 
+     * @return upload returns the upload object
+     */
     public Upload createImageUpload(final String UpFilename) {
         Upload upload = new Upload("", null);
         upload.setButtonCaption("Start Upload");
