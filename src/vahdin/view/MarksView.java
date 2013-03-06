@@ -3,7 +3,10 @@ package vahdin.view;
 import java.util.List;
 
 import vahdin.VahdinUI;
+import vahdin.VahdinUI.LoginEvent;
+import vahdin.VahdinUI.LoginListener;
 import vahdin.data.Mark;
+import vahdin.data.User;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -19,20 +22,21 @@ import com.vaadin.ui.VerticalLayout;
 public class MarksView extends CustomLayout implements View {
 
     final private VahdinUI ui = (VahdinUI) UI.getCurrent();
+    private final LoginListener loginListener;
 
     public MarksView() {
         super("marks-sidebar");
-        VerticalLayout tmp = new VerticalLayout();
+        VerticalLayout marksList = new VerticalLayout();
 
         List<Mark> marks = Mark.loadAll();
 
         // The button to add a new Mark is only shown if user is logged in
 
-        Button newMark = new Button();
-        newMark.setStyleName("new-mark-button");
-        newMark.setIcon(new ExternalResource(
+        final Button newMarkButton = new Button();
+        newMarkButton.setStyleName("new-mark-button");
+        newMarkButton.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/add-button.png"));
-        newMark.addClickListener(new Button.ClickListener() {
+        newMarkButton.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
@@ -91,11 +95,27 @@ public class MarksView extends CustomLayout implements View {
             System.out.println(i + " " + marks.get(i).getTitle() + "id:"
                     + marks.get(i).getId());
 
-            tmp.addComponent(layout);
+            marksList.addComponent(layout);
         }
 
-        addComponent(newMark, "new-mark-button");
-        addComponent(tmp, "marks-list");
+        addComponent(newMarkButton, "new-mark-button");
+        addComponent(marksList, "marks-list");
+
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                newMarkButton.setVisible(user.isLoggedIn());
+            }
+        };
+        ui.addLoginListener(loginListener);
+        loginListener.login(null); // force login actions
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        ui.removeLoginListener(loginListener);
     }
 
     @Override

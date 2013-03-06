@@ -334,6 +334,16 @@ public class VahdinUI extends UI implements MethodEventSource {
         addListener(LoginEvent.class, listener, LoginListener.LOGIN_METHOD);
     }
 
+    /**
+     * Removes a login listener.
+     * 
+     * @param listener
+     *            The listener to remove.
+     */
+    public void removeLoginListener(LoginListener listener) {
+        removeListener(LoginEvent.class, listener, LoginListener.LOGIN_METHOD);
+    }
+
     /** Login event listener. */
     public static abstract class LoginListener {
 
