@@ -64,7 +64,9 @@ public class MarksView extends CustomLayout implements View {
 
             });
 
-            Label voteCount = new Label(marks.get(i).getVoteCount() + "");
+            final double votes = marks.get(i).getVoteCount();
+
+            final Label voteCount = new Label(votes + "");
             voteCount.setStyleName("vote-count");
 
             // Button to give upvote to Mark
@@ -83,7 +85,7 @@ public class MarksView extends CustomLayout implements View {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-
+                    voteCount.setValue(votes + "");
                 }
             });
 
