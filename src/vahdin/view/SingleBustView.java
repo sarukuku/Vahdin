@@ -66,7 +66,7 @@ public class SingleBustView extends CustomLayout implements View {
         Label nick = new Label("Riku Riski");
         nick.setStyleName("nickname");
 
-        final Label votes = new Label(bust.getVoteCount() + "");
+        final Label votes = new Label((int) bust.getVoteCount() + "");
         votes.setStyleName("vote-count");
 
         final Button voteup = new Button();
