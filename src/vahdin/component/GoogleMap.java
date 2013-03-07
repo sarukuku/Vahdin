@@ -74,7 +74,7 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
 
     /** Removes all markers. */
     public void removeMarkers() {
-        JavaScript.getCurrent().execute("window['" + id + "'].removeMarker()");
+        JavaScript.getCurrent().execute("window['" + id + "'].removeMarkers()");
     }
 
     /**

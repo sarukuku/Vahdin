@@ -1,6 +1,7 @@
 package vahdin.data;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
@@ -53,6 +54,7 @@ public class User implements Item {
         PropertysetItem item = new PropertysetItem();
         item.addItemProperty("ID", new ObjectProperty<String>(""));
         item.addItemProperty("NAME", new ObjectProperty<String>("guest"));
+        item.addItemProperty("EXPERIENCE", new ObjectProperty<Integer>(0));
         item.addItemProperty("PRESTIGE", new ObjectProperty<Integer>(-1000));
         return new User(item);
     }
@@ -130,6 +132,24 @@ public class User implements Item {
     public boolean removeItemProperty(Object id)
             throws UnsupportedOperationException {
         return row.removeItemProperty(id);
+    }
+
+    public double getAllVotes() {
+        List<Vote> votes = new ArrayList<Vote>();
+        List<Mark> marks = Mark.getMarksByUserId(getUserId());
+        List<Bust> busts = Bust.getBustsByUserId(getUserId());
+        for (Mark mk : marks) {
+            votes.addAll(Vote.getVotesByTargetItemId(mk.getId(), "Mark"));
+        }
+        for (Bust bs : busts) {
+            votes.addAll(Vote.getVotesByTargetItemId(bs.getId(), "Bust"));
+        }
+        double votesum = 0;
+        for (Vote v : votes) {
+            votesum += v.getPower();
+        }
+        return votesum;
+
     }
 
     public String getName() {
@@ -213,16 +233,28 @@ public class User implements Item {
 
     public void addExperience(int experience) {
         this.getItemProperty("NAME").setValue(experience);
+        try {
+            commit();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /*
      * Add prestige to user
      * 
-     * @param prestige Prestige POWER of user
+     * @param prestige Prestige POWER of user giving vote lol
      */
-    public void addPrestige(float prestige) {
+    public void addPrestige(double prestige) {
         this.getItemProperty("Prestige").setValue(
                 getPrestigeValue() + (int) (prestige * 100));
+        try {
+            commit();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -54,6 +54,7 @@ public class VahdinUI extends UI implements MethodEventSource {
     private GoogleMap map;
 
     private User currentUser = User.guest();
+    private Label score = new Label("");
 
     /**
      * Initializes the UI.
@@ -148,6 +149,10 @@ public class VahdinUI extends UI implements MethodEventSource {
         for (Bust bust : busts) {
             map.addMarker(bust.getLocationLat(), bust.getLocationLon());
         }
+        if (busts.size() > 0) {
+            Bust bust = busts.get(0);
+            centerMapOn(bust.getLocationLat(), bust.getLocationLon());
+        }
     }
 
     /** Clears the map. */
@@ -161,6 +166,17 @@ public class VahdinUI extends UI implements MethodEventSource {
      * @param layout
      *            The layout to add the components to.
      */
+    private String getScoreString() {
+        String score;
+        if (currentUser.isLoggedIn()) {
+            score = ("(" + currentUser.getExperience() + " - "
+                    + currentUser.getPrestigeRank() + ")"); // TODO: user score
+        } else {
+            score = ("");
+        }
+        return score;
+    }
+
     private void buildMenuBar(CustomLayout layout) {
 
         final VahdinUI ui = (VahdinUI) UI.getCurrent();
@@ -194,8 +210,6 @@ public class VahdinUI extends UI implements MethodEventSource {
             }
         });
 
-        Label score = new Label(""); // TODO: user score
-
         final Label username = new Label(getCurrentUser().getName());
 
         addLoginListener(new LoginListener() {
@@ -205,9 +219,11 @@ public class VahdinUI extends UI implements MethodEventSource {
                 if (currentUser.isLoggedIn()) {
                     loginLink.removeStyleName("login-link");
                     loginLink.addStyleName("logout-link");
+                    score.setValue(getScoreString());
                 } else {
                     loginLink.removeStyleName("logout-link");
                     loginLink.addStyleName("login-link");
+                    score.setValue("");
                 }
                 username.setValue(currentUser.getName());
             }
