@@ -77,6 +77,9 @@ public class NewBustView extends CustomLayout implements View {
         lat.setReadOnly(true);
         lon.setReadOnly(true);
 
+        date.setDateFormat("dd.MM.yyyy");
+        date.setValue(new Date());
+
         mapListener = new GoogleMap.ClickListener() {
             @Override
             public void click(GoogleMap.ClickEvent event) {
@@ -120,7 +123,8 @@ public class NewBustView extends CustomLayout implements View {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                UI.getCurrent().getNavigator().navigateTo("busts/" + markId + "/");
+                UI.getCurrent().getNavigator()
+                        .navigateTo("busts/" + markId + "/");
             }
         });
 
