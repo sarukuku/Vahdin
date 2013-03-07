@@ -195,7 +195,7 @@ public class BustsView extends CustomLayout implements View {
             }
         });
 
-        for (int i = 0; i < busts.size(); i++) {
+        for (int i = busts.size()-1; i >= 0; i--) {
             CustomLayout layout = new CustomLayout("bust-row");
             final int bustId = busts.get(i).getId();
             final Bust bust = Bust.getBustById(bustId);

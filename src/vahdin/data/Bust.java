@@ -17,6 +17,7 @@ import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
+import com.vaadin.data.util.sqlcontainer.query.QueryDelegate;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 import com.vaadin.ui.UI;
 
@@ -189,6 +190,14 @@ public class Bust implements Item {
                 item.getItemProperty("COORDINATESLAT").getValue());
         row.getItemProperty("COORDINATESLON").setValue(
                 item.getItemProperty("COORDINATESLON").getValue());
+    }
+    
+    public static void addIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
+    	container.addRowIdChangeListener(listener);
+    }
+    
+    public static void removeIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
+    	container.removeRowIdChangeListener(listener);
     }
 
     public void delete() {
