@@ -20,7 +20,6 @@ import com.vaadin.data.util.sqlcontainer.RowItem;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.QueryDelegate;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
-import com.vaadin.data.util.sqlcontainer.query.QueryDelegate.RowIdChangeEvent;
 import com.vaadin.ui.UI;
 
 public class Mark implements Item {
