@@ -17,6 +17,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
@@ -53,7 +54,6 @@ public class BustsView extends CustomLayout implements View {
         markId = Integer.parseInt(s[0]);
 
         final User user = ui.getCurrentUser();
-        String userId = user.getUserId();
 
         final Mark mark = Mark.getMarkById(markId);
         final int id = mark.getId();
@@ -62,7 +62,7 @@ public class BustsView extends CustomLayout implements View {
         VerticalLayout bustsList = new VerticalLayout();
 
         Label markTitle = new Label("<h2>" + mark.getTitle() + "</h2>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
 
         newBustButton = new Button();
         newBustButton.setStyleName("new-bust-button");
@@ -90,7 +90,7 @@ public class BustsView extends CustomLayout implements View {
         });
 
         Label creationDate = new Label("<h4>" + mark.getTime() + "</h4>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
 
         Label ownerNick = new Label("Riku Riski");
         ownerNick.setStyleName("nickname");
@@ -120,9 +120,8 @@ public class BustsView extends CustomLayout implements View {
                                 .getPrestigePower());
                         try {
                             vote.save();
-                            vote.commit();
+                            Vote.commit();
                         } catch (SQLException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                         markVotes.setValue((int) mark.getVoteCount() + "");
@@ -156,9 +155,8 @@ public class BustsView extends CustomLayout implements View {
                                 -user.getPrestigePower());
                         try {
                             vote.save();
-                            vote.commit();
+                            Vote.commit();
                         } catch (SQLException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                         markVotes.setValue((int) mark.getVoteCount() + "");
@@ -175,7 +173,7 @@ public class BustsView extends CustomLayout implements View {
             markDescription.substring(0, 309);
         }
         Label markDesc = new Label("<p>" + markDescription + "</p>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
         markDesc.setStyleName("mark-description");
 
         Button viewImage = new Button("View image");
@@ -230,9 +228,8 @@ public class BustsView extends CustomLayout implements View {
                                     "Bust", user.getPrestigePower());
                             try {
                                 vote.save();
-                                vote.commit();
+                                Vote.commit();
                             } catch (SQLException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             votes.setValue(bust.getVoteCount() + "");
@@ -265,9 +262,8 @@ public class BustsView extends CustomLayout implements View {
                                     "Bust", -user.getPrestigePower());
                             try {
                                 vote.save();
-                                vote.commit();
+                                Vote.commit();
                             } catch (SQLException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             votes.setValue(bust.getVoteCount() + "");

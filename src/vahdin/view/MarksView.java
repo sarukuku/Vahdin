@@ -90,9 +90,8 @@ public class MarksView extends CustomLayout implements View {
                                     user.getPrestigePower());
                             try {
                                 vote.save();
-                                vote.commit();
+                                Vote.commit();
                             } catch (SQLException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             voteCount.setValue((int) m.getVoteCount() + "");
@@ -125,9 +124,8 @@ public class MarksView extends CustomLayout implements View {
                                     -user.getPrestigePower());
                             try {
                                 vote.save();
-                                vote.commit();
+                                Vote.commit();
                             } catch (SQLException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             voteCount.setValue((int) m.getVoteCount() + "");

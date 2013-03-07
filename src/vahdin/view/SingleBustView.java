@@ -15,6 +15,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
@@ -60,9 +61,9 @@ public class SingleBustView extends CustomLayout implements View {
         final int id = bust.getId();
 
         Label title = new Label("<h2>" + bust.getTitle() + "</h2>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
         Label date = new Label("<h4>" + bust.getTime() + "</h4>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
         Label nick = new Label("Riku Riski");
         nick.setStyleName("nickname");
 
@@ -91,9 +92,8 @@ public class SingleBustView extends CustomLayout implements View {
                                 .getPrestigePower());
                         try {
                             vote.save();
-                            vote.commit();
+                            Vote.commit();
                         } catch (SQLException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                         votes.setValue((int) bust.getVoteCount() + "");
@@ -126,9 +126,8 @@ public class SingleBustView extends CustomLayout implements View {
                                 -user.getPrestigePower());
                         try {
                             vote.save();
-                            vote.commit();
+                            Vote.commit();
                         } catch (SQLException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                         votes.setValue((int) bust.getVoteCount() + "");
@@ -166,7 +165,7 @@ public class SingleBustView extends CustomLayout implements View {
         });
 
         Label desc = new Label("<p>" + bust.getDescription() + "</p>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
         desc.setStyleName("mark-description");
 
         Button viewImage = new Button("View image");
@@ -175,7 +174,6 @@ public class SingleBustView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                // TODO Auto-generated method stub
                 showImage(bust);
             }
         });

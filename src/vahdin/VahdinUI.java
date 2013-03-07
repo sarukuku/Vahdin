@@ -170,7 +170,7 @@ public class VahdinUI extends UI implements MethodEventSource {
         String score;
         if (currentUser.isLoggedIn()) {
             score = ("(" + currentUser.getExperience() + " - "
-                    + currentUser.getPrestigeRank() + ")"); // TODO: user score
+                    + currentUser.getPrestigeRank() + ")");
         } else {
             score = ("");
         }

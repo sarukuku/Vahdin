@@ -24,7 +24,6 @@ public class Mark implements Item {
 
     private static final SQLContainer container;
     private static final Logger logger = Logger.getGlobal();
-    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
 
     static {
         logger.info("Initializing marks");
@@ -39,14 +38,6 @@ public class Mark implements Item {
 
     private Item row;
 
-    // the emphasis of one vote determines on the PrestigePower of the user,
-    // which is a 2 decimal float;
-    // Changed voteCount type from int to float.
-    private float voteCount = 0;
-    private int id;
-    private ArrayList<Bust> busts = new ArrayList<Bust>();
-
-    @SuppressWarnings("unchecked")
     public Mark(String name, Date time, String description, String userId) {
         row = new PropertysetItem();
         row.addItemProperty("NAME", new ObjectProperty<String>(name));
@@ -99,10 +90,6 @@ public class Mark implements Item {
 
     public List<Bust> getBusts() {
         return Bust.getBustByMarkId(getId());
-    }
-
-    public void addBust(Bust bust) {
-        this.busts.add(bust); // TODO:
     }
 
     public static List<Mark> getMarksByUserId(String id) {
