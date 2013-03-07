@@ -71,58 +71,62 @@ public class NewMarkView extends CustomLayout implements View {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                
+
                 Mark.addIdChangeListener(new QueryDelegate.RowIdChangeListener() {
-					@Override
-					public void rowIdChange(RowIdChangeEvent event) {
-						System.out.println("HERE");
-						try {
-		                	String basePath = System.getProperty("user.home") + "/contentimgs/";
-		                	File imgDirectory = new File(basePath);
-		                	String tempFilename = null;
-		                	if (imgDirectory.isDirectory()) {
-							  String filenames[] = imgDirectory.list();
-							  for (int i = 0; i < filenames.length; i++) {
-							      if (filenames[i].contains(tempImgId)) {
-							          tempFilename = filenames[i];
-							          break;
-							      }
-							  }
-							}
-		                	
-		                	String tempImgPath = basePath + tempFilename;
-		                	System.out.println("TempImgPath: " + tempImgPath);
-		                	
-		                	if (new File(tempImgPath).exists()) {
-		                		String[] fileType = tempImgPath.split("\\.");
-		                		String finalImgPath = basePath + "m" + event.getNewRowId() + "." + fileType[fileType.length-1];
-		                		File image = new File(tempImgPath);
-		                   	 
-		                  	  	if (image.renameTo(new File(finalImgPath))) {
-		                  	  		System.out.println("File renamed successfully!");
-		                  	  	} else {
-		                  	  		System.out.println("Failed to rename image!");
-		                  	  	}
-		                	}
-		                	
-		                } catch (Exception e) {
-		                	e.printStackTrace();
-		                }
-						Mark.removeIdChangeListener(this);
-					}
+                    @Override
+                    public void rowIdChange(RowIdChangeEvent event) {
+                        System.out.println("HERE");
+                        try {
+                            String basePath = System.getProperty("user.home")
+                                    + "/contentimgs/";
+                            File imgDirectory = new File(basePath);
+                            String tempFilename = null;
+                            if (imgDirectory.isDirectory()) {
+                                String filenames[] = imgDirectory.list();
+                                for (int i = 0; i < filenames.length; i++) {
+                                    if (filenames[i].contains(tempImgId)) {
+                                        tempFilename = filenames[i];
+                                        break;
+                                    }
+                                }
+                            }
+
+                            String tempImgPath = basePath + tempFilename;
+                            System.out.println("TempImgPath: " + tempImgPath);
+
+                            if (new File(tempImgPath).exists()) {
+                                String[] fileType = tempImgPath.split("\\.");
+                                String finalImgPath = basePath + "m"
+                                        + event.getNewRowId() + "."
+                                        + fileType[fileType.length - 1];
+                                File image = new File(tempImgPath);
+
+                                if (image.renameTo(new File(finalImgPath))) {
+                                    System.out
+                                            .println("File renamed successfully!");
+                                } else {
+                                    System.out
+                                            .println("Failed to rename image!");
+                                }
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Mark.removeIdChangeListener(this);
+                    }
                 });
-                
+
                 try {
-                	Mark.commit();
+                    Mark.commit();
                     User.commit();
                     user.reload();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-                
-                Notification.show("Created new Mark with title: "
-                        + title.getValue());
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                Notification.show("Your Mark has been sent for review");
                 UI.getCurrent().getNavigator().navigateTo("");
             }
         });
