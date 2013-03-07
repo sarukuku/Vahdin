@@ -57,9 +57,8 @@ public class NewMarkView extends CustomLayout implements View {
                 Mark m = new Mark(name, time, desc, userId);
                 try {
                     m.save();
-                    m.commit();
+                    Mark.commit();
                 } catch (SQLException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 Notification.show("Created new Mark with title: "

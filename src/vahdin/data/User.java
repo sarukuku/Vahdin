@@ -227,6 +227,7 @@ public class User implements Item {
         return power / 100 + 1;
     }
 
+    @SuppressWarnings("unchecked")
     public void setName(String name) {
         this.getItemProperty("NAME").setValue(name);
     }
@@ -239,7 +240,6 @@ public class User implements Item {
         try {
             commit();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -249,6 +249,7 @@ public class User implements Item {
      * 
      * @param prestige Prestige POWER of user giving vote lol
      */
+    @SuppressWarnings("unchecked")
     public void addPrestige(double prestige) {
         double pre = prestige * 100 + getPrestigeValue();
         this.getItemProperty("PRESTIGE").setValue(pre);
@@ -256,7 +257,6 @@ public class User implements Item {
         try {
             commit();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

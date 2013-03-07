@@ -51,7 +51,7 @@ public class ImageUpload {
                         Notification
                                 .show("Could not open file<br/>",
                                         e.getMessage(),
-                                        Notification.TYPE_ERROR_MESSAGE);
+                                        Notification.Type.ERROR_MESSAGE);
                         return null;
                     }
                 } else {

@@ -24,7 +24,6 @@ public class Bust implements Item {
 
     private static final SQLContainer container;
     private static final Logger logger = Logger.getGlobal();
-    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
 
     static {
         logger.info("Initializing busts");

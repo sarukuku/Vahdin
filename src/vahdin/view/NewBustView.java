@@ -118,9 +118,8 @@ public class NewBustView extends CustomLayout implements View {
                         markId, userId);
                 try {
                     bust.save();
-                    bust.commit();
+                    Bust.commit();
                 } catch (SQLException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 UI.getCurrent().getNavigator()

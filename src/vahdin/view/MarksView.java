@@ -22,20 +22,14 @@ import com.vaadin.ui.VerticalLayout;
 
 public class MarksView extends CustomLayout implements View {
 
-    final private VahdinUI ui = (VahdinUI) UI.getCurrent();
+    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
     private final LoginListener loginListener;
+    private final Button newMarkButton = new Button();
+    private final VerticalLayout marksList;
 
     public MarksView() {
         super("marks-sidebar");
-        VerticalLayout marksList = new VerticalLayout();
 
-        List<Mark> marks = Mark.loadAll();
-
-        final User user = ui.getCurrentUser();
-
-        // The button to add a new Mark is only shown if user is logged in
-
-        final Button newMarkButton = new Button();
         newMarkButton.setStyleName("new-mark-button");
         newMarkButton.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/add-button.png"));
@@ -46,6 +40,45 @@ public class MarksView extends CustomLayout implements View {
                 UI.getCurrent().getNavigator().navigateTo("newmark/");
             }
         });
+
+        marksList = new VerticalLayout();
+
+        addComponent(newMarkButton, "new-mark-button");
+        addComponent(marksList, "marks-list");
+
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                newMarkButton.setVisible(user.isLoggedIn());
+                if (event != null) {
+                    ui.getNavigator().navigateTo("");
+                }
+            }
+        };
+    }
+
+    @Override
+    public void attach() {
+        super.attach();
+        ui.addLoginListener(loginListener);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        ui.removeLoginListener(loginListener);
+        ui.clearMap();
+    }
+
+    @Override
+    public void enter(ViewChangeEvent event) {
+
+        List<Mark> marks = Mark.loadAll();
+
+        final User user = ui.getCurrentUser();
+
+        // The button to add a new Mark is only shown if user is logged in
 
         for (int i = 0; i < marks.size(); i++) {
             final Mark m = marks.get(i);
@@ -90,9 +123,8 @@ public class MarksView extends CustomLayout implements View {
                                     user.getPrestigePower());
                             try {
                                 vote.save();
-                                vote.commit();
+                                Vote.commit();
                             } catch (SQLException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             voteCount.setValue((int) m.getVoteCount() + "");
@@ -125,9 +157,8 @@ public class MarksView extends CustomLayout implements View {
                                     -user.getPrestigePower());
                             try {
                                 vote.save();
-                                vote.commit();
+                                Vote.commit();
                             } catch (SQLException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             voteCount.setValue((int) m.getVoteCount() + "");
@@ -154,36 +185,6 @@ public class MarksView extends CustomLayout implements View {
             }
         }
 
-        addComponent(newMarkButton, "new-mark-button");
-        addComponent(marksList, "marks-list");
-
-        loginListener = new LoginListener() {
-            @Override
-            public void login(LoginEvent event) {
-                User user = ui.getCurrentUser();
-                newMarkButton.setVisible(user.isLoggedIn());
-                if (event != null) {
-                    ui.getNavigator().navigateTo("");
-                }
-            }
-        };
-    }
-
-    @Override
-    public void attach() {
-        super.attach();
-        ui.addLoginListener(loginListener);
-    }
-
-    @Override
-    public void detach() {
-        super.detach();
-        ui.removeLoginListener(loginListener);
-        ui.clearMap();
-    }
-
-    @Override
-    public void enter(ViewChangeEvent event) {
         loginListener.login(null); // force login actions
     }
 }
