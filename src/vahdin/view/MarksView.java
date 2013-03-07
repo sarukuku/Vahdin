@@ -22,20 +22,14 @@ import com.vaadin.ui.VerticalLayout;
 
 public class MarksView extends CustomLayout implements View {
 
-    final private VahdinUI ui = (VahdinUI) UI.getCurrent();
+    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
     private final LoginListener loginListener;
+    private final Button newMarkButton = new Button();
+    private final VerticalLayout marksList;
 
     public MarksView() {
         super("marks-sidebar");
-        VerticalLayout marksList = new VerticalLayout();
 
-        List<Mark> marks = Mark.loadAll();
-
-        final User user = ui.getCurrentUser();
-
-        // The button to add a new Mark is only shown if user is logged in
-
-        final Button newMarkButton = new Button();
         newMarkButton.setStyleName("new-mark-button");
         newMarkButton.setIcon(new ExternalResource(
                 "VAADIN/themes/vahdintheme/img/add-button.png"));
@@ -47,7 +41,46 @@ public class MarksView extends CustomLayout implements View {
             }
         });
 
-        for (int i = 0; i < marks.size(); i++) {
+        marksList = new VerticalLayout();
+
+        addComponent(newMarkButton, "new-mark-button");
+        addComponent(marksList, "marks-list");
+
+        loginListener = new LoginListener() {
+            @Override
+            public void login(LoginEvent event) {
+                User user = ui.getCurrentUser();
+                newMarkButton.setVisible(user.isLoggedIn());
+                if (event != null) {
+                    ui.getNavigator().navigateTo("");
+                }
+            }
+        };
+    }
+
+    @Override
+    public void attach() {
+        super.attach();
+        ui.addLoginListener(loginListener);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        ui.removeLoginListener(loginListener);
+        ui.clearMap();
+    }
+
+    @Override
+    public void enter(ViewChangeEvent event) {
+
+        List<Mark> marks = Mark.loadAll();
+
+        final User user = ui.getCurrentUser();
+
+        // The button to add a new Mark is only shown if user is logged in
+
+        for (int i = marks.size()-1; i >= 0; i--) {
             final Mark m = marks.get(i);
 
             CustomLayout layout = new CustomLayout("mark-row");
@@ -90,15 +123,18 @@ public class MarksView extends CustomLayout implements View {
                                     user.getPrestigePower());
                             try {
                                 vote.save();
-                                vote.commit();
+                                Vote.commit();
+                                User.commit();
+                                user.reload();
                             } catch (SQLException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             voteCount.setValue((int) m.getVoteCount() + "");
                             voteUp.setIcon(new ExternalResource(
                                     "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                         }
+                    } else {
+                        ui.openLoginWindow();
                     }
                 }
             });
@@ -125,15 +161,18 @@ public class MarksView extends CustomLayout implements View {
                                     -user.getPrestigePower());
                             try {
                                 vote.save();
-                                vote.commit();
+                                Vote.commit();
+                                User.commit();
+                                user.reload();
                             } catch (SQLException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             voteCount.setValue((int) m.getVoteCount() + "");
                             voteDown.setIcon(new ExternalResource(
                                     "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                         }
+                    } else {
+                        ui.openLoginWindow();
                     }
                 }
             });
@@ -143,44 +182,13 @@ public class MarksView extends CustomLayout implements View {
             layout.addComponent(voteDown, "mark-row-downvote-arrow");
             layout.addComponent(title, "mark-row-title");
 
-            // FOR TESTING ONLY
-            System.out.println(i + " " + marks.get(i).getTitle() + "id:"
-                    + marks.get(i).getId());
-
             marksList.addComponent(layout);
 
-            if (i == 0) {
+            if (i == marks.size()-1) {
                 ui.showBusts(marks.get(i));
             }
         }
 
-        addComponent(newMarkButton, "new-mark-button");
-        addComponent(marksList, "marks-list");
-
-        loginListener = new LoginListener() {
-            @Override
-            public void login(LoginEvent event) {
-                User user = ui.getCurrentUser();
-                newMarkButton.setVisible(user.isLoggedIn());
-            }
-        };
-    }
-
-    @Override
-    public void attach() {
-        super.attach();
-        ui.addLoginListener(loginListener);
-    }
-
-    @Override
-    public void detach() {
-        super.detach();
-        ui.removeLoginListener(loginListener);
-        ui.clearMap();
-    }
-
-    @Override
-    public void enter(ViewChangeEvent event) {
         loginListener.login(null); // force login actions
     }
 }

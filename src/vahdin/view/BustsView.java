@@ -17,6 +17,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
@@ -53,7 +54,6 @@ public class BustsView extends CustomLayout implements View {
         markId = Integer.parseInt(s[0]);
 
         final User user = ui.getCurrentUser();
-        String userId = user.getUserId();
 
         final Mark mark = Mark.getMarkById(markId);
         final int id = mark.getId();
@@ -62,7 +62,7 @@ public class BustsView extends CustomLayout implements View {
         VerticalLayout bustsList = new VerticalLayout();
 
         Label markTitle = new Label("<h2>" + mark.getTitle() + "</h2>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
 
         newBustButton = new Button();
         newBustButton.setStyleName("new-bust-button");
@@ -90,9 +90,10 @@ public class BustsView extends CustomLayout implements View {
         });
 
         Label creationDate = new Label("<h4>" + mark.getTime() + "</h4>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
 
-        Label ownerNick = new Label("Riku Riski");
+        Label ownerNick = new Label(User.getUserById(mark.getUserID())
+                .getName());
         ownerNick.setStyleName("nickname");
 
         final Label markVotes = new Label((int) mark.getVoteCount() + "");
@@ -120,9 +121,10 @@ public class BustsView extends CustomLayout implements View {
                                 .getPrestigePower());
                         try {
                             vote.save();
-                            vote.commit();
+                            Vote.commit();
+                            User.commit();
+                            user.reload();
                         } catch (SQLException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                         markVotes.setValue((int) mark.getVoteCount() + "");
@@ -130,6 +132,8 @@ public class BustsView extends CustomLayout implements View {
                                 .setIcon(new ExternalResource(
                                         "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });
@@ -156,9 +160,10 @@ public class BustsView extends CustomLayout implements View {
                                 -user.getPrestigePower());
                         try {
                             vote.save();
-                            vote.commit();
+                            Vote.commit();
+                            User.commit();
+                            user.reload();
                         } catch (SQLException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                         markVotes.setValue((int) mark.getVoteCount() + "");
@@ -166,6 +171,8 @@ public class BustsView extends CustomLayout implements View {
                                 .setIcon(new ExternalResource(
                                         "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });
@@ -175,7 +182,7 @@ public class BustsView extends CustomLayout implements View {
             markDescription.substring(0, 309);
         }
         Label markDesc = new Label("<p>" + markDescription + "</p>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
         markDesc.setStyleName("mark-description");
 
         Button viewImage = new Button("View image");
@@ -188,7 +195,7 @@ public class BustsView extends CustomLayout implements View {
             }
         });
 
-        for (int i = 0; i < busts.size(); i++) {
+        for (int i = busts.size()-1; i >= 0; i--) {
             CustomLayout layout = new CustomLayout("bust-row");
             final int bustId = busts.get(i).getId();
             final Bust bust = Bust.getBustById(bustId);
@@ -230,9 +237,10 @@ public class BustsView extends CustomLayout implements View {
                                     "Bust", user.getPrestigePower());
                             try {
                                 vote.save();
-                                vote.commit();
+                                Vote.commit();
+                                User.commit();
+                                user.reload();
                             } catch (SQLException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             votes.setValue(bust.getVoteCount() + "");
@@ -265,9 +273,10 @@ public class BustsView extends CustomLayout implements View {
                                     "Bust", -user.getPrestigePower());
                             try {
                                 vote.save();
-                                vote.commit();
+                                Vote.commit();
+                                User.commit();
+                                user.reload();
                             } catch (SQLException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             votes.setValue(bust.getVoteCount() + "");
@@ -298,6 +307,8 @@ public class BustsView extends CustomLayout implements View {
         addComponent(bustsList, "busts-list");
 
         loginListener.login(null); // force login actions
+
+        ui.showBusts(mark);
     }
 
     @Override
@@ -310,6 +321,7 @@ public class BustsView extends CustomLayout implements View {
     public void detach() {
         super.detach();
         ui.removeLoginListener(loginListener);
+        ui.clearMap();
     }
 
     /*

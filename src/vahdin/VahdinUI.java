@@ -56,6 +56,8 @@ public class VahdinUI extends UI implements MethodEventSource {
     private User currentUser = User.guest();
     private Label score = new Label("");
 
+    private Window loginWindow;
+
     /**
      * Initializes the UI.
      * 
@@ -170,7 +172,7 @@ public class VahdinUI extends UI implements MethodEventSource {
         String score;
         if (currentUser.isLoggedIn()) {
             score = ("(" + currentUser.getExperience() + " - "
-                    + currentUser.getPrestigeRank() + ")"); // TODO: user score
+                    + currentUser.getPrestigeRank() + ")");
         } else {
             score = ("");
         }
@@ -194,7 +196,7 @@ public class VahdinUI extends UI implements MethodEventSource {
                 "https://dl.dropbox.com/u/733138/vahdin_user_guide.htm"));
         userGuideLink.setTargetName("_blank");
 
-        final Window loginWindow = buildLoginWindow();
+        loginWindow = buildLoginWindow();
 
         final Button loginLink = new Button();
         loginLink.addStyleName("login-link");
@@ -205,7 +207,7 @@ public class VahdinUI extends UI implements MethodEventSource {
                 if (currentUser.isLoggedIn()) {
                     ui.setCurrentUser(User.guest());
                 } else {
-                    UI.getCurrent().addWindow(loginWindow);
+                    openLoginWindow();
                 }
             }
         });
@@ -350,6 +352,11 @@ public class VahdinUI extends UI implements MethodEventSource {
         window.setContent(layout);
 
         return window;
+    }
+
+    /** Opens the login window. */
+    public void openLoginWindow() {
+        UI.getCurrent().addWindow(loginWindow);
     }
 
     /**

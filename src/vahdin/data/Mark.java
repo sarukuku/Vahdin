@@ -16,7 +16,9 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.sqlcontainer.RowId;
+import com.vaadin.data.util.sqlcontainer.RowItem;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
+import com.vaadin.data.util.sqlcontainer.query.QueryDelegate;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 import com.vaadin.ui.UI;
 
@@ -24,7 +26,6 @@ public class Mark implements Item {
 
     private static final SQLContainer container;
     private static final Logger logger = Logger.getGlobal();
-    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
 
     static {
         logger.info("Initializing marks");
@@ -39,14 +40,6 @@ public class Mark implements Item {
 
     private Item row;
 
-    // the emphasis of one vote determines on the PrestigePower of the user,
-    // which is a 2 decimal float;
-    // Changed voteCount type from int to float.
-    private float voteCount = 0;
-    private int id;
-    private ArrayList<Bust> busts = new ArrayList<Bust>();
-
-    @SuppressWarnings("unchecked")
     public Mark(String name, Date time, String description, String userId) {
         row = new PropertysetItem();
         row.addItemProperty("NAME", new ObjectProperty<String>(name));
@@ -54,8 +47,6 @@ public class Mark implements Item {
                 description));
         row.addItemProperty("CREATIONTIME", new ObjectProperty<Date>(time));
         row.addItemProperty("USERID", new ObjectProperty<String>(userId));
-        User user = ((VahdinUI) UI.getCurrent()).getCurrentUser();
-        user.addExperience(10);
     }
 
     public String getTitle() {
@@ -88,7 +79,7 @@ public class Mark implements Item {
     }
 
     public int getId() {
-        Integer id = (Integer) row.getItemProperty("ID").getValue();
+        Integer id = (Integer) ((RowItem) row).getId().getId()[0];
         return id == null ? 0 : id;
     }
 
@@ -97,12 +88,8 @@ public class Mark implements Item {
         return id;
     }
 
-    public ArrayList<Bust> getBusts() {
-        return this.busts; // TODO:
-    }
-
-    public void addBust(Bust bust) {
-        this.busts.add(bust); // TODO:
+    public List<Bust> getBusts() {
+        return Bust.getBustByMarkId(getId());
     }
 
     public static List<Mark> getMarksByUserId(String id) {
@@ -191,5 +178,13 @@ public class Mark implements Item {
         row.getItemProperty("USERID").setValue(
                 item.getItemProperty("USERID").getValue());
     }
-
+    
+    public static void addIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
+    	container.addRowIdChangeListener(listener);
+    }
+    
+    public static void removeIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
+    	container.removeRowIdChangeListener(listener);
+    }
+    
 }

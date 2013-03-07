@@ -1,7 +1,9 @@
 package vahdin.view;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.UUID;
 
 import vahdin.VahdinUI;
 import vahdin.VahdinUI.LoginEvent;
@@ -11,6 +13,8 @@ import vahdin.component.ImageUpload;
 import vahdin.data.Bust;
 import vahdin.data.User;
 
+import com.vaadin.data.util.sqlcontainer.query.QueryDelegate;
+import com.vaadin.data.util.sqlcontainer.query.QueryDelegate.RowIdChangeEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
@@ -18,6 +22,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -39,7 +44,8 @@ public class NewBustView extends CustomLayout implements View {
 
     private final TextField title = new TextField();
     private final TextArea description = new TextArea();
-    private final Upload up = new ImageUpload().createImageUpload("tissit");
+    final String tempImgId = "b" + UUID.randomUUID().toString();
+    private final Upload up = new ImageUpload().createImageUpload(tempImgId);
     private final DateField date = new DateField();
     private final Label lat = new Label();
     private final Label lon = new Label();
@@ -71,11 +77,14 @@ public class NewBustView extends CustomLayout implements View {
         String[] s = event.getParameters().split("/");
         markId = Integer.parseInt(s[0]);
 
-        User user = ui.getCurrentUser();
+        final User user = ui.getCurrentUser();
         final String userId = user.getUserId();
 
         lat.setReadOnly(true);
         lon.setReadOnly(true);
+
+        date.setDateFormat("dd.MM.yyyy");
+        date.setValue(new Date());
 
         mapListener = new GoogleMap.ClickListener() {
             @Override
@@ -111,16 +120,73 @@ public class NewBustView extends CustomLayout implements View {
                 String name = title.getValue();
                 String desc = description.getValue();
                 Date time = date.getValue();
+                if (name.isEmpty() || desc.isEmpty() || time == null) {
+                    Notification
+                            .show("A sign of wisdom and maturity is when you come to terms with the realization that your decisions cause your rewards and consequences. You are responsible for your life, and your ultimate success depends on the choices you make.");
+                    return;
+                }
+
                 Bust bust = new Bust(name, desc, time, latitude, longitude,
                         markId, userId);
+                user.addExperience(1);
                 try {
                     bust.save();
-                    bust.commit();
                 } catch (SQLException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                UI.getCurrent().getNavigator().navigateTo("busts/" + markId + "/");
+                
+                Bust.addIdChangeListener(new QueryDelegate.RowIdChangeListener() {
+					@Override
+					public void rowIdChange(RowIdChangeEvent event) {
+						System.out.println("HERE");
+						try {
+		                	String basePath = System.getProperty("user.home") + "/contentimgs/";
+		                	File imgDirectory = new File(basePath);
+		                	String tempFilename = null;
+		                	if (imgDirectory.isDirectory()) {
+							  String filenames[] = imgDirectory.list();
+							  for (int i = 0; i < filenames.length; i++) {
+							      if (filenames[i].contains(tempImgId)) {
+							          tempFilename = filenames[i];
+							          break;
+							      }
+							  }
+							}
+		                	
+		                	String tempImgPath = basePath + tempFilename;
+		                	System.out.println("TempImgPath: " + tempImgPath);
+		                	
+		                	if (new File(tempImgPath).exists()) {
+		                		String[] fileType = tempImgPath.split("\\.");
+		                		String finalImgPath = basePath + "b" + event.getNewRowId() + "." + fileType[fileType.length-1];
+		                		File image = new File(tempImgPath);
+		                   	 
+		                  	  	if (image.renameTo(new File(finalImgPath))) {
+		                  	  		System.out.println("File renamed successfully!");
+		                  	  	} else {
+		                  	  		System.out.println("Failed to rename image!");
+		                  	  	}
+		                	}
+		                	
+		                } catch (Exception e) {
+		                	e.printStackTrace();
+		                }
+						Bust.removeIdChangeListener(this);
+					}
+                });
+                
+                try {
+                	 Bust.commit();
+                     User.commit();
+                     user.reload();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+                
+                Notification.show("Created new Bust with title: "
+                        + title.getValue());
+                UI.getCurrent().getNavigator()
+                        .navigateTo("busts/" + markId + "/");
             }
         });
 

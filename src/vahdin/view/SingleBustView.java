@@ -15,13 +15,13 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -30,6 +30,7 @@ public class SingleBustView extends CustomLayout implements View {
 
     private int markId;
     private int bustId;
+    private Bust bust;
     private final VahdinUI ui = (VahdinUI) UI.getCurrent();
     private final LoginListener loginListener;
     private Button delete;
@@ -41,7 +42,9 @@ public class SingleBustView extends CustomLayout implements View {
             @Override
             public void login(LoginEvent event) {
                 User user = ui.getCurrentUser();
-                delete.setVisible(user.isLoggedIn());
+                delete.setVisible(user.isLoggedIn()
+                        && (user.getUserId().equals(bust.getUserID()) || user
+                                .isAdmin()));
             }
         };
 
@@ -56,14 +59,14 @@ public class SingleBustView extends CustomLayout implements View {
 
         final User user = ui.getCurrentUser();
 
-        final Bust bust = Bust.getBustById(bustId);
+        bust = Bust.getBustById(bustId);
         final int id = bust.getId();
 
         Label title = new Label("<h2>" + bust.getTitle() + "</h2>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
         Label date = new Label("<h4>" + bust.getTime() + "</h4>",
-                Label.CONTENT_XHTML);
-        Label nick = new Label("Riku Riski");
+                ContentMode.HTML);
+        Label nick = new Label(User.getUserById(bust.getUserID()).getName());
         nick.setStyleName("nickname");
 
         final Label votes = new Label((int) bust.getVoteCount() + "");
@@ -91,15 +94,18 @@ public class SingleBustView extends CustomLayout implements View {
                                 .getPrestigePower());
                         try {
                             vote.save();
-                            vote.commit();
+                            Vote.commit();
+                            User.commit();
+                            user.reload();
                         } catch (SQLException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                         votes.setValue((int) bust.getVoteCount() + "");
                         voteup.setIcon(new ExternalResource(
                                 "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });
@@ -126,15 +132,18 @@ public class SingleBustView extends CustomLayout implements View {
                                 -user.getPrestigePower());
                         try {
                             vote.save();
-                            vote.commit();
+                            Vote.commit();
+                            User.commit();
+                            user.reload();
                         } catch (SQLException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                         votes.setValue((int) bust.getVoteCount() + "");
                         votedown.setIcon(new ExternalResource(
                                 "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });
@@ -147,8 +156,8 @@ public class SingleBustView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                // TODO Auto-generated method stub
-                Notification.show("Delete clicked");
+                bust.delete();
+                ui.getNavigator().navigateTo("busts/" + markId + "/");
             }
         });
 
@@ -166,7 +175,7 @@ public class SingleBustView extends CustomLayout implements View {
         });
 
         Label desc = new Label("<p>" + bust.getDescription() + "</p>",
-                Label.CONTENT_XHTML);
+                ContentMode.HTML);
         desc.setStyleName("mark-description");
 
         Button viewImage = new Button("View image");
@@ -175,7 +184,6 @@ public class SingleBustView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                // TODO Auto-generated method stub
                 showImage(bust);
             }
         });
@@ -191,6 +199,10 @@ public class SingleBustView extends CustomLayout implements View {
         addComponent(desc, "bust-description");
         addComponent(viewImage, "view-bust-image-button");
 
+        ui.clearMap();
+        ui.addMarker(bust.getLocationLat(), bust.getLocationLon());
+        ui.centerMapOn(bust.getLocationLat(), bust.getLocationLon());
+
         loginListener.login(null); // force login actions
     }
 
@@ -203,6 +215,7 @@ public class SingleBustView extends CustomLayout implements View {
     @Override
     public void detach() {
         super.detach();
+        ui.clearMap();
         ui.removeLoginListener(loginListener);
     }
 

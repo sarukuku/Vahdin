@@ -11,5 +11,6 @@ local.properties
 *.war
 *.ear
 .classpath
+.settings/Jelastic_Eclipse_Plugin.prefs
 # Don't ignore libraries
 !WebContent/WEB-INF/lib/*.jar

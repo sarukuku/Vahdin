@@ -17,6 +17,7 @@ import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
+import com.vaadin.data.util.sqlcontainer.query.QueryDelegate;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 import com.vaadin.ui.UI;
 
@@ -24,7 +25,6 @@ public class Bust implements Item {
 
     private static final SQLContainer container;
     private static final Logger logger = Logger.getGlobal();
-    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
 
     static {
         logger.info("Initializing busts");
@@ -49,9 +49,6 @@ public class Bust implements Item {
         row.addItemProperty("MARKID", new ObjectProperty<Integer>(markId));
         row.addItemProperty("COORDINATESLAT", new ObjectProperty<Double>(lat));
         row.addItemProperty("COORDINATESLON", new ObjectProperty<Double>(lon));
-        User user = ((VahdinUI) UI.getCurrent()).getCurrentUser();
-        user.addExperience(1);
-
     }
 
     private Bust(Item item) {
@@ -193,6 +190,23 @@ public class Bust implements Item {
                 item.getItemProperty("COORDINATESLAT").getValue());
         row.getItemProperty("COORDINATESLON").setValue(
                 item.getItemProperty("COORDINATESLON").getValue());
+    }
+    
+    public static void addIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
+    	container.addRowIdChangeListener(listener);
+    }
+    
+    public static void removeIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
+    	container.removeRowIdChangeListener(listener);
+    }
+
+    public void delete() {
+        try {
+            container.removeItem(new RowId(new Object[] { getId() }));
+            commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }
