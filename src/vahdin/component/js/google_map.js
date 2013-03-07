@@ -72,7 +72,7 @@ GoogleMap = function (elementId, apiKey) {
     /** Removes all markers. */
     this.removeMarkers = apiCall(function () {
         for (var id in markers) {
-            removeMarker(id);
+            this.removeMarker(id);
         }
     });
     
