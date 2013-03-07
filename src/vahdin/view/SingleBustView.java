@@ -1,12 +1,14 @@
 package vahdin.view;
 
 import java.io.File;
+import java.sql.SQLException;
 
 import vahdin.VahdinUI;
 import vahdin.VahdinUI.LoginEvent;
 import vahdin.VahdinUI.LoginListener;
 import vahdin.data.Bust;
 import vahdin.data.User;
+import vahdin.data.Vote;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -52,41 +54,88 @@ public class SingleBustView extends CustomLayout implements View {
         markId = Integer.parseInt(s[0]);
         bustId = Integer.parseInt(s[1]);
 
+        final User user = ui.getCurrentUser();
+
         final Bust bust = Bust.getBustById(bustId);
+        final int id = bust.getId();
 
         Label title = new Label("<h2>" + bust.getTitle() + "</h2>",
                 Label.CONTENT_XHTML);
         Label date = new Label("<h4>" + bust.getTime() + "</h4>",
                 Label.CONTENT_XHTML);
-        Label user = new Label("Riku Riski");
-        user.setStyleName("nickname");
+        Label nick = new Label("Riku Riski");
+        nick.setStyleName("nickname");
 
-        Button voteup = new Button();
+        final Label votes = new Label((int) bust.getVoteCount() + "");
+        votes.setStyleName("vote-count");
+
+        final Button voteup = new Button();
         voteup.setStyleName("upvote");
-        voteup.setIcon(new ExternalResource(
-                "VAADIN/themes/vahdintheme/img/up-arrow.png"));
+
+        if (Vote.hasVoted(bustId, "Bust", user.getUserId())
+                && user.getVote(bust).getPower() > 0) {
+            voteup.setIcon(new ExternalResource(
+                    "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
+        } else {
+            voteup.setIcon(new ExternalResource(
+                    "VAADIN/themes/vahdintheme/img/up-arrow.png"));
+        }
+
         voteup.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                // TODO Auto-generated method stub
-                Notification.show("Voteup clicked");
+                if (!user.isGuest()) {
+                    if (!Vote.hasVoted(bustId, "Bust", user.getUserId())) {
+                        Vote vote = new Vote(user.getUserId(), id, "Bust", user
+                                .getPrestigePower());
+                        try {
+                            vote.save();
+                            vote.commit();
+                        } catch (SQLException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        votes.setValue((int) bust.getVoteCount() + "");
+                        voteup.setIcon(new ExternalResource(
+                                "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
+                    }
+                }
             }
         });
 
-        Label votes = new Label("2");
-        votes.setStyleName("vote-count");
-
-        Button votedown = new Button();
+        final Button votedown = new Button();
         votedown.setStyleName("downvote");
-        votedown.setIcon(new ExternalResource(
-                "VAADIN/themes/vahdintheme/img/down-arrow.png"));
+
+        if (Vote.hasVoted(id, "Bust", user.getUserId())
+                && user.getVote(bust).getPower() < 0) {
+            votedown.setIcon(new ExternalResource(
+                    "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
+        } else {
+            votedown.setIcon(new ExternalResource(
+                    "VAADIN/themes/vahdintheme/img/down-arrow.png"));
+        }
+
         votedown.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                // TODO Auto-generated method stub
-                Notification.show("Votedown clicked");
+                if (!user.isGuest()) {
+                    if (!Vote.hasVoted(id, "Bust", user.getUserId())) {
+                        Vote vote = new Vote(user.getUserId(), id, "Bust",
+                                -user.getPrestigePower());
+                        try {
+                            vote.save();
+                            vote.commit();
+                        } catch (SQLException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        votes.setValue((int) bust.getVoteCount() + "");
+                        votedown.setIcon(new ExternalResource(
+                                "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
+                    }
+                }
             }
         });
 
@@ -133,7 +182,7 @@ public class SingleBustView extends CustomLayout implements View {
 
         addComponent(title, "bust-title");
         addComponent(date, "bust-datetime");
-        addComponent(user, "bust-submitter-nickname");
+        addComponent(nick, "bust-submitter-nickname");
         addComponent(voteup, "bust-upvote-arrow");
         addComponent(votes, "bust-vote-count");
         addComponent(votedown, "bust-downvote-arrow");
