@@ -264,6 +264,10 @@ html, body {
 	position: relative;
 }
 
+.map-container .v-customcomponent {
+	position: absolute;
+}
+
 .map-container iframe {
 	position: absolute;
 	width: 100%;
