@@ -132,6 +132,8 @@ public class BustsView extends CustomLayout implements View {
                                 .setIcon(new ExternalResource(
                                         "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });
@@ -169,6 +171,8 @@ public class BustsView extends CustomLayout implements View {
                                 .setIcon(new ExternalResource(
                                         "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });

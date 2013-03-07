@@ -104,6 +104,8 @@ public class SingleBustView extends CustomLayout implements View {
                         voteup.setIcon(new ExternalResource(
                                 "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });
@@ -140,6 +142,8 @@ public class SingleBustView extends CustomLayout implements View {
                         votedown.setIcon(new ExternalResource(
                                 "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });
