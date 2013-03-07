@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import vahdin.VahdinUI;
-
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
@@ -16,7 +14,6 @@ import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
-import com.vaadin.ui.UI;
 
 public class Vote implements Item {
 
@@ -43,8 +40,7 @@ public class Vote implements Item {
                 targetItemId));
         row.addItemProperty("TYPE", new ObjectProperty<String>(type));
         row.addItemProperty("POWER", new ObjectProperty<Double>(power));
-        User user = ((VahdinUI) UI.getCurrent()).getCurrentUser();
-        user.addPrestige(power);
+        addPrestigeToVoteOwner(targetItemId, type, power);
     }
 
     private Vote(Item item) {
@@ -88,6 +84,19 @@ public class Vote implements Item {
     public boolean removeItemProperty(Object id)
             throws UnsupportedOperationException {
         return row.removeItemProperty(id);
+    }
+
+    private void addPrestigeToVoteOwner(int targetItemId, String type,
+            double power) {
+        if (type.equals("Mark")) {
+            Mark m = Mark.getMarkById(targetItemId);
+            User u = User.getUserById(m.getUserID());
+            u.addPrestige(power);
+        } else {
+            Bust b = Bust.getBustById(targetItemId);
+            User u = User.getUserById(b.getUserID());
+            u.addPrestige(power);
+        }
     }
 
     /**

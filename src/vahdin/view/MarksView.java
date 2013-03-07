@@ -124,6 +124,7 @@ public class MarksView extends CustomLayout implements View {
                             try {
                                 vote.save();
                                 Vote.commit();
+                                User.commit();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -158,6 +159,7 @@ public class MarksView extends CustomLayout implements View {
                             try {
                                 vote.save();
                                 Vote.commit();
+                                User.commit();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }

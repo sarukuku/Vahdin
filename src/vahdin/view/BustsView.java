@@ -121,6 +121,7 @@ public class BustsView extends CustomLayout implements View {
                         try {
                             vote.save();
                             Vote.commit();
+                            User.commit();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -156,6 +157,7 @@ public class BustsView extends CustomLayout implements View {
                         try {
                             vote.save();
                             Vote.commit();
+                            User.commit();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -229,6 +231,7 @@ public class BustsView extends CustomLayout implements View {
                             try {
                                 vote.save();
                                 Vote.commit();
+                                User.commit();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -263,6 +266,7 @@ public class BustsView extends CustomLayout implements View {
                             try {
                                 vote.save();
                                 Vote.commit();
+                                User.commit();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
