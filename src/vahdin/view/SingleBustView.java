@@ -95,6 +95,7 @@ public class SingleBustView extends CustomLayout implements View {
                         try {
                             vote.save();
                             Vote.commit();
+                            User.commit();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -131,6 +132,7 @@ public class SingleBustView extends CustomLayout implements View {
                         try {
                             vote.save();
                             Vote.commit();
+                            User.commit();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
