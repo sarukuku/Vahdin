@@ -22,7 +22,6 @@ import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -31,6 +30,7 @@ public class SingleBustView extends CustomLayout implements View {
 
     private int markId;
     private int bustId;
+    private Bust bust;
     private final VahdinUI ui = (VahdinUI) UI.getCurrent();
     private final LoginListener loginListener;
     private Button delete;
@@ -42,7 +42,9 @@ public class SingleBustView extends CustomLayout implements View {
             @Override
             public void login(LoginEvent event) {
                 User user = ui.getCurrentUser();
-                delete.setVisible(user.isLoggedIn());
+                delete.setVisible(user.isLoggedIn()
+                        && (user.getUserId().equals(bust.getUserID()) || user
+                                .isAdmin()));
             }
         };
 
@@ -57,7 +59,7 @@ public class SingleBustView extends CustomLayout implements View {
 
         final User user = ui.getCurrentUser();
 
-        final Bust bust = Bust.getBustById(bustId);
+        bust = Bust.getBustById(bustId);
         final int id = bust.getId();
 
         Label title = new Label("<h2>" + bust.getTitle() + "</h2>",
@@ -148,8 +150,8 @@ public class SingleBustView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                // TODO Auto-generated method stub
-                Notification.show("Delete clicked");
+                bust.delete();
+                ui.getNavigator().navigateTo("busts/" + markId + "/");
             }
         });
 

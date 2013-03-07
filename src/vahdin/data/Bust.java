@@ -191,4 +191,13 @@ public class Bust implements Item {
                 item.getItemProperty("COORDINATESLON").getValue());
     }
 
+    public void delete() {
+        try {
+            container.removeItem(new RowId(new Object[] { getId() }));
+            commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
