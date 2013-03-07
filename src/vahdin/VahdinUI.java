@@ -2,11 +2,14 @@ package vahdin;
 
 import java.lang.reflect.Method;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import vahdin.component.GoogleMap;
 import vahdin.component.OAuth2Button;
 import vahdin.component.OAuth2Button.AuthEvent;
+import vahdin.data.Bust;
+import vahdin.data.Mark;
 import vahdin.data.User;
 import vahdin.view.BustsView;
 import vahdin.view.MarksView;
@@ -133,6 +136,24 @@ public class VahdinUI extends UI implements MethodEventSource {
      */
     public void centerMapOn(double latitude, double longitude) {
         map.center(latitude, longitude);
+    }
+
+    /**
+     * Shows the busts of the specified mark on the map.
+     * 
+     * @param mark
+     */
+    public void showBusts(Mark mark) {
+        clearMap();
+        List<Bust> busts = mark.getBusts();
+        for (Bust bust : busts) {
+            map.addMarker(bust.getLocationLat(), bust.getLocationLon());
+        }
+    }
+
+    /** Clears the map. */
+    public void clearMap() {
+        map.removeMarkers();
     }
 
     /**

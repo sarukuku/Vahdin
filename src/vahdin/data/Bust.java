@@ -153,7 +153,7 @@ public class Bust implements Item {
         List<Bust> bustsAll = loadAll();
         List<Bust> busts = new ArrayList<>();
         for (int i = 0; i < bustsAll.size(); i++) {
-            if (bustsAll.get(i).getId() == id) {
+            if (bustsAll.get(i).getMarkId() == id) {
                 busts.add(bustsAll.get(i));
             }
         }

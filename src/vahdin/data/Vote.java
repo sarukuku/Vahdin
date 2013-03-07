@@ -106,7 +106,6 @@ public class Vote implements Item {
             if (all.get(i).getTargetItemId() == id
                     && all.get(i).getType().equals(type)) {
                 votes.add(all.get(i));
-                System.out.println("jeh");
             }
         }
         return votes;

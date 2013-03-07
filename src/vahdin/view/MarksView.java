@@ -48,6 +48,8 @@ public class MarksView extends CustomLayout implements View {
         });
 
         for (int i = 0; i < marks.size(); i++) {
+            final Mark m = marks.get(i);
+
             CustomLayout layout = new CustomLayout("mark-row");
 
             // Button to show BustsSubview with Busts under the clicked Mark
@@ -64,46 +66,74 @@ public class MarksView extends CustomLayout implements View {
 
             });
 
-            final double votes = marks.get(i).getVoteCount();
-
-            final Label voteCount = new Label(votes + "");
+            final Label voteCount = new Label((int) m.getVoteCount() + "");
             voteCount.setStyleName("vote-count");
 
             // Button to give upvote to Mark
-            Button voteUp = new Button();
-            voteUp.setIcon(new ExternalResource(
-                    "VAADIN/themes/vahdintheme/img/up-arrow.png"));
+            final Button voteUp = new Button();
+
+            if (Vote.hasVoted(id, "Mark", user.getUserId())
+                    && user.getVote(m).getPower() > 0) {
+                voteUp.setIcon(new ExternalResource(
+                        "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
+            } else {
+                voteUp.setIcon(new ExternalResource(
+                        "VAADIN/themes/vahdintheme/img/up-arrow.png"));
+            }
+
             voteUp.setStyleName("upvote");
             voteUp.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
-                    Vote vote = new Vote(user.getUserId(), id, "Mark", user
-                            .getPrestigePower());
-                    try {
-                        vote.save();
-                        vote.commit();
-                    } catch (SQLException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    if (!user.isGuest()) {
+                        if (!Vote.hasVoted(id, "Mark", user.getUserId())) {
+                            Vote vote = new Vote(user.getUserId(), id, "Mark",
+                                    user.getPrestigePower());
+                            try {
+                                vote.save();
+                                vote.commit();
+                            } catch (SQLException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            voteCount.setValue((int) m.getVoteCount() + "");
+                            voteUp.setIcon(new ExternalResource(
+                                    "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
+                        }
                     }
-                    voteCount.setValue(votes + "");
                 }
             });
 
             // Button to give downvote to Mark
-            Button voteDown = new Button();
-            voteDown.setIcon(new ExternalResource(
-                    "VAADIN/themes/vahdintheme/img/down-arrow.png"));
+            final Button voteDown = new Button();
+
+            if (Vote.hasVoted(id, "Mark", user.getUserId())
+                    && user.getVote(m).getPower() < 0) {
+                voteDown.setIcon(new ExternalResource(
+                        "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
+            } else {
+                voteDown.setIcon(new ExternalResource(
+                        "VAADIN/themes/vahdintheme/img/down-arrow.png"));
+            }
+
             voteDown.setStyleName("downvote");
+
             voteDown.addClickListener(new Button.ClickListener() {
                 public void buttonClick(ClickEvent event) {
-                    Vote vote = new Vote(user.getUserId(), id, "Mark", -user
-                            .getPrestigePower());
-                    try {
-                        vote.save();
-                        vote.commit();
-                    } catch (SQLException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    if (!user.isGuest()) {
+                        if (!Vote.hasVoted(id, "Mark", user.getUserId())) {
+                            Vote vote = new Vote(user.getUserId(), id, "Mark",
+                                    -user.getPrestigePower());
+                            try {
+                                vote.save();
+                                vote.commit();
+                            } catch (SQLException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            voteCount.setValue((int) m.getVoteCount() + "");
+                            voteDown.setIcon(new ExternalResource(
+                                    "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
+                        }
                     }
                 }
             });
@@ -118,6 +148,10 @@ public class MarksView extends CustomLayout implements View {
                     + marks.get(i).getId());
 
             marksList.addComponent(layout);
+
+            if (i == 0) {
+                ui.showBusts(marks.get(i));
+            }
         }
 
         addComponent(newMarkButton, "new-mark-button");

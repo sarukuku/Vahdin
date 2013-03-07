@@ -63,8 +63,17 @@ GoogleMap = function (elementId, apiKey) {
     
     /** Removes the specified marker. */
     this.removeMarker = apiCall(function (id) {
-        markers[id].setMap(null);
-        delete markers[id];
+        if (markers[id] && markers[id].setMap) {
+            markers[id].setMap(null);
+            delete markers[id];
+        }
+    });
+    
+    /** Removes all markers. */
+    this.removeMarkers = apiCall(function () {
+        for (var id in markers) {
+            removeMarker(id);
+        }
     });
     
     /** Centers the map at the specified coordinates. */

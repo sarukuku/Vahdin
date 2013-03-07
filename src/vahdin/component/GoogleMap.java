@@ -72,6 +72,11 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
                 "window['" + id + "'].removeMarker('" + marker.id + "')");
     }
 
+    /** Removes all markers. */
+    public void removeMarkers() {
+        JavaScript.getCurrent().execute("window['" + id + "'].removeMarker()");
+    }
+
     /**
      * Centers the map at the specified coordinates.
      * 
