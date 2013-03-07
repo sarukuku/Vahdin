@@ -231,8 +231,11 @@ public class User implements Item {
         this.getItemProperty("NAME").setValue(name);
     }
 
+    @SuppressWarnings("unchecked")
     public void addExperience(int experience) {
-        this.getItemProperty("NAME").setValue(experience);
+        int exp = experience + getExperience();
+        this.getItemProperty("EXPERIENCE").setValue(exp);
+
         try {
             commit();
         } catch (SQLException e) {
@@ -247,8 +250,9 @@ public class User implements Item {
      * @param prestige Prestige POWER of user giving vote lol
      */
     public void addPrestige(double prestige) {
-        this.getItemProperty("Prestige").setValue(
-                getPrestigeValue() + (int) (prestige * 100));
+        double pre = prestige * 100 + getPrestigeValue();
+        this.getItemProperty("PRESTIGE").setValue(pre);
+
         try {
             commit();
         } catch (SQLException e) {
