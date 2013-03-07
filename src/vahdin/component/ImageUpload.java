@@ -35,18 +35,16 @@ public class ImageUpload {
 
             public OutputStream receiveUpload(String filename, String mimeType) {
                 FileOutputStream fos = null;
-                // String dir = "/Users/roopemerikukka/Dropbox/testi/";
-                File dir = new File(System.getProperty("user.home")
-                        + File.separator + "uusikansio");
 
-                // File folder = new File(System.getProperty("user.home") +
-                // File.separator + "myfolder");
+                String basepath = System.getProperty("user.home");
+                File imgDirectory = new File(basepath + "/contentimgs");
+
                 String filetype = mimeType.split("/")[1];
                 filename = UpFilename;
                 if (checkMimeType(mimeType)) {
                     try {
 
-                        file = new File(dir, filename + "." + filetype);
+                        file = new File(imgDirectory, filename + "." + filetype);
                         System.out.println(file.getAbsolutePath());
                         fos = new FileOutputStream(file);
                     } catch (final java.io.FileNotFoundException e) {
