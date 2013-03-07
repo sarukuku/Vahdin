@@ -121,6 +121,7 @@ public class NewBustView extends CustomLayout implements View {
                     bust.save();
                     Bust.commit();
                     User.commit();
+                    user.reload();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

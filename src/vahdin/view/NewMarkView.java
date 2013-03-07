@@ -60,6 +60,7 @@ public class NewMarkView extends CustomLayout implements View {
                     m.save();
                     Mark.commit();
                     User.commit();
+                    user.reload();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

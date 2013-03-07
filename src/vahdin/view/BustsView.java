@@ -92,7 +92,8 @@ public class BustsView extends CustomLayout implements View {
         Label creationDate = new Label("<h4>" + mark.getTime() + "</h4>",
                 ContentMode.HTML);
 
-        Label ownerNick = new Label("Riku Riski");
+        Label ownerNick = new Label(User.getUserById(mark.getUserID())
+                .getName());
         ownerNick.setStyleName("nickname");
 
         final Label markVotes = new Label((int) mark.getVoteCount() + "");
@@ -122,6 +123,7 @@ public class BustsView extends CustomLayout implements View {
                             vote.save();
                             Vote.commit();
                             User.commit();
+                            user.reload();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -158,6 +160,7 @@ public class BustsView extends CustomLayout implements View {
                             vote.save();
                             Vote.commit();
                             User.commit();
+                            user.reload();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -232,6 +235,7 @@ public class BustsView extends CustomLayout implements View {
                                 vote.save();
                                 Vote.commit();
                                 User.commit();
+                                user.reload();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -267,6 +271,7 @@ public class BustsView extends CustomLayout implements View {
                                 vote.save();
                                 Vote.commit();
                                 User.commit();
+                                user.reload();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }

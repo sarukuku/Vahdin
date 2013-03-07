@@ -215,7 +215,7 @@ public class User implements Item {
         } else {
             rank = "Gaylord";
         }
-        return rank;
+        return value + "";
     }
 
     /*
@@ -224,8 +224,8 @@ public class User implements Item {
      * @return 2 point decimal float power
      */
     public float getPrestigePower() {
-        int power = (int) (java.lang.Math.sqrt(getPrestigeValue()) * 50);
-        return power / 100 + 1;
+        int power = (int) (java.lang.Math.sqrt(getPrestigeValue()));
+        return power / 200 + 1;
     }
 
     @SuppressWarnings("unchecked")
@@ -250,7 +250,7 @@ public class User implements Item {
         this.getItemProperty("PRESTIGE").setValue((int) pre);
     }
 
-    private void reload() {
+    public void reload() {
         container.refresh();
         row = container.getItem(new RowId(new Object[] { getUserId() }));
     }
