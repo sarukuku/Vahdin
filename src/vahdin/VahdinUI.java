@@ -198,6 +198,7 @@ public class VahdinUI extends UI implements MethodEventSource {
                 } else {
                     loginLink.removeStyleName("logout-link");
                     loginLink.addStyleName("login-link");
+                    score.setValue("");
                 }
                 username.setValue(currentUser.getName());
             }

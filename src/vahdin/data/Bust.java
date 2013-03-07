@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import vahdin.VahdinUI;
+
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
@@ -16,11 +18,13 @@ import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
+import com.vaadin.ui.UI;
 
 public class Bust implements Item {
 
     private static final SQLContainer container;
     private static final Logger logger = Logger.getGlobal();
+    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
 
     static {
         logger.info("Initializing busts");
@@ -45,6 +49,8 @@ public class Bust implements Item {
         row.addItemProperty("MARKID", new ObjectProperty<Integer>(markId));
         row.addItemProperty("COORDINATESLAT", new ObjectProperty<Double>(lat));
         row.addItemProperty("COORDINATESLON", new ObjectProperty<Double>(lon));
+        User user = ((VahdinUI) UI.getCurrent()).getCurrentUser();
+        user.addExperience(1);
 
     }
 
@@ -58,6 +64,11 @@ public class Bust implements Item {
 
     public int getId() {
         return (Integer) getItemProperty("ID").getValue();
+    }
+
+    public String getUserID() {
+        String id = (String) row.getItemProperty("USERID").getValue();
+        return id;
     }
 
     public int getMarkId() {
@@ -83,8 +94,14 @@ public class Bust implements Item {
         return (Double) getItemProperty("COORDINATESLON").getValue();
     }
 
-    public int getVoteCount() {
-        return 12; // TODO:
+    public double getVoteCount() {
+        int id = (Integer) getItemProperty("ID").getValue();
+        double count = 0.0;
+        List<Vote> votes = Vote.getVotesByTargetItemId(id, "Bust");
+        for (int i = 0; i < votes.size(); i++) {
+            count += votes.get(i).getPower();
+        }
+        return count;
     }
 
     @SuppressWarnings("rawtypes")
@@ -108,6 +125,18 @@ public class Bust implements Item {
     public boolean removeItemProperty(Object id)
             throws UnsupportedOperationException {
         return row.removeItemProperty(id);
+    }
+
+    public static List<Bust> getBustsByUserId(String id) {
+        List<Bust> busts = loadAll();
+        List<Bust> userbusts = new ArrayList<Bust>();
+        for (Bust bs : busts) {
+            if (bs.getUserID() == ((VahdinUI) UI.getCurrent()).getCurrentUser()
+                    .getUserId()) {
+                userbusts.add(bs);
+            }
+        }
+        return userbusts;
     }
 
     public static Bust getBustById(int id) {

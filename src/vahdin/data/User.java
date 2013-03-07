@@ -1,7 +1,9 @@
 package vahdin.data;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.vaadin.data.Item;
@@ -129,6 +131,24 @@ public class User implements Item {
         return row.removeItemProperty(id);
     }
 
+    public double getAllVotes() {
+        List<Vote> votes = new ArrayList<Vote>();
+        List<Mark> marks = Mark.getMarksByUserId(getUserId());
+        List<Bust> busts = Bust.getBustsByUserId(getUserId());
+        for (Mark mk : marks) {
+            votes.addAll(Vote.getVotesByTargetItemId(mk.getId(), "Mark"));
+        }
+        for (Bust bs : busts) {
+            votes.addAll(Vote.getVotesByTargetItemId(bs.getId(), "Bust"));
+        }
+        double votesum = 0;
+        for (Vote v : votes) {
+            votesum += v.getPower();
+        }
+        return votesum;
+
+    }
+
     public String getName() {
         String name = this.getItemProperty("NAME").getValue().toString();
         return name;
@@ -182,16 +202,28 @@ public class User implements Item {
 
     public void addExperience(int experience) {
         this.getItemProperty("NAME").setValue(experience);
+        try {
+            commit();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /*
      * Add prestige to user
      * 
-     * @param prestige Prestige POWER of user
+     * @param prestige Prestige POWER of user giving vote lol
      */
-    public void addPrestige(float prestige) {
+    public void addPrestige(double prestige) {
         this.getItemProperty("Prestige").setValue(
                 getPrestigeValue() + (int) (prestige * 100));
+        try {
+            commit();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**

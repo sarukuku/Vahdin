@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import vahdin.VahdinUI;
+
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
@@ -14,6 +16,7 @@ import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
+import com.vaadin.ui.UI;
 
 public class Vote implements Item {
 
@@ -40,6 +43,8 @@ public class Vote implements Item {
                 targetItemId));
         row.addItemProperty("TYPE", new ObjectProperty<String>(type));
         row.addItemProperty("POWER", new ObjectProperty<Double>(power));
+        User user = ((VahdinUI) UI.getCurrent()).getCurrentUser();
+        user.addPrestige(power);
     }
 
     private Vote(Item item) {
@@ -85,6 +90,15 @@ public class Vote implements Item {
         return row.removeItemProperty(id);
     }
 
+    /**
+     * Get a list of all votes related to a Mark or a Bust
+     * 
+     * @param id
+     *            id of Mark or Bust
+     * @param type
+     *            type of object: Mark or Bust
+     * @return List of all Votes*
+     */
     public static List<Vote> getVotesByTargetItemId(int id, String type) {
         List<Vote> all = loadAll();
         List<Vote> votes = new ArrayList<>();
@@ -97,15 +111,15 @@ public class Vote implements Item {
         }
         return votes;
     }
-    
+
     public static boolean hasVoted(int itemId, String itemType, String userId) {
-    	List<Vote> votes = getVotesByTargetItemId(itemId, itemType);
-    	for (int i = 0; i < votes.size(); i++) {
-    		if (votes.get(i).getUserId() == userId) {
-    			return true;
-    		}
-    	}
-    	return false;
+        List<Vote> votes = getVotesByTargetItemId(itemId, itemType);
+        for (int i = 0; i < votes.size(); i++) {
+            if (votes.get(i).getUserId() == userId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static List<Vote> loadAll() {

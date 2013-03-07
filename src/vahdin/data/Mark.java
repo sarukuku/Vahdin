@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import vahdin.VahdinUI;
+
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
@@ -16,11 +18,13 @@ import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.sqlcontainer.RowId;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
+import com.vaadin.ui.UI;
 
 public class Mark implements Item {
 
     private static final SQLContainer container;
     private static final Logger logger = Logger.getGlobal();
+    private final VahdinUI ui = (VahdinUI) UI.getCurrent();
 
     static {
         logger.info("Initializing marks");
@@ -50,6 +54,8 @@ public class Mark implements Item {
                 description));
         row.addItemProperty("CREATIONTIME", new ObjectProperty<Date>(time));
         row.addItemProperty("USERID", new ObjectProperty<String>(userId));
+        User user = ((VahdinUI) UI.getCurrent()).getCurrentUser();
+        user.addExperience(10);
     }
 
     public String getTitle() {
@@ -86,12 +92,29 @@ public class Mark implements Item {
         return id == null ? 0 : id;
     }
 
+    public String getUserID() {
+        String id = (String) row.getItemProperty("USERID").getValue();
+        return id;
+    }
+
     public ArrayList<Bust> getBusts() {
         return this.busts; // TODO:
     }
 
     public void addBust(Bust bust) {
         this.busts.add(bust); // TODO:
+    }
+
+    public static List<Mark> getMarksByUserId(String id) {
+        List<Mark> marks = loadAll();
+        List<Mark> usermarks = new ArrayList<Mark>();
+        for (Mark mk : marks) {
+            if (mk.getUserID() == ((VahdinUI) UI.getCurrent()).getCurrentUser()
+                    .getUserId()) {
+                usermarks.add(mk);
+            }
+        }
+        return usermarks;
     }
 
     @SuppressWarnings("rawtypes")
@@ -121,6 +144,10 @@ public class Mark implements Item {
         row = item;
     }
 
+    /**
+     * Get a specific mark by id
+     * 
+     */
     public static Mark getMarkById(int id) {
         List<Mark> marks = loadAll();
         for (int i = 0; i < marks.size(); i++) {
