@@ -16,8 +16,11 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.sqlcontainer.RowId;
+import com.vaadin.data.util.sqlcontainer.RowItem;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
+import com.vaadin.data.util.sqlcontainer.query.QueryDelegate;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
+import com.vaadin.data.util.sqlcontainer.query.QueryDelegate.RowIdChangeEvent;
 import com.vaadin.ui.UI;
 
 public class Mark implements Item {
@@ -79,7 +82,7 @@ public class Mark implements Item {
     }
 
     public int getId() {
-        Integer id = (Integer) row.getItemProperty("ID").getValue();
+        Integer id = (Integer) ((RowItem) row).getId().getId()[0];
         return id == null ? 0 : id;
     }
 
@@ -178,5 +181,13 @@ public class Mark implements Item {
         row.getItemProperty("USERID").setValue(
                 item.getItemProperty("USERID").getValue());
     }
-
+    
+    public static void addIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
+    	container.addRowIdChangeListener(listener);
+    }
+    
+    public static void removeIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
+    	container.removeRowIdChangeListener(listener);
+    }
+    
 }
