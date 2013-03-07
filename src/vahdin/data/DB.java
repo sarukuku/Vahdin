@@ -16,10 +16,10 @@ import com.vaadin.data.util.sqlcontainer.connection.SimpleJDBCConnectionPool;
 
 public class DB {
 
-    private static final String H2_DB_NAME = System.getProperty("user.home")
-            + System.getProperty("file.separator") + "vahdin";
+    private static final String H2_DB_NAME = "vahdin";
+    private static final String H2_DB_PATH = System.getProperty("user.home") + System.getProperty("file.separator");
     private static final String DRIVER = "org.h2.Driver";
-    private static final String CONNECTION_URI = "jdbc:h2:" + H2_DB_NAME
+    private static final String CONNECTION_URI = "jdbc:h2:" + H2_DB_PATH + H2_DB_NAME
             + ";FILE_LOCK=NO";
     private static final String USER = "vahdin";
     private static final String PASSWORD = "";
@@ -30,7 +30,7 @@ public class DB {
     static {
         try {
             logger.info("Initializing connection to " + CONNECTION_URI);
-            File h2File = new File(H2_DB_NAME + ".h2.db");
+            File h2File = new File(H2_DB_PATH + H2_DB_NAME + ".h2.db");
             if (!h2File.exists()) {
                 logger.info("Copying database to working directory from classpath.");
                 InputStream in = DB.class.getResourceAsStream(H2_DB_NAME
