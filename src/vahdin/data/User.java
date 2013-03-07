@@ -66,18 +66,27 @@ public class User implements Item {
         row = item;
     }
 
-    // get raw prestige value from DB
+    /**
+     * get raw prestige value from DB
+     * 
+     * @return prestige value
+     */
     private int getPrestigeValue() {
         int value = (Integer) this.getItemProperty("PRESTIGE").getValue();
         return value;
     }
 
+    /**
+     * Get the id of the user
+     * 
+     * @return id userid
+     */
     public String getUserId() {
         String id = (String) this.getItemProperty("ID").getValue();
         return id;
     }
 
-    /** Returns true if the user is a guest. */
+    /** @return true if the user is a guest. */
     public boolean isGuest() {
         return "".equals(getItemProperty("ID").getValue());
     }
@@ -200,11 +209,11 @@ public class User implements Item {
         String rank = null;
 
         if (value < 0) {
-            rank = "Titface :(";
+            rank = "Trolol";
         } else if (value < 1000) {
-            rank = "Newbie";
+            rank = "Nobody";
         } else if (value < 2000) {
-            rank = "Stalker Wannabe";
+            rank = "Newbie";
         } else if (value < 4000) {
             rank = "Stalker";
         } else if (value < 8000) {
