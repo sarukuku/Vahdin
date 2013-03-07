@@ -162,6 +162,9 @@ public class MarksView extends CustomLayout implements View {
             public void login(LoginEvent event) {
                 User user = ui.getCurrentUser();
                 newMarkButton.setVisible(user.isLoggedIn());
+                if (event != null) {
+                    ui.getNavigator().navigateTo("");
+                }
             }
         };
     }
