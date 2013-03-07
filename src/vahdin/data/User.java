@@ -3,6 +3,7 @@ package vahdin.data;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -214,7 +215,7 @@ public class User implements Item {
         } else {
             rank = "Gaylord";
         }
-        return rank;
+        return value + "";
     }
 
     /*
@@ -223,8 +224,8 @@ public class User implements Item {
      * @return 2 point decimal float power
      */
     public float getPrestigePower() {
-        int power = (int) (java.lang.Math.sqrt(getPrestigeValue()) * 50);
-        return power / 100 + 1;
+        int power = (int) (java.lang.Math.sqrt(getPrestigeValue()));
+        return power / 200 + 1;
     }
 
     @SuppressWarnings("unchecked")
@@ -236,12 +237,6 @@ public class User implements Item {
     public void addExperience(int experience) {
         int exp = experience + getExperience();
         this.getItemProperty("EXPERIENCE").setValue(exp);
-
-        try {
-            commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     /*
@@ -252,13 +247,33 @@ public class User implements Item {
     @SuppressWarnings("unchecked")
     public void addPrestige(double prestige) {
         double pre = prestige * 100 + getPrestigeValue();
-        this.getItemProperty("PRESTIGE").setValue(pre);
+        this.getItemProperty("PRESTIGE").setValue((int) pre);
+    }
 
-        try {
-            commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void reload() {
+        container.refresh();
+        row = container.getItem(new RowId(new Object[] { getUserId() }));
+    }
+
+    public static User getUserById(String id) {
+        List<User> users = loadAll();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUserId() == id) {
+                return users.get(i);
+            }
         }
+        return null;
+    }
+
+    public static List<User> loadAll() {
+        ArrayList<User> users = new ArrayList<>(container.size());
+        for (@SuppressWarnings("rawtypes")
+        Iterator i = container.getItemIds().iterator(); i.hasNext();) {
+            RowId id = (RowId) i.next();
+            Item item = container.getItem(id);
+            users.add(new User(item));
+        }
+        return users;
     }
 
     /**

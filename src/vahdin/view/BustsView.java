@@ -92,7 +92,8 @@ public class BustsView extends CustomLayout implements View {
         Label creationDate = new Label("<h4>" + mark.getTime() + "</h4>",
                 ContentMode.HTML);
 
-        Label ownerNick = new Label("Riku Riski");
+        Label ownerNick = new Label(User.getUserById(mark.getUserID())
+                .getName());
         ownerNick.setStyleName("nickname");
 
         final Label markVotes = new Label((int) mark.getVoteCount() + "");
@@ -121,6 +122,8 @@ public class BustsView extends CustomLayout implements View {
                         try {
                             vote.save();
                             Vote.commit();
+                            User.commit();
+                            user.reload();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -129,6 +132,8 @@ public class BustsView extends CustomLayout implements View {
                                 .setIcon(new ExternalResource(
                                         "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });
@@ -156,6 +161,8 @@ public class BustsView extends CustomLayout implements View {
                         try {
                             vote.save();
                             Vote.commit();
+                            User.commit();
+                            user.reload();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -164,6 +171,8 @@ public class BustsView extends CustomLayout implements View {
                                 .setIcon(new ExternalResource(
                                         "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });
@@ -186,7 +195,7 @@ public class BustsView extends CustomLayout implements View {
             }
         });
 
-        for (int i = 0; i < busts.size(); i++) {
+        for (int i = busts.size()-1; i >= 0; i--) {
             CustomLayout layout = new CustomLayout("bust-row");
             final int bustId = busts.get(i).getId();
             final Bust bust = Bust.getBustById(bustId);
@@ -229,6 +238,8 @@ public class BustsView extends CustomLayout implements View {
                             try {
                                 vote.save();
                                 Vote.commit();
+                                User.commit();
+                                user.reload();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -263,6 +274,8 @@ public class BustsView extends CustomLayout implements View {
                             try {
                                 vote.save();
                                 Vote.commit();
+                                User.commit();
+                                user.reload();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }

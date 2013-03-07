@@ -80,7 +80,7 @@ public class MarksView extends CustomLayout implements View {
 
         // The button to add a new Mark is only shown if user is logged in
 
-        for (int i = 0; i < marks.size(); i++) {
+        for (int i = marks.size()-1; i >= 0; i--) {
             final Mark m = marks.get(i);
 
             CustomLayout layout = new CustomLayout("mark-row");
@@ -124,6 +124,8 @@ public class MarksView extends CustomLayout implements View {
                             try {
                                 vote.save();
                                 Vote.commit();
+                                User.commit();
+                                user.reload();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -131,6 +133,8 @@ public class MarksView extends CustomLayout implements View {
                             voteUp.setIcon(new ExternalResource(
                                     "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                         }
+                    } else {
+                        ui.openLoginWindow();
                     }
                 }
             });
@@ -158,6 +162,8 @@ public class MarksView extends CustomLayout implements View {
                             try {
                                 vote.save();
                                 Vote.commit();
+                                User.commit();
+                                user.reload();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -165,6 +171,8 @@ public class MarksView extends CustomLayout implements View {
                             voteDown.setIcon(new ExternalResource(
                                     "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                         }
+                    } else {
+                        ui.openLoginWindow();
                     }
                 }
             });
@@ -174,13 +182,9 @@ public class MarksView extends CustomLayout implements View {
             layout.addComponent(voteDown, "mark-row-downvote-arrow");
             layout.addComponent(title, "mark-row-title");
 
-            // FOR TESTING ONLY
-            System.out.println(i + " " + marks.get(i).getTitle() + "id:"
-                    + marks.get(i).getId());
-
             marksList.addComponent(layout);
 
-            if (i == 0) {
+            if (i == marks.size()-1) {
                 ui.showBusts(marks.get(i));
             }
         }

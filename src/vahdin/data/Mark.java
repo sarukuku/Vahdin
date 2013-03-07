@@ -48,8 +48,6 @@ public class Mark implements Item {
                 description));
         row.addItemProperty("CREATIONTIME", new ObjectProperty<Date>(time));
         row.addItemProperty("USERID", new ObjectProperty<String>(userId));
-        User user = ((VahdinUI) UI.getCurrent()).getCurrentUser();
-        user.addExperience(10);
     }
 
     public String getTitle() {

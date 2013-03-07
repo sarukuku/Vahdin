@@ -66,7 +66,7 @@ public class SingleBustView extends CustomLayout implements View {
                 ContentMode.HTML);
         Label date = new Label("<h4>" + bust.getTime() + "</h4>",
                 ContentMode.HTML);
-        Label nick = new Label("Riku Riski");
+        Label nick = new Label(User.getUserById(bust.getUserID()).getName());
         nick.setStyleName("nickname");
 
         final Label votes = new Label((int) bust.getVoteCount() + "");
@@ -95,6 +95,8 @@ public class SingleBustView extends CustomLayout implements View {
                         try {
                             vote.save();
                             Vote.commit();
+                            User.commit();
+                            user.reload();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -102,6 +104,8 @@ public class SingleBustView extends CustomLayout implements View {
                         voteup.setIcon(new ExternalResource(
                                 "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });
@@ -129,6 +133,8 @@ public class SingleBustView extends CustomLayout implements View {
                         try {
                             vote.save();
                             Vote.commit();
+                            User.commit();
+                            user.reload();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -136,6 +142,8 @@ public class SingleBustView extends CustomLayout implements View {
                         votedown.setIcon(new ExternalResource(
                                 "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                     }
+                } else {
+                    ui.openLoginWindow();
                 }
             }
         });

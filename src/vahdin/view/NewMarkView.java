@@ -33,7 +33,7 @@ public class NewMarkView extends CustomLayout implements View {
     public NewMarkView() {
         super("new-mark-sidebar");
 
-        User user = ui.getCurrentUser();
+        final User user = ui.getCurrentUser();
         final String userId = user.getUserId();
 
         final TextField title = new TextField();
@@ -59,7 +59,9 @@ public class NewMarkView extends CustomLayout implements View {
                 String name = title.getValue();
                 String desc = description.getValue();
                 Date time = new Date();
-                final Mark m = new Mark(name, time, desc, userId);
+
+                Mark m = new Mark(name, time, desc, userId);
+                user.addExperience(10);
                 try {
                     m.save();
                 } catch (SQLException e) {
@@ -107,7 +109,9 @@ public class NewMarkView extends CustomLayout implements View {
                 });
                 
                 try {
-					Mark.commit();
+                	Mark.commit();
+                    User.commit();
+                    user.reload();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -49,9 +49,6 @@ public class Bust implements Item {
         row.addItemProperty("MARKID", new ObjectProperty<Integer>(markId));
         row.addItemProperty("COORDINATESLAT", new ObjectProperty<Double>(lat));
         row.addItemProperty("COORDINATESLON", new ObjectProperty<Double>(lon));
-        User user = ((VahdinUI) UI.getCurrent()).getCurrentUser();
-        user.addExperience(1);
-
     }
 
     private Bust(Item item) {

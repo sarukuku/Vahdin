@@ -78,7 +78,7 @@ public class NewBustView extends CustomLayout implements View {
         String[] s = event.getParameters().split("/");
         markId = Integer.parseInt(s[0]);
 
-        User user = ui.getCurrentUser();
+        final User user = ui.getCurrentUser();
         final String userId = user.getUserId();
 
         lat.setReadOnly(true);
@@ -123,6 +123,7 @@ public class NewBustView extends CustomLayout implements View {
                 Date time = date.getValue();
                 Bust bust = new Bust(name, desc, time, latitude, longitude,
                         markId, userId);
+                user.addExperience(1);
                 try {
                     bust.save();
                 } catch (SQLException e) {
@@ -170,7 +171,9 @@ public class NewBustView extends CustomLayout implements View {
                 });
                 
                 try {
-					Bust.commit();
+                	 Bust.commit();
+                     User.commit();
+                     user.reload();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
