@@ -114,20 +114,22 @@ public class BustsView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                if (!Vote.hasVoted(id, "Mark", user.getUserId())) {
-                    Vote vote = new Vote(user.getUserId(), id, "Mark", user
-                            .getPrestigePower());
-                    try {
-                        vote.save();
-                        vote.commit();
-                    } catch (SQLException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                if (!user.isGuest()) {
+                    if (!Vote.hasVoted(id, "Mark", user.getUserId())) {
+                        Vote vote = new Vote(user.getUserId(), id, "Mark", user
+                                .getPrestigePower());
+                        try {
+                            vote.save();
+                            vote.commit();
+                        } catch (SQLException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        markVotes.setValue((int) mark.getVoteCount() + "");
+                        markUpvote
+                                .setIcon(new ExternalResource(
+                                        "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                     }
-                    markVotes.setValue((int) mark.getVoteCount() + "");
-                    markUpvote
-                            .setIcon(new ExternalResource(
-                                    "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                 }
             }
         });
@@ -148,20 +150,22 @@ public class BustsView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                if (!Vote.hasVoted(id, "Mark", user.getUserId())) {
-                    Vote vote = new Vote(user.getUserId(), id, "Mark", -user
-                            .getPrestigePower());
-                    try {
-                        vote.save();
-                        vote.commit();
-                    } catch (SQLException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                if (!user.isGuest()) {
+                    if (!Vote.hasVoted(id, "Mark", user.getUserId())) {
+                        Vote vote = new Vote(user.getUserId(), id, "Mark",
+                                -user.getPrestigePower());
+                        try {
+                            vote.save();
+                            vote.commit();
+                        } catch (SQLException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        markVotes.setValue((int) mark.getVoteCount() + "");
+                        markDownvote
+                                .setIcon(new ExternalResource(
+                                        "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                     }
-                    markVotes.setValue((int) mark.getVoteCount() + "");
-                    markDownvote
-                            .setIcon(new ExternalResource(
-                                    "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                 }
             }
         });
@@ -220,19 +224,21 @@ public class BustsView extends CustomLayout implements View {
 
                 @Override
                 public void buttonClick(ClickEvent event) {
-                    if (!Vote.hasVoted(bustId, "Bust", user.getUserId())) {
-                        Vote vote = new Vote(user.getUserId(), bustId, "Bust",
-                                user.getPrestigePower());
-                        try {
-                            vote.save();
-                            vote.commit();
-                        } catch (SQLException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                    if (!user.isGuest()) {
+                        if (!Vote.hasVoted(bustId, "Bust", user.getUserId())) {
+                            Vote vote = new Vote(user.getUserId(), bustId,
+                                    "Bust", user.getPrestigePower());
+                            try {
+                                vote.save();
+                                vote.commit();
+                            } catch (SQLException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            votes.setValue(bust.getVoteCount() + "");
+                            upvote.setIcon(new ExternalResource(
+                                    "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                         }
-                        votes.setValue(bust.getVoteCount() + "");
-                        upvote.setIcon(new ExternalResource(
-                                "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                     }
                 }
             });
@@ -253,19 +259,21 @@ public class BustsView extends CustomLayout implements View {
 
                 @Override
                 public void buttonClick(ClickEvent event) {
-                    if (!Vote.hasVoted(bustId, "Bust", user.getUserId())) {
-                        Vote vote = new Vote(user.getUserId(), bustId, "Bust",
-                                -user.getPrestigePower());
-                        try {
-                            vote.save();
-                            vote.commit();
-                        } catch (SQLException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                    if (!user.isGuest()) {
+                        if (!Vote.hasVoted(bustId, "Bust", user.getUserId())) {
+                            Vote vote = new Vote(user.getUserId(), bustId,
+                                    "Bust", -user.getPrestigePower());
+                            try {
+                                vote.save();
+                                vote.commit();
+                            } catch (SQLException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            votes.setValue(bust.getVoteCount() + "");
+                            downvote.setIcon(new ExternalResource(
+                                    "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                         }
-                        votes.setValue(bust.getVoteCount() + "");
-                        downvote.setIcon(new ExternalResource(
-                                "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                     }
                 }
             });

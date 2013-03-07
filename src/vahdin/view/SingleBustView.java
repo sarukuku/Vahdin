@@ -85,19 +85,21 @@ public class SingleBustView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                if (!Vote.hasVoted(bustId, "Bust", user.getUserId())) {
-                    Vote vote = new Vote(user.getUserId(), id, "Bust", user
-                            .getPrestigePower());
-                    try {
-                        vote.save();
-                        vote.commit();
-                    } catch (SQLException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                if (!user.isGuest()) {
+                    if (!Vote.hasVoted(bustId, "Bust", user.getUserId())) {
+                        Vote vote = new Vote(user.getUserId(), id, "Bust", user
+                                .getPrestigePower());
+                        try {
+                            vote.save();
+                            vote.commit();
+                        } catch (SQLException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        votes.setValue((int) bust.getVoteCount() + "");
+                        voteup.setIcon(new ExternalResource(
+                                "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                     }
-                    votes.setValue((int) bust.getVoteCount() + "");
-                    voteup.setIcon(new ExternalResource(
-                            "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                 }
             }
         });
@@ -118,19 +120,21 @@ public class SingleBustView extends CustomLayout implements View {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                if (!Vote.hasVoted(id, "Bust", user.getUserId())) {
-                    Vote vote = new Vote(user.getUserId(), id, "Bust", -user
-                            .getPrestigePower());
-                    try {
-                        vote.save();
-                        vote.commit();
-                    } catch (SQLException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                if (!user.isGuest()) {
+                    if (!Vote.hasVoted(id, "Bust", user.getUserId())) {
+                        Vote vote = new Vote(user.getUserId(), id, "Bust",
+                                -user.getPrestigePower());
+                        try {
+                            vote.save();
+                            vote.commit();
+                        } catch (SQLException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        votes.setValue((int) bust.getVoteCount() + "");
+                        votedown.setIcon(new ExternalResource(
+                                "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                     }
-                    votes.setValue((int) bust.getVoteCount() + "");
-                    votedown.setIcon(new ExternalResource(
-                            "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                 }
             }
         });
