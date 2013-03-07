@@ -80,13 +80,15 @@ public class MarksView extends CustomLayout implements View {
 
         // The button to add a new Mark is only shown if user is logged in
 
-        for (int i = marks.size()-1; i >= 0; i--) {
+        for (int i = marks.size() - 1; i >= 0; i--) {
             final Mark m = marks.get(i);
 
             CustomLayout layout = new CustomLayout("mark-row");
 
             // Button to show BustsSubview with Busts under the clicked Mark
-            Button title = new Button(marks.get(i).getTitle());
+            int count = m.getBusts().size();
+            Button title = new Button(marks.get(i).getTitle() + " (" + count
+                    + ")");
             title.setStyleName("mark-title");
             final int id = marks.get(i).getId();
             title.addClickListener(new Button.ClickListener() {
@@ -184,7 +186,7 @@ public class MarksView extends CustomLayout implements View {
 
             marksList.addComponent(layout);
 
-            if (i == marks.size()-1) {
+            if (i == marks.size() - 1) {
                 ui.showBusts(marks.get(i));
             }
         }
