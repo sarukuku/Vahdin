@@ -189,6 +189,10 @@ public class SingleBustView extends CustomLayout implements View {
         addComponent(desc, "bust-description");
         addComponent(viewImage, "view-bust-image-button");
 
+        ui.clearMap();
+        ui.addMarker(bust.getLocationLat(), bust.getLocationLon());
+        ui.centerMapOn(bust.getLocationLat(), bust.getLocationLon());
+
         loginListener.login(null); // force login actions
     }
 
@@ -201,6 +205,7 @@ public class SingleBustView extends CustomLayout implements View {
     @Override
     public void detach() {
         super.detach();
+        ui.clearMap();
         ui.removeLoginListener(loginListener);
     }
 
