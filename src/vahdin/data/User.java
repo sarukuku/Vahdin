@@ -103,7 +103,8 @@ public class User implements Item {
      * @return true if admin
      */
     public boolean isAdmin() {
-        boolean admin = (boolean) this.getItemProperty("ADMIN").getValue();
+        boolean admin = isLoggedIn()
+                && (boolean) getItemProperty("ADMIN").getValue();
         return admin;
     }
 

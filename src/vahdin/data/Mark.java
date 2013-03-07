@@ -175,6 +175,11 @@ public class Mark implements Item {
                 item.getItemProperty("CREATIONTIME").getValue());
         row.getItemProperty("USERID").setValue(
                 item.getItemProperty("USERID").getValue());
+        row.getItemProperty("APPROVED").setValue(false);
+    }
+
+    public boolean isApproved() {
+        return (Boolean) getItemProperty("APPROVED").getValue();
     }
 
 }

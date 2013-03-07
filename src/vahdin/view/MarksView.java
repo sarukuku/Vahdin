@@ -83,6 +83,26 @@ public class MarksView extends CustomLayout implements View {
         for (int i = 0; i < marks.size(); i++) {
             final Mark m = marks.get(i);
 
+            if (!m.isApproved()) {
+                if (user.isAdmin()) {
+                    CustomLayout layout = new CustomLayout("mark-row");
+                    Button title = new Button(marks.get(i).getTitle());
+                    title.setStyleName("mark-title");
+                    final int id = marks.get(i).getId();
+                    title.addClickListener(new Button.ClickListener() {
+
+                        public void buttonClick(ClickEvent event) {
+                            UI.getCurrent().getNavigator()
+                                    .navigateTo("suggested-mark/" + id);
+                            // Notification.show("Title clicked");
+                        }
+
+                    });
+                    marksList.addComponent(layout);
+                }
+                continue;
+            }
+
             CustomLayout layout = new CustomLayout("mark-row");
 
             // Button to show BustsSubview with Busts under the clicked Mark
