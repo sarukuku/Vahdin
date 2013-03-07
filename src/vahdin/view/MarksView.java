@@ -172,6 +172,7 @@ public class MarksView extends CustomLayout implements View {
     public void detach() {
         super.detach();
         ui.removeLoginListener(loginListener);
+        ui.clearMap();
     }
 
     @Override

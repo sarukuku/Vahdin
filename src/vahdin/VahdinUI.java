@@ -148,6 +148,10 @@ public class VahdinUI extends UI implements MethodEventSource {
         for (Bust bust : busts) {
             map.addMarker(bust.getLocationLat(), bust.getLocationLon());
         }
+        if (busts.size() > 0) {
+            Bust bust = busts.get(0);
+            centerMapOn(bust.getLocationLat(), bust.getLocationLon());
+        }
     }
 
     /** Clears the map. */
