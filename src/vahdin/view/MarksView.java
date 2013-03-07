@@ -131,6 +131,8 @@ public class MarksView extends CustomLayout implements View {
                             voteUp.setIcon(new ExternalResource(
                                     "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                         }
+                    } else {
+                        ui.openLoginWindow();
                     }
                 }
             });
@@ -165,6 +167,8 @@ public class MarksView extends CustomLayout implements View {
                             voteDown.setIcon(new ExternalResource(
                                     "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                         }
+                    } else {
+                        ui.openLoginWindow();
                     }
                 }
             });
