@@ -77,6 +77,9 @@ public class NewBustView extends CustomLayout implements View {
         lat.setReadOnly(true);
         lon.setReadOnly(true);
 
+        date.setDateFormat("dd.MM.yyyy");
+        date.setValue(new Date());
+
         mapListener = new GoogleMap.ClickListener() {
             @Override
             public void click(GoogleMap.ClickEvent event) {
