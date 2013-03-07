@@ -97,8 +97,8 @@ public class Mark implements Item {
         return id;
     }
 
-    public ArrayList<Bust> getBusts() {
-        return this.busts; // TODO:
+    public List<Bust> getBusts() {
+        return Bust.getBustByMarkId(getId());
     }
 
     public void addBust(Bust bust) {

@@ -298,6 +298,8 @@ public class BustsView extends CustomLayout implements View {
         addComponent(bustsList, "busts-list");
 
         loginListener.login(null); // force login actions
+
+        ui.showBusts(mark);
     }
 
     @Override
@@ -310,6 +312,7 @@ public class BustsView extends CustomLayout implements View {
     public void detach() {
         super.detach();
         ui.removeLoginListener(loginListener);
+        ui.clearMap();
     }
 
     /*
