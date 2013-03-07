@@ -59,7 +59,11 @@ public class NewMarkView extends CustomLayout implements View {
                 String name = title.getValue();
                 String desc = description.getValue();
                 Date time = new Date();
-
+                if (name.isEmpty() || desc.isEmpty() || time == null) {
+                    Notification
+                            .show("A sign of wisdom and maturity is when you come to terms with the realization that your decisions cause your rewards and consequences. You are responsible for your life, and your ultimate success depends on the choices you make.");
+                    return;
+                }
                 Mark m = new Mark(name, time, desc, userId);
                 user.addExperience(10);
                 try {

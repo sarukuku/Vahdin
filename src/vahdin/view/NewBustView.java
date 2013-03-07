@@ -11,7 +11,6 @@ import vahdin.VahdinUI.LoginListener;
 import vahdin.component.GoogleMap;
 import vahdin.component.ImageUpload;
 import vahdin.data.Bust;
-import vahdin.data.Mark;
 import vahdin.data.User;
 
 import com.vaadin.data.util.sqlcontainer.query.QueryDelegate;
@@ -121,6 +120,12 @@ public class NewBustView extends CustomLayout implements View {
                 String name = title.getValue();
                 String desc = description.getValue();
                 Date time = date.getValue();
+                if (name.isEmpty() || desc.isEmpty() || time == null) {
+                    Notification
+                            .show("A sign of wisdom and maturity is when you come to terms with the realization that your decisions cause your rewards and consequences. You are responsible for your life, and your ultimate success depends on the choices you make.");
+                    return;
+                }
+
                 Bust bust = new Bust(name, desc, time, latitude, longitude,
                         markId, userId);
                 user.addExperience(1);
@@ -175,7 +180,6 @@ public class NewBustView extends CustomLayout implements View {
                      User.commit();
                      user.reload();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
                 

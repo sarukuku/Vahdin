@@ -215,7 +215,7 @@ public class User implements Item {
         } else {
             rank = "Gaylord";
         }
-        return value + "";
+        return rank;
     }
 
     /*
