@@ -957,6 +957,13 @@ div.marks-list-container! > div.open {
 
 .single-image-window {
 	color: black;
+	max-width: 90%;
+}
+
+.single-image-window .v-image {
+	display: block;
+	max-width: 100%;
+	height: auto;
 }
 
 .single-image-window .v-button-caption {

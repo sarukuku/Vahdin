@@ -71,6 +71,9 @@ public class SuggestedMarkView extends CustomLayout implements View {
 
         final Label nickname = new Label("<h4 class=\"nickname\">"
                 + submitter.getName() + "</h4>", ContentMode.HTML);
+        
+        final Label description = new Label("<p class=\"mark-description\">"
+                + mark.getDescription() + "</p>", ContentMode.HTML);
 
         final Button viewImageButton = new Button("View image");
         viewImageButton.setStyleName("view-image-button");
@@ -112,6 +115,7 @@ public class SuggestedMarkView extends CustomLayout implements View {
         addComponent(backButton, "back-button");
         addComponent(creationDate, "mark-creation-date");
         addComponent(nickname, "mark-submitter-nickname");
+        addComponent(description, "mark-description");
         addComponent(viewImageButton, "view-image-button");
         addComponent(deleteButton, "new-mark-cancel-button");
         addComponent(approveButton, "new-mark-submit-button");
