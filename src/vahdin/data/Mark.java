@@ -183,13 +183,23 @@ public class Mark implements Item {
     public boolean isApproved() {
         return (Boolean) getItemProperty("APPROVED").getValue();
     }
-    
-    public static void addIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
-    	container.addRowIdChangeListener(listener);
+
+    public static void addIdChangeListener(
+            QueryDelegate.RowIdChangeListener listener) {
+        container.addRowIdChangeListener(listener);
     }
-    
-    public static void removeIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
-    	container.removeRowIdChangeListener(listener);
+
+    public static void removeIdChangeListener(
+            QueryDelegate.RowIdChangeListener listener) {
+        container.removeRowIdChangeListener(listener);
     }
-    
+
+    public void delete() {
+        try {
+            container.removeItem(new RowId(new Object[] { getId() }));
+            commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

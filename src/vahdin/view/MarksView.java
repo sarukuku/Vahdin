@@ -93,7 +93,7 @@ public class MarksView extends CustomLayout implements View {
 
                         public void buttonClick(ClickEvent event) {
                             UI.getCurrent().getNavigator()
-                                    .navigateTo("suggested-mark/" + id);
+                                    .navigateTo("suggestedmark/" + id);
                             // Notification.show("Title clicked");
                         }
 
