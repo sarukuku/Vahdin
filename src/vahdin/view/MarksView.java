@@ -85,7 +85,7 @@ public class MarksView extends CustomLayout implements View {
 
             if (!m.isApproved()) {
                 if (user.isAdmin()) {
-                    CustomLayout layout = new CustomLayout("mark-row");
+                    CustomLayout layout = new CustomLayout("suggested-mark-row");
                     Button title = new Button(marks.get(i).getTitle());
                     title.setStyleName("mark-title");
                     final int id = marks.get(i).getId();
@@ -98,6 +98,7 @@ public class MarksView extends CustomLayout implements View {
                         }
 
                     });
+                    layout.addComponent(title, "suggested-mark-row-title");
                     marksList.addComponent(layout);
                 }
                 continue;
