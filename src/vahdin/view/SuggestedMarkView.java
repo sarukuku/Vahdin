@@ -73,6 +73,10 @@ public class SuggestedMarkView extends CustomLayout implements View {
                 + SafeHtmlUtils.htmlEscape(submitter.getName()) + "</h4>",
                 ContentMode.HTML);
 
+        final Label description = new Label("<p class=\"mark-description\">"
+                + SafeHtmlUtils.htmlEscape(mark.getDescription()) + "</p>",
+                ContentMode.HTML);
+
         final Button viewImageButton = new Button("View image");
         viewImageButton.setStyleName("view-image-button");
         viewImageButton.addClickListener(new Button.ClickListener() {
@@ -113,6 +117,7 @@ public class SuggestedMarkView extends CustomLayout implements View {
         addComponent(backButton, "back-button");
         addComponent(creationDate, "mark-creation-date");
         addComponent(nickname, "mark-submitter-nickname");
+        addComponent(description, "mark-description");
         addComponent(viewImageButton, "view-image-button");
         addComponent(deleteButton, "new-mark-cancel-button");
         addComponent(approveButton, "new-mark-submit-button");
