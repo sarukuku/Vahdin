@@ -70,7 +70,8 @@ public class SuggestedMarkView extends CustomLayout implements View {
                 ContentMode.HTML);
 
         final Label nickname = new Label("<h4 class=\"nickname\">"
-                + submitter.getName() + "</h4>", ContentMode.HTML);
+                + SafeHtmlUtils.htmlEscape(submitter.getName()) + "</h4>",
+                ContentMode.HTML);
 
         final Button viewImageButton = new Button("View image");
         viewImageButton.setStyleName("view-image-button");
