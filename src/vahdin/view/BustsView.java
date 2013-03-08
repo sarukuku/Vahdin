@@ -195,7 +195,7 @@ public class BustsView extends CustomLayout implements View {
             }
         });
 
-        for (int i = busts.size()-1; i >= 0; i--) {
+        for (int i = busts.size() - 1; i >= 0; i--) {
             CustomLayout layout = new CustomLayout("bust-row");
             final int bustId = busts.get(i).getId();
             final Bust bust = Bust.getBustById(bustId);
@@ -247,6 +247,8 @@ public class BustsView extends CustomLayout implements View {
                             upvote.setIcon(new ExternalResource(
                                     "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                         }
+                    } else {
+                        ui.openLoginWindow();
                     }
                 }
             });
@@ -283,6 +285,8 @@ public class BustsView extends CustomLayout implements View {
                             downvote.setIcon(new ExternalResource(
                                     "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                         }
+                    } else {
+                        ui.openLoginWindow();
                     }
                 }
             });
