@@ -10,6 +10,7 @@ import vahdin.data.Mark;
 import vahdin.data.User;
 
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.vaadin.data.util.sqlcontainer.OptimisticLockException;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
@@ -22,6 +23,7 @@ import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -50,6 +52,12 @@ public class SuggestedMarkView extends CustomLayout implements View {
         final int markId = Integer.parseInt(s[0]);
         final Mark mark = Mark.getMarkById(markId);
         final User submitter = User.load(mark.getUserID());
+
+        if (mark == null || mark.isApproved()) {
+            Notification
+                    .show("It looks like someone else already took care of this mark.");
+            ui.getNavigator().navigateTo("");
+        }
 
         final Label title = new Label("<h2>"
                 + SafeHtmlUtils.htmlEscape(mark.getTitle()) + "</h2>",
@@ -106,9 +114,19 @@ public class SuggestedMarkView extends CustomLayout implements View {
                 mark.getItemProperty("APPROVED").setValue(true);
                 try {
                     Mark.commit();
-                    ui.getNavigator().navigateTo("");
+                    User user = User.load(mark.getUserID());
+                    user.addExperience(10);
+                    User.commit();
+                } catch (OptimisticLockException e) {
+                    Notification
+                            .show("It looks like someone else already took care of this mark.");
                 } catch (SQLException e) {
+                    Notification
+                            .show("Something went horribly wrong! Check the logs for details.",
+                                    Notification.Type.ERROR_MESSAGE);
                     e.printStackTrace();
+                } finally {
+                    ui.getNavigator().navigateTo("");
                 }
             }
         });
@@ -127,11 +145,13 @@ public class SuggestedMarkView extends CustomLayout implements View {
 
     @Override
     public void attach() {
+        super.attach();
         ui.addLoginListener(loginListener);
     }
 
     @Override
     public void detach() {
+        super.detach();
         ui.removeLoginListener(loginListener);
     }
 
