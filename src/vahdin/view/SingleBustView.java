@@ -10,6 +10,7 @@ import vahdin.data.Bust;
 import vahdin.data.User;
 import vahdin.data.Vote;
 
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
@@ -62,7 +63,8 @@ public class SingleBustView extends CustomLayout implements View {
         bust = Bust.getBustById(bustId);
         final int id = bust.getId();
 
-        Label title = new Label("<h2>" + bust.getTitle() + "</h2>",
+        Label title = new Label("<h2>"
+                + SafeHtmlUtils.htmlEscape(bust.getTitle()) + "</h2>",
                 ContentMode.HTML);
         Label date = new Label("<h4>" + bust.getTime() + "</h4>",
                 ContentMode.HTML);
@@ -174,7 +176,8 @@ public class SingleBustView extends CustomLayout implements View {
             }
         });
 
-        Label desc = new Label("<p>" + bust.getDescription() + "</p>",
+        Label desc = new Label("<p>"
+                + SafeHtmlUtils.htmlEscape(bust.getDescription()) + "</p>",
                 ContentMode.HTML);
         desc.setStyleName("mark-description");
 
