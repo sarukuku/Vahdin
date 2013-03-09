@@ -16,6 +16,7 @@ import vahdin.view.MarksView;
 import vahdin.view.NewBustView;
 import vahdin.view.NewMarkView;
 import vahdin.view.SingleBustView;
+import vahdin.view.SuggestedMarkView;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
@@ -89,6 +90,7 @@ public class VahdinUI extends UI implements MethodEventSource {
         navigator.addView("busts", BustsView.class);
         navigator.addView("newbust", NewBustView.class);
         navigator.addView("newmark", NewMarkView.class);
+        navigator.addView("suggestedmark", SuggestedMarkView.class);
 
     }
 
