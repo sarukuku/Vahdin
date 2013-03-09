@@ -12,6 +12,7 @@ import vahdin.data.Mark;
 import vahdin.data.User;
 import vahdin.data.Vote;
 
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
@@ -61,7 +62,8 @@ public class BustsView extends CustomLayout implements View {
 
         VerticalLayout bustsList = new VerticalLayout();
 
-        Label markTitle = new Label("<h2>" + mark.getTitle() + "</h2>",
+        Label markTitle = new Label("<h2>"
+                + SafeHtmlUtils.htmlEscape(mark.getTitle()) + "</h2>",
                 ContentMode.HTML);
 
         newBustButton = new Button();
@@ -181,7 +183,8 @@ public class BustsView extends CustomLayout implements View {
         if (markDescription.length() > 310) {
             markDescription.substring(0, 309);
         }
-        Label markDesc = new Label("<p>" + markDescription + "</p>",
+        Label markDesc = new Label("<p>"
+                + SafeHtmlUtils.htmlEscape(markDescription) + "</p>",
                 ContentMode.HTML);
         markDesc.setStyleName("mark-description");
 

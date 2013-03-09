@@ -146,11 +146,19 @@ public class VahdinUI extends UI implements MethodEventSource {
      * 
      * @param mark
      */
-    public void showBusts(Mark mark) {
+    public void showBusts(final Mark mark) {
         clearMap();
         List<Bust> busts = mark.getBusts();
-        for (Bust bust : busts) {
-            map.addMarker(bust.getLocationLat(), bust.getLocationLon());
+        for (final Bust bust : busts) {
+            GoogleMap.Marker marker = map.addMarker(bust.getLocationLat(),
+                    bust.getLocationLon());
+            marker.addClickListener(new GoogleMap.ClickListener() {
+                @Override
+                public void click(GoogleMap.ClickEvent event) {
+                    getNavigator().navigateTo(
+                            "bust/" + mark.getId() + "/" + bust.getId());
+                }
+            });
         }
         if (busts.size() > 0) {
             Bust bust = busts.get(0);
