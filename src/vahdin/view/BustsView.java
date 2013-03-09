@@ -246,7 +246,7 @@ public class BustsView extends CustomLayout implements View {
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
-                            votes.setValue(bust.getVoteCount() + "");
+                            votes.setValue((int) bust.getVoteCount() + "");
                             upvote.setIcon(new ExternalResource(
                                     "VAADIN/themes/vahdintheme/img/up-arrow-active.png"));
                         }
@@ -284,7 +284,7 @@ public class BustsView extends CustomLayout implements View {
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
-                            votes.setValue(bust.getVoteCount() + "");
+                            votes.setValue((int) bust.getVoteCount() + "");
                             downvote.setIcon(new ExternalResource(
                                     "VAADIN/themes/vahdintheme/img/down-arrow-active.png"));
                         }
