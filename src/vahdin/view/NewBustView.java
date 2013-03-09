@@ -37,8 +37,8 @@ public class NewBustView extends CustomLayout implements View {
 
     private int markId;
     private GoogleMap.Marker marker = null;
-    private double latitude;
-    private double longitude;
+    private Double latitude = null;
+    private Double longitude = null;
 
     private final VahdinUI ui = (VahdinUI) UI.getCurrent();
 
@@ -120,7 +120,8 @@ public class NewBustView extends CustomLayout implements View {
                 String name = title.getValue();
                 String desc = description.getValue();
                 Date time = date.getValue();
-                if (name.isEmpty() || desc.isEmpty() || time == null) {
+                if (name.isEmpty() || desc.isEmpty() || time == null
+                        || latitude == null || longitude == null) {
                     Notification
                             .show("A sign of wisdom and maturity is when you come to terms with the realization that your decisions cause your rewards and consequences. You are responsible for your life, and your ultimate success depends on the choices you make.");
                     return;
@@ -134,55 +135,60 @@ public class NewBustView extends CustomLayout implements View {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                
+
                 Bust.addIdChangeListener(new QueryDelegate.RowIdChangeListener() {
-					@Override
-					public void rowIdChange(RowIdChangeEvent event) {
-						System.out.println("HERE");
-						try {
-		                	String basePath = System.getProperty("user.home") + "/contentimgs/";
-		                	File imgDirectory = new File(basePath);
-		                	String tempFilename = null;
-		                	if (imgDirectory.isDirectory()) {
-							  String filenames[] = imgDirectory.list();
-							  for (int i = 0; i < filenames.length; i++) {
-							      if (filenames[i].contains(tempImgId)) {
-							          tempFilename = filenames[i];
-							          break;
-							      }
-							  }
-							}
-		                	
-		                	String tempImgPath = basePath + tempFilename;
-		                	System.out.println("TempImgPath: " + tempImgPath);
-		                	
-		                	if (new File(tempImgPath).exists()) {
-		                		String[] fileType = tempImgPath.split("\\.");
-		                		String finalImgPath = basePath + "b" + event.getNewRowId() + "." + fileType[fileType.length-1];
-		                		File image = new File(tempImgPath);
-		                   	 
-		                  	  	if (image.renameTo(new File(finalImgPath))) {
-		                  	  		System.out.println("File renamed successfully!");
-		                  	  	} else {
-		                  	  		System.out.println("Failed to rename image!");
-		                  	  	}
-		                	}
-		                	
-		                } catch (Exception e) {
-		                	e.printStackTrace();
-		                }
-						Bust.removeIdChangeListener(this);
-					}
+                    @Override
+                    public void rowIdChange(RowIdChangeEvent event) {
+                        System.out.println("HERE");
+                        try {
+                            String basePath = System.getProperty("user.home")
+                                    + "/contentimgs/";
+                            File imgDirectory = new File(basePath);
+                            String tempFilename = null;
+                            if (imgDirectory.isDirectory()) {
+                                String filenames[] = imgDirectory.list();
+                                for (int i = 0; i < filenames.length; i++) {
+                                    if (filenames[i].contains(tempImgId)) {
+                                        tempFilename = filenames[i];
+                                        break;
+                                    }
+                                }
+                            }
+
+                            String tempImgPath = basePath + tempFilename;
+                            System.out.println("TempImgPath: " + tempImgPath);
+
+                            if (new File(tempImgPath).exists()) {
+                                String[] fileType = tempImgPath.split("\\.");
+                                String finalImgPath = basePath + "b"
+                                        + event.getNewRowId() + "."
+                                        + fileType[fileType.length - 1];
+                                File image = new File(tempImgPath);
+
+                                if (image.renameTo(new File(finalImgPath))) {
+                                    System.out
+                                            .println("File renamed successfully!");
+                                } else {
+                                    System.out
+                                            .println("Failed to rename image!");
+                                }
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Bust.removeIdChangeListener(this);
+                    }
                 });
-                
+
                 try {
-                	 Bust.commit();
-                     User.commit();
-                     user.reload();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-                
+                    Bust.commit();
+                    User.commit();
+                    user.reload();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
                 Notification.show("Created new Bust with title: "
                         + title.getValue());
                 UI.getCurrent().getNavigator()
