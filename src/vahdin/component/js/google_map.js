@@ -59,6 +59,9 @@ GoogleMap = function (elementId, apiKey) {
             'map': map,
             'icon': 'VAADIN/themes/vahdintheme/img/google-maps-icon-red.png'
         });
+        google.maps.event.addListener(markers[id], 'click', function (event) {
+            GoogleMap.click(event.latLng.lat(), event.latLng.lng(), id);
+        });
     });
     
     /** Removes the specified marker. */

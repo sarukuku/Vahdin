@@ -1,6 +1,10 @@
 package vahdin.component;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.json.JSONArray;
@@ -15,6 +19,7 @@ import com.vaadin.ui.JavaScriptFunction;
 public class GoogleMap extends CustomComponent implements MethodEventSource {
 
     private final String id;
+    private final Map<String, List<ClickListener>> markerClickListeners = new HashMap<>();
 
     /**
      * Constructs a new GoogleMap with the specified API key.
@@ -30,13 +35,19 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
 
         JavaScript.getCurrent().addFunction("GoogleMap.click",
                 new JavaScriptFunction() {
-
                     @Override
                     public void call(JSONArray arguments) throws JSONException {
-                        fireEvent(new ClickEvent(map, arguments.getDouble(0),
-                                arguments.getDouble(1)));
+                        if (arguments.length() == 3) {
+                            for (ClickListener listener : markerClickListeners
+                                    .get(arguments.getString(2))) {
+                                listener.click(new ClickEvent(map, arguments
+                                        .getDouble(0), arguments.getDouble(1)));
+                            }
+                        } else {
+                            fireEvent(new ClickEvent(map, arguments
+                                    .getDouble(0), arguments.getDouble(1)));
+                        }
                     }
-
                 });
 
         JavaScript.getCurrent().execute(
@@ -70,11 +81,13 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
     public void removeMarker(Marker marker) {
         JavaScript.getCurrent().execute(
                 "window['" + id + "'].removeMarker('" + marker.id + "')");
+        markerClickListeners.remove(marker.id);
     }
 
     /** Removes all markers. */
     public void removeMarkers() {
         JavaScript.getCurrent().execute("window['" + id + "'].removeMarkers()");
+        markerClickListeners.clear();
     }
 
     /**
@@ -90,6 +103,7 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
                 "window['" + id + "'].center(" + lat + "," + lng + ");");
     }
 
+    /** A class representing a single marker on the map. */
     public class Marker {
 
         public final double latitude;
@@ -97,21 +111,26 @@ public class GoogleMap extends CustomComponent implements MethodEventSource {
 
         private final String id;
 
-        /**
-         * Constructs a new map marker with the given coordinates.
-         * 
-         * @param lat
-         *            coordinate latitude
-         * @param lng
-         *            coordinate longitude
-         * @param id
-         *            Unique id for marker, to communicate betweewn Java and
-         *            Vaadin
-         * */
         private Marker(double lat, double lng, String id) {
             latitude = lat;
             longitude = lng;
             this.id = id;
+            markerClickListeners.put(id, new LinkedList<ClickListener>());
+        }
+
+        public void addClickListener(ClickListener listener) {
+            markerClickListeners.get(id).add(listener);
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            return other != null && other.getClass() == Marker.class
+                    && id == ((Marker) other).id;
+        }
+
+        @Override
+        public int hashCode() {
+            return id.hashCode();
         }
     }
 
