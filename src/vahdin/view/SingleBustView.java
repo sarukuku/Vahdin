@@ -57,10 +57,7 @@ public class SingleBustView extends CustomLayout implements View {
         markId = Integer.parseInt(s[0]);
         bustId = Integer.parseInt(s[1]);
 
-        final User user = ui.getCurrentUser();
-
         bust = Bust.getBustById(bustId);
-        final int id = bust.getId();
 
         Label title = new Label("<h2>"
                 + SafeHtmlUtils.htmlEscape(bust.getTitle()) + "</h2>",

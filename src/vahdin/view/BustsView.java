@@ -53,10 +53,7 @@ public class BustsView extends CustomLayout implements View {
         String[] s = event.getParameters().split("/");
         markId = Integer.parseInt(s[0]);
 
-        final User user = ui.getCurrentUser();
-
         final Mark mark = Mark.getMarkById(markId);
-        final int id = mark.getId();
         List<Bust> busts = Bust.getBustByMarkId(markId);
 
         VerticalLayout bustsList = new VerticalLayout();
@@ -164,7 +161,8 @@ public class BustsView extends CustomLayout implements View {
                 }
             });
 
-            final Button downvoteButton = new VoteButton(bust, VoteButton.Type.DOWN);
+            final Button downvoteButton = new VoteButton(bust,
+                    VoteButton.Type.DOWN);
             downvoteButton.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(ClickEvent event) {
