@@ -21,7 +21,7 @@ import com.vaadin.data.util.sqlcontainer.query.QueryDelegate;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 import com.vaadin.ui.UI;
 
-public class Bust implements Item {
+public class Bust implements Item, Votable {
 
     private static final SQLContainer container;
     private static final Logger logger = Logger.getGlobal();
@@ -191,13 +191,15 @@ public class Bust implements Item {
         row.getItemProperty("COORDINATESLON").setValue(
                 item.getItemProperty("COORDINATESLON").getValue());
     }
-    
-    public static void addIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
-    	container.addRowIdChangeListener(listener);
+
+    public static void addIdChangeListener(
+            QueryDelegate.RowIdChangeListener listener) {
+        container.addRowIdChangeListener(listener);
     }
-    
-    public static void removeIdChangeListener(QueryDelegate.RowIdChangeListener listener) {
-    	container.removeRowIdChangeListener(listener);
+
+    public static void removeIdChangeListener(
+            QueryDelegate.RowIdChangeListener listener) {
+        container.removeRowIdChangeListener(listener);
     }
 
     public void delete() {
@@ -207,6 +209,11 @@ public class Bust implements Item {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getVotableName() {
+        return "Bust";
     }
 
 }

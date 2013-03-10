@@ -22,7 +22,7 @@ import com.vaadin.data.util.sqlcontainer.query.QueryDelegate;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 import com.vaadin.ui.UI;
 
-public class Mark implements Item {
+public class Mark implements Item, Votable {
 
     private static final SQLContainer container;
     private static final Logger logger = Logger.getGlobal();
@@ -201,5 +201,10 @@ public class Mark implements Item {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getVotableName() {
+        return "Mark";
     }
 }

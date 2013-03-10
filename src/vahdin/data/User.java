@@ -173,26 +173,12 @@ public class User implements Item {
         return value;
     }
 
-    public Vote getVote(Mark mark) {
+    public Vote getVote(Votable target) {
         final VahdinUI ui = (VahdinUI) UI.getCurrent();
         List<Vote> all = Vote.loadAll();
         for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getTargetItemId() == mark.getId()
-                    && all.get(i).getType().equals("Mark")
-                    && all.get(i).getUserId() == ui.getCurrentUser()
-                            .getUserId()) {
-                return all.get(i);
-            }
-        }
-        return null;
-    }
-
-    public Vote getVote(Bust bust) {
-        final VahdinUI ui = (VahdinUI) UI.getCurrent();
-        List<Vote> all = Vote.loadAll();
-        for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getTargetItemId() == bust.getId()
-                    && all.get(i).getType().equals("Bust")
+            if (all.get(i).getTargetItemId() == target.getId()
+                    && all.get(i).getType().equals(target.getVotableName())
                     && all.get(i).getUserId() == ui.getCurrentUser()
                             .getUserId()) {
                 return all.get(i);
