@@ -26,6 +26,8 @@ public class MarksView extends CustomLayout implements View {
     private final Button newMarkButton = new Button();
     private final VerticalLayout marksList;
 
+    private boolean hasVisibleSuggestedMarks = false;
+
     public MarksView() {
         super("marks-sidebar");
 
@@ -49,7 +51,13 @@ public class MarksView extends CustomLayout implements View {
             @Override
             public void login(LoginEvent event) {
                 User user = ui.getCurrentUser();
-                newMarkButton.setVisible(user.isLoggedIn());
+                if (event != null
+                        && (user.isAdmin() || hasVisibleSuggestedMarks)) {
+                    hasVisibleSuggestedMarks = false;
+                    ui.getNavigator().navigateTo("");
+                } else {
+                    newMarkButton.setVisible(user.isLoggedIn());
+                }
             }
         };
     }
@@ -96,6 +104,7 @@ public class MarksView extends CustomLayout implements View {
                     });
                     layout.addComponent(title, "suggested-mark-row-title");
                     marksList.addComponent(layout);
+                    hasVisibleSuggestedMarks = true;
                 }
                 continue;
             }
