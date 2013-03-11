@@ -81,8 +81,7 @@ public class MarksView extends CustomLayout implements View {
         List<Mark> marks = Mark.loadAll();
 
         final User user = ui.getCurrentUser();
-
-        // The button to add a new Mark is only shown if user is logged in
+        boolean bustsOnMap = false;
 
         for (int i = marks.size() - 1; i >= 0; i--) {
             final Mark m = marks.get(i);
@@ -156,8 +155,9 @@ public class MarksView extends CustomLayout implements View {
 
             marksList.addComponent(layout);
 
-            if (i == marks.size() - 1) {
+            if (!bustsOnMap && count > 0) {
                 ui.showBusts(marks.get(i));
+                bustsOnMap = true;
             }
         }
 
