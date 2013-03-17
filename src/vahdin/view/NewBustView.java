@@ -129,6 +129,7 @@ public class NewBustView extends CustomLayout implements View {
 
                 Bust bust = new Bust(name, desc, time, latitude, longitude,
                         markId, userId);
+                user.reload();
                 user.addExperience(1);
                 try {
                     bust.save();
