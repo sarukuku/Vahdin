@@ -44,7 +44,7 @@ GoogleMap = function (elementId, apiKey) {
     apiCall(function () {
         map = new google.maps.Map(dom, {
             'center': new google.maps.LatLng(-34.397, 150.644),
-            'zoom': 8,
+            'zoom': 11,
             'mapTypeId': google.maps.MapTypeId.ROADMAP
         });
         google.maps.event.addListener(map, 'click', function (event) {
