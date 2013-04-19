@@ -678,6 +678,10 @@ div.marks-list-container! > div.open {
 	min-height: 105px;
 }
 
+.v-label-mark-description {
+	width: 85%;
+}
+
 .view-image-button {
 	display: block;
 	position: relative;
