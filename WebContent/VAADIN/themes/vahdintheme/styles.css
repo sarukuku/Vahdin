@@ -678,7 +678,7 @@ div.marks-list-container! > div.open {
 	min-height: 105px;
 }
 
-.v-label-mark-description {
+.v-label-mark-description p {
 	width: 85%;
 }
 
